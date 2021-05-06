@@ -187,14 +187,15 @@ export class GenesysCloudClientAuthenticator {
       });
     }
 
-    var query = {
+    const query: { [key: string]: string } = {
       client_id: encodeURIComponent(this.clientId)
     };
 
-    if (logoutRedirectUri)
-      query['redirect_uri'] = encodeURI(logoutRedirectUri);
+    if (logoutRedirectUri) {
+      query.redirect_uri = encodeURI(logoutRedirectUri);
+    }
 
-    var url = this._buildAuthUrl('logout', query);
+    const url = this._buildAuthUrl('logout', query);
     window.location.replace(url);
   }
 
@@ -243,31 +244,6 @@ export class GenesysCloudClientAuthenticator {
       return encodeURIComponent(value);
     });
     return url;
-  }
-
-  /**
-   * Normalizes parameter values:
-   * <ul>
-   * <li>remove nils</li>
-   * <li>keep files and arrays</li>
-   * <li>format to string with `paramToString` for other cases</li>
-   * </ul>
-   * @param params The parameters as object properties.
-   * @returns normalized parameters.
-   */
-  normalizeParams (params) {
-    var newParams = {};
-    for (var key in params) {
-      if (params.hasOwnProperty(key) && params[key] !== undefined) {
-        var value = params[key];
-        if (Array.isArray(value)) {
-          newParams[key] = value;
-        } else {
-          newParams[key] = this.paramToString(value);
-        }
-      }
-    }
-    return newParams;
   }
 
   /**
@@ -372,7 +348,7 @@ export class GenesysCloudClientAuthenticator {
     const hash: IAuthReturnData = {};
     window.location.hash.split('&').forEach((h) => {
       const match = hashRegex.exec(h);
-      if (match) hash[match[1]] = decodeURIComponent(decodeURIComponent(match[2].replace(/\+/g, '%20')));
+      if (match) (hash as any)[match[1]] = decodeURIComponent(decodeURIComponent(match[2].replace(/\+/g, '%20')));
     });
 
     // Check for error
@@ -402,8 +378,8 @@ export class GenesysCloudClientAuthenticator {
       let scrollH: number;
       const loc = window.location;
 
-      if ('replaceState' in history) {
-        history.replaceState('', document.title, loc.pathname + loc.search);
+      if ('replaceState' in window.history) {
+        window.history.replaceState('', document.title, loc.pathname + loc.search);
       } else {
         // Prevent scrolling by storing the page's current scroll offset
         scrollV = document.body.scrollTop;

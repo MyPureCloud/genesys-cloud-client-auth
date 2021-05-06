@@ -2,7 +2,7 @@ import { GenesysCloudClientAuthenticator } from './authenticator';
 import { IAuthenticatorConfig } from './types';
 
 const authenticators = new Map<string, GenesysCloudClientAuthenticator>();
-const authenticatorFactory = (clientId: string, config: IAuthenticatorConfig): GenesysCloudClientAuthenticator => {
+const authenticatorFactory = (clientId: string, config: Partial<IAuthenticatorConfig>): GenesysCloudClientAuthenticator => {
   let authenticator = authenticators.get(clientId);
 
   if (!authenticator) {

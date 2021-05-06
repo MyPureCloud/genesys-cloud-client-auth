@@ -11,7 +11,7 @@
     "build:dev": "npm run build:react:dev",
     "build:prod": "rimraf dist && npm run build:react:dev && npm run build:react:prod && npm run build:lib",
     "build:react:dev": "BUILD_PATH=dist/local-app PUBLIC_URL=\"//localhost:3000/local-app\" node scripts/build.js ",
-    "build:react:prod": "BUILD_PATH=dist/app node scripts/build.js --PUBLIC_URL=/yeet",
+    "build:react:prod": "BUILD_PATH=dist/app node scripts/build.js",
     "build:lib": "npm run compile:cjs && npm run compile:module && npm run compile:webpack",
     "compile:cjs": "tsc -p ./tsconfig.lib.json",
     "compile:module": "tsc -p ./tsconfig.lib.json --outDir ./dist/lib/es --target es2015 --module es2015",

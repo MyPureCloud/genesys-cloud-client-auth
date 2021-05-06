@@ -6,10 +6,6 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
-    // "rootDir": "./src/lib", /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
-    // "rootDirs": [
-    //   "src/lib"
-    // ], /* List of root folders whose combined content represents the structure of the project at runtime. */
     "lib": [
       "dom",
       "es2018"
