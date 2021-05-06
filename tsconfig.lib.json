@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    // "rootDir": "./src/lib", /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
+    // "rootDirs": [
+    //   "src/lib"
+    // ], /* List of root folders whose combined content represents the structure of the project at runtime. */
+    "lib": [
+      "dom",
+      "es2018"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./dist/lib/cjs",
+    "strict": true,
+    "target": "es2018",
+    "noImplicitAny": false,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src/lib"
+  ],
+  "exclude": [
+    "dist",
+    "src/app"
+  ]
+}
