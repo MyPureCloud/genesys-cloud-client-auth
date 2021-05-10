@@ -1,15 +1,21 @@
 import React from 'react';
 
-import { authenticatorFactory } from '../lib';
+import { handleRedirectFromLogin } from '../lib';
 
 import './App.css';
 
 function App () {
-  const clientId = 'hi-there-client';
-  const auth = authenticatorFactory(clientId, {});
+  let response = 'We have successfully stored login information to our domain\'s localStorage';
+
+  try {
+    handleRedirectFromLogin();
+  } catch (e) {
+    response = e.name + ': '+ e.message;
+  }
+
   return (
     <div className="App">
-      We have the authenticator for: <span dangerouslySetInnerHTML={{ __html: auth.clientId }} />
+      {response}
     </div>
   );
 }

@@ -14,15 +14,14 @@ def getVersion = {
 
 webappPipeline {
     slaveLabel = 'dev_v2'
-    useArtifactoryRepo = true
     projectName = 'client-auth'
     buildType = getBranchType
     manifest = staticManifest([
         'app/index.html',
         'app/favicon.ico',
         'lib/genesys-cloud-client-auth.browser.min.js',
-        'lib/genesys-cloud-client-auth.browser.min.js.map']
-    )
+        'lib/genesys-cloud-client-auth.browser.min.js.map'
+    ])
     publishPackage = { 'prod' }
 
     buildStep = {
