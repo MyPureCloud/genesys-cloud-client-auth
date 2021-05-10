@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auth Test</title>
+</head>
+
+<body>
+  <div id="app"></div>
+
+  <script>
+    window.getApp = () => {
+      return document.querySelector('#app');
+    }
+
+    window.writeToApp = function (content) {
+      getApp().innerText = content;
+    }
+
+    window.appendToApp = function (content) {
+      const app = getApp();
+      app.innerText = app.innerText + '\n' + content;
+    }
+  </script>
+
+  <script src="./genesys-cloud-client-auth.browser.min.js"></script>
+  <script>
+    appendToApp('Starting authentication process');
+
+    if (window.location.href.indexOf('state=gc-ca_') > -1) {
+      appendToApp('We are returing from the redirect and writing to storage');
+      GenesysCloudClientAuth.handleRedirectFromLogin();
+    } else {
+      const auth = GenesysCloudClientAuth.authenticatorFactory(
+        'b1b6440e-b854-4ded-a2fe-78e4782cf698',
+        {
+          environment: 'inindca.com',
+          persist: true,
+          storageKey: 'gc-ca_test_auth_data',
+          debugMode: true
+        }
+      );
+
+      appendToApp('We are authenticating via redirect');
+
+      auth.loginImplicitGrant({
+        redirectUri: 'https://localhost:8443',
+        usePopupAuth: true,
+        state: 'our-custom-state'
+      })
+        .then(data => {
+          console.log('Returned from auth with', data);
+          appendToApp('We are fully authenticated');
+        }).catch(console.error)
+    }
+
+  </script>
+</body>
+
+</html>
