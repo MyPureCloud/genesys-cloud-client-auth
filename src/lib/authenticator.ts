@@ -1,12 +1,14 @@
 import superagent from 'superagent';
+import { v4 } from 'uuid';
 
 import {
   IAuthData,
   IAuthenticatorConfig,
   IAuthRequestParams,
-  IAuthReturnData,
-  ILoginOptions
+  ILoginOptions,
+  IRedirectStorageParams,
 } from './types';
+import { debug, parseOauthParams } from './utils';
 
 export class GenesysCloudClientAuthenticator {
   readonly clientId: string;
@@ -24,7 +26,7 @@ export class GenesysCloudClientAuthenticator {
     this.clientId = clientId;
 
     if (!config.storageKey) {
-      config.storageKey = 'gc_client_auth_auth_data';
+      config.storageKey = 'gc_client_auth_data';
     }
 
     if (typeof config.persist !== 'boolean') {
@@ -96,9 +98,9 @@ export class GenesysCloudClientAuthenticator {
    */
   loginImplicitGrant (opts: ILoginOptions = {}): Promise<IAuthData | undefined> {
     // Check for auth token in hash
-    const hash = this._setValuesFromUrlHash();
+    const hash = parseOauthParams();
 
-    // // TODO: add logic for `usePopupAuth`
+    // // TODO: add logic for `usePopupAuth` _without_ a redirectUri (ie. using our standalone app)
     // this.redirectUri = opts.redirectUri;
 
     if (!opts) opts = {};
@@ -119,6 +121,11 @@ export class GenesysCloudClientAuthenticator {
         hash.accessToken = undefined;
         this._saveSettings(hash);
         reject(new Error(`[${hash.error}] ${hash.error_description}`))
+      }
+
+      /* if we have an acess token in the hash, save it before testing */
+      if (hash.accessToken) {
+        this._saveSettings(hash);
       }
 
       // Test token and proceed with login
@@ -143,30 +150,21 @@ export class GenesysCloudClientAuthenticator {
           if (opts.org) query.org = encodeURIComponent(opts.org);
           if (opts.provider) query.provider = encodeURIComponent(opts.provider);
 
-          var url = this._buildAuthUrl('oauth/authorize', query as any);
-
+          /* if we are using */
           if (opts.usePopupAuth) {
+            if (!this.hasLocalStorage) {
+              return reject(new Error('localStorage is unavailable. Cannot authenticate via popup window.'))
+            }
+
             this.debug('using popup auth – adding listener');
-
-            const listener = (evt: StorageEvent) => {
-              this.debug('value was just written to storage by another app', {
-                key: evt.key,
-                newValue: evt.newValue,
-                oldValue: evt.oldValue,
-              });
-
-              if (evt.key === this.config.storageKey) {
-                this.debug('keys matched. resolving value', { key: evt.key, value: evt.newValue });
-                window.removeEventListener('storage', listener);
-                JSON.parse(evt.newValue || '');
-              }
-            };
-
-            window.addEventListener('storage', listener);
-
-            this.debug('Implicit grant: opening new window: ' + url);
-            window.open(url, '_blank', 'width=500px, height=500px, resizable, scrollbars, status');
+            this._authenticateViaPopup(query)
+              .then((data: IAuthData) => {
+                this._saveSettings(data);
+                resolve(data);
+              })
+              .catch(reject);
           } else {
+            const url = this._buildAuthUrl('oauth/authorize', query as any);
             this.debug('Implicit grant: redirecting to: ' + url);
             window.location.replace(url);
           }
@@ -268,8 +266,7 @@ export class GenesysCloudClientAuthenticator {
    */
   debug (message: string, details?: any): void {
     if (!this.config.debugMode) return;
-
-    console.log(`%c [DEBUG:gc-client-authenticator] ${message}`, 'color: #f29f2c', details);
+    debug(message, details);
   }
 
   /**
@@ -304,15 +301,97 @@ export class GenesysCloudClientAuthenticator {
       // Remove state from data so it's not persisted
       let tempData = JSON.parse(JSON.stringify(this.authData));
 
-      // TODO: this needs to come out
-      // delete tempData.state;
+      delete tempData.state;
 
       // Save updated auth data
       localStorage.setItem(this.config.storageKey, JSON.stringify(tempData));
-      this.debug('Auth data saved to local storage');
+      this.debug('Auth data saved to local storage', tempData);
     } catch (e) {
       console.error(e);
     }
+  }
+
+  private _getId (id?: string): string {
+    id = id || v4();
+    return `gc-ca_${id}`;
+  }
+
+  private _authenticateViaPopup (query: IAuthRequestParams): Promise<IAuthData> {
+    /* save original options */
+    const id = this._getId();
+    const storageData: IRedirectStorageParams = { ...query, storageKey: this.config.storageKey };
+    localStorage.setItem(id, JSON.stringify(storageData));
+
+    /* change `state` to new id */
+    query.state = id;
+
+    /* if we aren't provided a redirectUri, use our app */
+    if (!query.redirect_uri) {
+      query.redirect_uri = encodeURIComponent(`https://apps.${this.environment}/client-auth`);
+    }
+
+    const loginUrl = this._buildAuthUrl('oauth/authorize', query as any);
+
+    return new Promise<IAuthData>((resolve, reject) => {
+      this.debug('Implicit grant: opening new window: ' + loginUrl);
+      const popupWindow = window.open(loginUrl, '_blank', 'width=500px, height=500px, resizable, scrollbars, status') as Window;
+
+      if (!popupWindow) {
+        const error = new Error('Unable to open the popup window, its likely that the popup was blocked.');
+        error.name = 'POPUP_BLOCKED_ERROR';
+        reject(error);
+      }
+
+      const storageListener = (evt: StorageEvent) => {
+        this.debug('value was just written to storage by another app', {
+          key: evt.key,
+          newValue: evt.newValue,
+          oldValue: evt.oldValue,
+        });
+
+        if (evt.key === this.config.storageKey) {
+          this.debug('keys matched. resolving value', { key: evt.key, value: evt.newValue });
+          window.removeEventListener('storage', storageListener);
+          const authData = JSON.parse(evt.newValue || '');
+
+          localStorage.removeItem(id);
+
+          // TODO: do something with the saved temp state (if saved)
+          resolve(authData);
+        }
+      };
+
+      window.addEventListener('storage', storageListener);
+
+      const checker = setInterval(() => {
+        try {
+          if (!popupWindow.closed) {
+            // This could throw cross-domain errors, so we need to silence them.
+            // if (popupWindow.location.href.indexOf(options.redirectUrl) !== 0) return;
+
+            // const parsed = Utils.URL.parse(popupWindow.location);
+
+            // popupWindow.close();
+            // resolve();
+            // TODO: check for error params in url
+            this.debug('popup window is not closed: ' + popupWindow.location.href);
+          }
+
+          this.debug('popup window IS closed');
+          clearInterval(checker);
+        } catch (e) {
+          this.debug('popup window checker threw an error: ', { error: e });
+
+          if (e instanceof DOMException || e.message === 'Permission denied') return;
+
+          popupWindow.close();
+          clearInterval(checker);
+
+          reject(e);
+        }
+      }, 100);
+
+    });
   }
 
   /**
@@ -333,69 +412,6 @@ export class GenesysCloudClientAuthenticator {
     } catch (error) {
       this._saveSettings({ accessToken: undefined });
       throw error;
-    }
-  }
-
-  /**
-   * Parses the URL hash, grabs the access token, and clears the hash. If no access token is found, no action is taken.
-   */
-  private _setValuesFromUrlHash (): IAuthData | void {
-    // Check for window
-    if (!(typeof window !== 'undefined' && window.location.hash)) return;
-
-    // Process hash string into object
-    const hashRegex = new RegExp(`^#*(.+?)=(.+?)$`, 'i');
-    const hash: IAuthReturnData = {};
-    window.location.hash.split('&').forEach((h) => {
-      const match = hashRegex.exec(h);
-      if (match) (hash as any)[match[1]] = decodeURIComponent(decodeURIComponent(match[2].replace(/\+/g, '%20')));
-    });
-
-    // Check for error
-    if (hash.error) {
-      return hash;
-    }
-
-    // Everything goes in here because we only want to act if we found an access token
-    if (hash.access_token) {
-      const opts: IAuthData = {};
-
-      if (hash.state) {
-        opts.state = hash.state;
-      }
-
-      if (hash.expires_in) {
-        opts.tokenExpiryTime = (new Date()).getTime() + (parseInt(hash.expires_in.replace(/\+/g, '%20')) * 1000);
-        opts.tokenExpiryTimeString = (new Date(opts.tokenExpiryTime)).toISOString();
-      }
-
-      // Set access token
-      opts.accessToken = hash.access_token.replace(/\+/g, '%20');
-
-      // Remove hash from URL
-      // Credit: https://stackoverflow.com/questions/1397329/how-to-remove-the-hash-from-window-location-with-javascript-without-page-refresh/5298684#5298684
-      let scrollV: number;
-      let scrollH: number;
-      const loc = window.location;
-
-      if ('replaceState' in window.history) {
-        window.history.replaceState('', document.title, loc.pathname + loc.search);
-      } else {
-        // Prevent scrolling by storing the page's current scroll offset
-        scrollV = document.body.scrollTop;
-        scrollH = document.body.scrollLeft;
-
-        // Remove hash
-        loc.hash = '';
-
-        // Restore the scroll offset, should be flicker free
-        document.body.scrollTop = scrollV;
-        document.body.scrollLeft = scrollH;
-      }
-
-      this._saveSettings(opts);
-
-      return opts;
     }
   }
 

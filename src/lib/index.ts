@@ -1,4 +1,5 @@
 import { GenesysCloudClientAuthenticator } from './authenticator';
+import { handleRedirectFromLogin } from './parse-redirect';
 import { IAuthenticatorConfig } from './types';
 
 const authenticators = new Map<string, GenesysCloudClientAuthenticator>();
@@ -16,6 +17,7 @@ const authenticatorFactory = (clientId: string, config: Partial<IAuthenticatorCo
 export * from './types';
 export {
   GenesysCloudClientAuthenticator,
-  authenticatorFactory
+  authenticatorFactory,
+  handleRedirectFromLogin
 };
 export default authenticatorFactory;

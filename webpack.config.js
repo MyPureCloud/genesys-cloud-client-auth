@@ -8,7 +8,6 @@ module.exports = (_env = {}) => {
       filename: 'genesys-cloud-client-auth.browser.min.js',
       library: 'GenesysCloudClientAuth',
       libraryTarget: 'window',
-      libraryExport: 'default',
       path: Path.resolve('dist/lib')
     }
   };

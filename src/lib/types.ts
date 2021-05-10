@@ -23,6 +23,19 @@ export interface IAuthReturnData {
   error_description?: string;
 }
 
+export interface IAuthRequestParams {
+  client_id: string;
+  redirect_uri: string;
+  response_type: string;
+  state?: string;
+  org?: string;
+  provider?: string;
+}
+
+export interface IRedirectStorageParams extends IAuthRequestParams {
+  storageKey: string;
+}
+
 export interface ILoginOptions {
   /**
    * The redirect URI of the OAuth Implicit Grant client. Not needed if `usePopupAuth: true` _and_
@@ -48,13 +61,4 @@ export interface ILoginOptions {
    * Use a popup window to open to the login page.
    */
   usePopupAuth?: boolean;
-}
-
-export interface IAuthRequestParams {
-  client_id: string;
-  redirect_uri: string;
-  response_type: string;
-  state?: string;
-  org?: string;
-  provider?: string;
 }
