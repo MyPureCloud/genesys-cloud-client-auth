@@ -28,13 +28,13 @@ webappPipeline {
         sh("""
             CDN_URL="\$(npx cdn --ecosystem pc --name \$APP_NAME --build \$BUILD_ID --version ${getVersion()})"
             echo "CDN_URL: \$CDN_URL"
-            npm ci && PUBLIC_URL=\$CDN_URL npm run build:prod && npm test
+            npm i && PUBLIC_URL=\$CDN_URL npm run build:prod && npm test
         """)
     }
 
     uploadBuildStep = {
       /* deploy to `/alpha` if we are building for `MAINLINE` */
-      if (env.BRANCH_NAME == 'main') {
+      if (getBranchType() == 'MAINLINE') {
         sh ('''
           echo "\n\n======== MAINLINE build – uploading to alpha branch ========\n\n"
           npx upload --ecosystem pc --source-dir dist --manifest manifest.json --version alpha
