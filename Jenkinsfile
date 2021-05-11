@@ -28,7 +28,7 @@ webappPipeline {
         sh("""
             CDN_URL="\$(npx cdn --ecosystem pc --name \$APP_NAME --build \$BUILD_ID --version ${getVersion()})"
             echo "CDN_URL: \$CDN_URL"
-            npm i && PUBLIC_URL=\$CDN_URL npm run build:prod && npm test
+            npm ci && PUBLIC_URL=\$CDN_URL npm run build:prod && npm test
         """)
     }
 
