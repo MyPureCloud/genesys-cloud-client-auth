@@ -23,9 +23,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "superagent": "^6.1.0",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
+    "uuid": "^8.3.2",
     "@babel/core": "7.12.3",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@svgr/webpack": "5.5.0",
