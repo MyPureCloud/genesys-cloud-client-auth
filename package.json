@@ -1,5 +1,6 @@
 {
   "name": "genesys-cloud-client-auth",
+  "description": "Small, lightweight library and app to handle authentication for client applications. Big advantage is utilization of popup windows to authenticate apps within iframes.",
   "version": "0.0.1",
   "main": "dist/lib/cjs/index.js",
   "module": "dist/lib/es/index.js",
@@ -176,5 +177,6 @@
     "presets": [
       "react-app"
     ]
-  }
+  },
+  "false": {}
 }

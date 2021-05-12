@@ -15,6 +15,7 @@ def getVersion = {
 webappPipeline {
     slaveLabel = 'dev_v2'
     projectName = 'client-auth'
+    nodeVersion = '14.16.1'
     buildType = getBranchType
     manifest = staticManifest([
         'app/index.html',
