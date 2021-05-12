@@ -38,6 +38,5 @@ export const parseOauthParams = (): IAuthData => {
 };
 
 export const debug = (message: string, details?: any): void => {
-  console.log(`%c [DEBUG:gc-client-authenticator] ${message}`, 'color: #f29f2c', details);
-
+  console.log(`%c [DEBUG:gc-client-auth] ${message}`, 'color: #f29f2c', details);
 };

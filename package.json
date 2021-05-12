@@ -26,10 +26,6 @@
     "test": "node scripts/test.js"
   },
   "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "superagent": "^6.1.0",
-    "uuid": "^8.3.2",
     "@babel/core": "7.12.3",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@svgr/webpack": "5.5.0",
@@ -82,8 +78,10 @@
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "5.0.2",
     "prompts": "2.4.0",
+    "react": "^17.0.2",
     "react-app-polyfill": "^2.0.0",
     "react-dev-utils": "^11.0.3",
+    "react-dom": "^17.0.2",
     "react-refresh": "^0.8.3",
     "resolve": "1.18.1",
     "resolve-url-loader": "^3.1.2",
@@ -92,10 +90,12 @@
     "semver": "7.3.2",
     "stupid-server": "^0.2.5",
     "style-loader": "1.3.0",
+    "superagent": "^6.1.0",
     "terser-webpack-plugin": "4.2.3",
     "ts-pnp": "1.2.0",
     "typescript": "^4.2.4",
     "url-loader": "4.1.1",
+    "uuid": "^8.3.2",
     "web-vitals": "^1.1.1",
     "webpack": "4.44.2",
     "webpack-cli": "^4.6.0",
@@ -133,7 +133,7 @@
       "react-app-polyfill/jsdom"
     ],
     "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.ts"
+      "<rootDir>/src/app/setupTests.ts"
     ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
