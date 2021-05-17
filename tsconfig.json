@@ -1,3 +1,29 @@
 {
-  "extends": "./tsconfig.lib.json"
+  "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "module": "es2015",
+    "moduleResolution": "node",
+    "outDir": "./dist/lib/es",
+    "strict": true,
+    "target": "es2015",
+    "noImplicitAny": false,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src/lib"
+  ],
+  "exclude": [
+    "dist",
+    "src/app"
+  ]
 }

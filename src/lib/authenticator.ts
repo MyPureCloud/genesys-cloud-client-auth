@@ -9,9 +9,11 @@ import {
   IRedirectStorageParams,
 } from './types';
 import { debug, parseOauthParams } from './utils';
+import VERSION from './version';
 
 export class GenesysCloudClientAuthenticator {
   readonly clientId: string;
+  readonly VERSION: string = VERSION;
   config: IAuthenticatorConfig;
   environment!: string;
   basePath!: string;
@@ -138,7 +140,7 @@ export class GenesysCloudClientAuthenticator {
           return resolve(this.authData);
         })
         .catch((error) => {
-          this.debug('Error encountered during login. This is normal if the application has not yet been authorized.', error);
+          this._debug('Error encountered during login. This is normal if the application has not yet been authorized.', error);
 
 
           const query: IAuthRequestParams = {
@@ -153,10 +155,10 @@ export class GenesysCloudClientAuthenticator {
           /* if we are using */
           if (opts.usePopupAuth) {
             if (!this.hasLocalStorage) {
-              return reject(new Error('localStorage is unavailable. Cannot authenticate via popup window.'))
+              return reject(new Error('localStorage is unavailable. Cannot authenticate via popup window.'));
             }
 
-            this.debug('using popup auth – adding listener');
+            this._debug('using popup auth – adding listener');
             this._authenticateViaPopup(query)
               .then((data: IAuthData) => {
                 this._saveSettings(data);
@@ -165,17 +167,14 @@ export class GenesysCloudClientAuthenticator {
               .catch(reject);
           } else {
             const url = this._buildAuthUrl('oauth/authorize', query as any);
-            this.debug('Implicit grant: redirecting to: ' + url);
+            this._debug('Implicit grant: redirecting to: ' + url);
             window.location.replace(url);
           }
         });
     });
   }
 
-  /**
-   * Redirects the user to the PureCloud logout page
-   */
-  logout (logoutRedirectUri: string) {
+  clearAuthData (): void {
     if (this.hasLocalStorage) {
       this._saveSettings({
         accessToken: undefined,
@@ -184,6 +183,13 @@ export class GenesysCloudClientAuthenticator {
         tokenExpiryTimeString: undefined
       });
     }
+  }
+
+  /**
+   * Redirects the user to the PureCloud logout page
+   */
+  logout (logoutRedirectUri: string) {
+    this.clearAuthData();
 
     const query: { [key: string]: string } = {
       client_id: encodeURIComponent(this.clientId)
@@ -244,18 +250,23 @@ export class GenesysCloudClientAuthenticator {
     return url;
   }
 
+  testAccessToken (token: string): Promise<any> {
+    // Test token
+    return this.callApi('/api/v2/tokens/me', 'get', token)
+  }
+
   /**
    * Invokes the REST service using the supplied settings and parameters.
    * @param path The path of the resource – this will be appended to base url.
    * @param httpMethod The HTTP method to use.
    * @returns A Promise request object.
    */
-  callApi (path: string, httpMethod: 'get' | 'post'): superagent.Request {
+  callApi (path: string, httpMethod: 'get' | 'post', token?: string): superagent.Request {
     const uri = this.buildUrl(path);
     return superagent[httpMethod](uri)
       .type('application/json')
       .timeout(this.timeout)
-      .set('Authorization', `Bearer ${this.authData?.accessToken}`)
+      .set('Authorization', `Bearer ${token || this.authData?.accessToken}`)
       .send();
   }
 
@@ -264,7 +275,7 @@ export class GenesysCloudClientAuthenticator {
    * @param message as a string
    * @param details any additional details
    */
-  debug (message: string, details?: any): void {
+  private _debug (message: string, details?: any): void {
     if (!this.config.debugMode) return;
     debug(message, details);
   }
@@ -294,7 +305,7 @@ export class GenesysCloudClientAuthenticator {
 
       // Ensure we can access local storage
       if (!this.hasLocalStorage) {
-        this.debug('Warning: Cannot access local storage. Settings will not be saved.');
+        this._debug('Warning: Cannot access local storage. Settings will not be saved.');
         return;
       }
 
@@ -305,7 +316,7 @@ export class GenesysCloudClientAuthenticator {
 
       // Save updated auth data
       localStorage.setItem(this.config.storageKey, JSON.stringify(tempData));
-      this.debug('Auth data saved to local storage', tempData);
+      this._debug('Auth data saved to local storage', tempData);
     } catch (e) {
       console.error(e);
     }
@@ -333,24 +344,24 @@ export class GenesysCloudClientAuthenticator {
     const loginUrl = this._buildAuthUrl('oauth/authorize', query as any);
 
     return new Promise<IAuthData>((resolve, reject) => {
-      this.debug('Implicit grant: opening new window: ' + loginUrl);
+      this._debug('Implicit grant: opening new window: ' + loginUrl);
       const popupWindow = window.open(loginUrl, '_blank', 'width=500px, height=500px, resizable, scrollbars, status') as Window;
 
       if (!popupWindow) {
         const error = new Error('Unable to open the popup window, its likely that the popup was blocked.');
         error.name = 'POPUP_BLOCKED_ERROR';
-        reject(error);
+        return reject(error);
       }
 
       const storageListener = (evt: StorageEvent) => {
-        this.debug('value was just written to storage by another app', {
+        this._debug('value was just written to storage by another app', {
           key: evt.key,
           newValue: evt.newValue,
           oldValue: evt.oldValue,
         });
 
         if (evt.key === this.config.storageKey) {
-          this.debug('keys matched. resolving value', { key: evt.key, value: evt.newValue });
+          this._debug('keys matched. resolving value', { key: evt.key, value: evt.newValue });
           window.removeEventListener('storage', storageListener);
           const authData = JSON.parse(evt.newValue || '');
 
@@ -365,26 +376,37 @@ export class GenesysCloudClientAuthenticator {
 
       const checker = setInterval(() => {
         try {
-          if (!popupWindow.closed) {
+          if (popupWindow && !popupWindow.closed) {
+            // if we aren't on the login page, we don't need to check for errors
             // This could throw cross-domain errors, so we need to silence them.
-            // if (popupWindow.location.href.indexOf(options.redirectUrl) !== 0) return;
+            if (popupWindow.location.href.indexOf(this.authUrl) !== 0) return;
 
-            // const parsed = Utils.URL.parse(popupWindow.location);
+            this._debug('popup window is not closed: ' + popupWindow.location.href);
 
-            // popupWindow.close();
-            // resolve();
-            // TODO: check for error params in url
-            this.debug('popup window is not closed: ' + popupWindow.location.href);
+            // if we are on the login page, check for errors
+            const hash = parseOauthParams();
+
+            // if there are errors, reject and close the popup window
+            if (hash.error) {
+              this._debug('popup window has an error. rejecting and closing popup', {
+                error: `[${hash.error}] ${hash.error_description}`,
+                href: popupWindow.location.href
+              });
+              reject(new Error(`[${hash.error}] ${hash.error_description}`));
+              popupWindow && popupWindow.close();
+            }
           }
 
-          this.debug('popup window IS closed');
+          this._debug('popup window IS closed. turning off interval');
           clearInterval(checker);
         } catch (e) {
-          this.debug('popup window checker threw an error: ', { error: e });
+          const silence = e instanceof DOMException || e.message === 'Permission denied';
 
-          if (e instanceof DOMException || e.message === 'Permission denied') return;
+          this._debug('popup window checker threw an error: ', { error: e, silence });
 
-          popupWindow.close();
+          if (silence) return;
+
+          popupWindow && popupWindow.close();
           clearInterval(checker);
 
           reject(e);
@@ -424,7 +446,7 @@ export class GenesysCloudClientAuthenticator {
 
     // Ensure we can access local storage
     if (!this.hasLocalStorage) {
-      this.debug('Warning: Cannot access local storage. Settings will not be loaded.');
+      this._debug('Warning: Cannot access local storage. Settings will not be loaded.');
       return;
     }
 

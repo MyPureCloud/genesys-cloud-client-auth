@@ -1,16 +1,22 @@
 import React from 'react';
 
-import { handleRedirectFromLogin } from '../lib';
-
 import './App.css';
+
+declare var GenesysCloudClientAuth: {
+  handleRedirectFromLogin: () => void;
+};
+
+// declare var GenesysCloudClientAuth: {
+//   handleRedirectFromLogin: () => void;
+// };
 
 function App () {
   let response = 'We have successfully stored login information to our domain\'s localStorage';
 
   try {
-    handleRedirectFromLogin();
+    GenesysCloudClientAuth.handleRedirectFromLogin();
   } catch (e) {
-    response = e.name + ': '+ e.message;
+    response = e.name + ': ' + e.message;
   }
 
   return (

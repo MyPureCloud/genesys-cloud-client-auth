@@ -18,18 +18,22 @@ webappPipeline {
     nodeVersion = '14.16.1'
     buildType = getBranchType
     manifest = staticManifest([
-        'app/index.html',
-        'app/favicon.ico',
-        'lib/genesys-cloud-client-auth.browser.min.js',
-        'lib/genesys-cloud-client-auth.browser.min.js.map'
+        'index.html',
+        'favicon.ico',
+        'robots.txt',
+        'genesys-cloud-client-auth.browser.min.js',
+        'genesys-cloud-client-auth.browser.min.js.map'
     ])
+    useArtifactoryRepo = false
+    testJob = null
+
     publishPackage = { 'prod' }
 
     buildStep = {
         sh("""
             CDN_URL="\$(npx cdn --ecosystem pc --name \$APP_NAME --build \$BUILD_ID --version ${getVersion()})"
             echo "CDN_URL: \$CDN_URL"
-            yarn --pure-lockfile && PUBLIC_URL=\$CDN_URL npm run build:prod # && npm test
+            npm ci && PUBLIC_URL=\$CDN_URL npm run build # && npm test
         """)
     }
 
@@ -48,6 +52,7 @@ webappPipeline {
     snykConfig = {
       return [
         organization: 'genesys-client-media-webrtc',
+        targetFiles: ['package.json', 'src/react-app/package.json']
       ]
     }
 
