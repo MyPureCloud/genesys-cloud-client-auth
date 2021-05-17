@@ -2,7 +2,7 @@ const Path = require('path');
 
 module.exports = (_env = {}) => {
   return {
-    entry: './dist/lib/es/index.js',
+    entry: './src/lib/index.ts',
     devtool: 'source-map',
     output: {
       filename: 'genesys-cloud-client-auth.browser.min.js',

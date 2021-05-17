@@ -12,8 +12,8 @@
   },
   "scripts": {
     "postinstall": "cd src/react-app && yarn",
-    "start": "npm run start:lib",
-    "start:lib": "webpack --watch",
+    "start": "concurrently \"npm run start:lib\" \"npm run start:react\"",
+    "start:lib": "webpack -c webpack.config.dev.js",
     "start:react": "cd src/react-app && yarn start",
     "prebuild": "rimraf dist",
     "build": "npm run build:react && npm run build:lib && node replace-version.js",
@@ -35,8 +35,9 @@
   "devDependencies": {
     "@types/superagent": "^4.1.10",
     "@types/uuid": "^8.3.0",
+    "concurrently": "^6.1.0",
     "rimraf": "^3.0.2",
-    "ts-loader": "^9.1.2",
+    "ts-loader": "^8.2.0",
     "tslib": "^2.2.0",
     "typescript": "^4.2.4",
     "webpack": "4.44.2",
