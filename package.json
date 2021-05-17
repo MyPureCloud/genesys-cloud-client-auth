@@ -11,7 +11,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "postinstall": "cd src/react-app && yarn",
+    "install:all": "npm ci && cd src/react-app && yarn --pure-lockfile",
     "start": "concurrently \"npm run start:lib\" \"npm run start:react\"",
     "start:lib": "webpack -c webpack.config.dev.js",
     "start:react": "cd src/react-app && yarn start",
