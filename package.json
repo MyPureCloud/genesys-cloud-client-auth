@@ -11,7 +11,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "install": "npm install && cd src/react-app && yarn",
+    "postinstall": "cd src/react-app && yarn",
     "start": "npm run start:lib",
     "start:lib": "webpack --watch",
     "start:react": "cd src/react-app && yarn start",
