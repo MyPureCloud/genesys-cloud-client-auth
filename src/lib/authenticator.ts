@@ -430,7 +430,7 @@ export class GenesysCloudClientAuthenticator {
 
     try {
       // Test token
-      this.callApi('/api/v2/tokens/me', 'get')
+      await this.callApi('/api/v2/tokens/me', 'get');
     } catch (error) {
       this._saveSettings({ accessToken: undefined });
       throw error;
