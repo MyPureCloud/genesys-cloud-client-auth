@@ -25,8 +25,8 @@ export interface IAuthReturnData {
 
 export interface IAuthRequestParams {
   client_id: string;
-  redirect_uri: string;
   response_type: string;
+  redirect_uri?: string;
   state?: string;
   org?: string;
   provider?: string;

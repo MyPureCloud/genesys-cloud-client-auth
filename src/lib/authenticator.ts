@@ -53,6 +53,8 @@ export class GenesysCloudClientAuthenticator {
     } catch (e) {
       this.hasLocalStorage = false;
     }
+
+    this._loadSettings();
   }
 
   /**
@@ -98,9 +100,9 @@ export class GenesysCloudClientAuthenticator {
   /**
    * Initiates the implicit grant login flow. Will attempt to load the token from local storage, if enabled.
    */
-  loginImplicitGrant (opts: ILoginOptions = {}): Promise<IAuthData | undefined> {
+  loginImplicitGrant (opts: ILoginOptions = {}, existingAuthData?: IAuthData): Promise<IAuthData | undefined> {
     // Check for auth token in hash
-    const hash = parseOauthParams();
+    const hash = existingAuthData || parseOauthParams();
 
     // // TODO: add logic for `usePopupAuth` _without_ a redirectUri (ie. using our standalone app)
     // this.redirectUri = opts.redirectUri;
@@ -145,9 +147,10 @@ export class GenesysCloudClientAuthenticator {
 
           const query: IAuthRequestParams = {
             client_id: encodeURIComponent(this.clientId),
-            redirect_uri: encodeURIComponent(opts.redirectUri as string),
             response_type: 'token'
           };
+
+          if (opts.redirectUri) query.redirect_uri = encodeURIComponent(opts.redirectUri);
           if (opts.state) query.state = encodeURIComponent(opts.state);
           if (opts.org) query.org = encodeURIComponent(opts.org);
           if (opts.provider) query.provider = encodeURIComponent(opts.provider);
@@ -404,10 +407,12 @@ export class GenesysCloudClientAuthenticator {
 
           this._debug('popup window checker threw an error: ', { error: e, silence });
 
+          clearInterval(checker);
+
+          /* if we have a cross-origin error, we won't reject */
           if (silence) return;
 
-          popupWindow && popupWindow.close();
-          clearInterval(checker);
+          // TODO: we really need a timeout incase there is a cross-origin error that causes issues and there are actually errors authenticating
 
           reject(e);
         }

@@ -1,7 +1,7 @@
 import { GenesysCloudClientAuthenticator } from './authenticator';
 import { handleRedirectFromLogin } from './parse-redirect';
 import { IAuthenticatorConfig } from './types';
-import { isIssuedTimeWithinWindow } from './utils';
+import { isIssuedTimeWithinWindow, parseOauthParams } from './utils';
 import VERSION from './version';
 
 const authenticators = new Map<string, GenesysCloudClientAuthenticator>();
@@ -22,6 +22,7 @@ export {
   authenticatorFactory,
   handleRedirectFromLogin,
   isIssuedTimeWithinWindow,
+  parseOauthParams,
   VERSION
 };
 export default authenticatorFactory;
