@@ -162,7 +162,7 @@ export class GenesysCloudClientAuthenticator {
             }
 
             this._debug('using popup auth – adding listener');
-            this._authenticateViaPopup(query)
+            this._authenticateViaPopup(query, opts.popupTimeout || 15000)
               .then((data: IAuthData) => {
                 this._saveSettings(data);
                 resolve(data);
@@ -330,10 +330,15 @@ export class GenesysCloudClientAuthenticator {
     return `gc-ca_${id}`;
   }
 
-  private _authenticateViaPopup (query: IAuthRequestParams): Promise<IAuthData> {
+  private _authenticateViaPopup (query: IAuthRequestParams, timeout: number): Promise<IAuthData> {
     /* save original options */
     const id = this._getId();
     const storageData: IRedirectStorageParams = { ...query, storageKey: this.config.storageKey };
+
+    if (this.config.debugMode) {
+      storageData.debug = true;
+    }
+
     localStorage.setItem(id, JSON.stringify(storageData));
 
     /* change `state` to new id */
@@ -348,13 +353,16 @@ export class GenesysCloudClientAuthenticator {
 
     return new Promise<IAuthData>((resolve, reject) => {
       this._debug('Implicit grant: opening new window: ' + loginUrl);
-      const popupWindow = window.open(loginUrl, '_blank', 'width=500px, height=500px, resizable, scrollbars, status') as Window;
 
-      if (!popupWindow) {
-        const error = new Error('Unable to open the popup window, its likely that the popup was blocked.');
-        error.name = 'POPUP_BLOCKED_ERROR';
-        return reject(error);
-      }
+      /* this will always be `null` if `nofererrer` or `noopener` is set */
+      /* const popupWindow =  */window.open(loginUrl, '_blank', 'width=500px,height=500px,noreferrer,noopener,resizable,scrollbars,status') as Window;
+
+      const timeoutId = setTimeout(() => {
+        this._debug('timeout for loginImplicitGrant using popup', query);
+        const error = new Error('Popup timeout. It is possible that the popup was blocked.');
+        error.name = 'POPUP_TIMEOUT';
+        reject(error);
+      }, timeout);
 
       const storageListener = (evt: StorageEvent) => {
         this._debug('value was just written to storage by another app', {
@@ -366,8 +374,9 @@ export class GenesysCloudClientAuthenticator {
         if (evt.key === this.config.storageKey) {
           this._debug('keys matched. resolving value', { key: evt.key, value: evt.newValue });
           window.removeEventListener('storage', storageListener);
-          const authData = JSON.parse(evt.newValue || '');
+          clearTimeout(timeoutId);
 
+          const authData = JSON.parse(evt.newValue || '');
           localStorage.removeItem(id);
 
           // TODO: do something with the saved temp state (if saved)
@@ -376,47 +385,52 @@ export class GenesysCloudClientAuthenticator {
       };
 
       window.addEventListener('storage', storageListener);
+      // if (!popupWindow) {
+      //   const error = new Error('Unable to open the popup window, its likely that the popup was blocked.');
+      //   error.name = 'POPUP_BLOCKED_ERROR';
+      //   return reject(error);
+      // }
 
-      const checker = setInterval(() => {
-        try {
-          if (popupWindow && !popupWindow.closed) {
-            // if we aren't on the login page, we don't need to check for errors
-            // This could throw cross-domain errors, so we need to silence them.
-            if (popupWindow.location.href.indexOf(this.authUrl) !== 0) return;
+      // const checker = setInterval(() => {
+      //   try {
+      //     if (popupWindow && !popupWindow.closed) {
+      //       // if we aren't on the login page, we don't need to check for errors
+      //       // This could throw cross-domain errors, so we need to silence them.
+      //       if (popupWindow.location.href.indexOf(this.authUrl) !== 0) return;
 
-            this._debug('popup window is not closed: ' + popupWindow.location.href);
+      //       this._debug('popup window is not closed: ' + popupWindow.location.href);
 
-            // if we are on the login page, check for errors
-            const hash = parseOauthParams();
+      //       // if we are on the login page, check for errors
+      //       const hash = parseOauthParams();
 
-            // if there are errors, reject and close the popup window
-            if (hash.error) {
-              this._debug('popup window has an error. rejecting and closing popup', {
-                error: `[${hash.error}] ${hash.error_description}`,
-                href: popupWindow.location.href
-              });
-              reject(new Error(`[${hash.error}] ${hash.error_description}`));
-              popupWindow && popupWindow.close();
-            }
-          }
+      //       // if there are errors, reject and close the popup window
+      //       if (hash.error) {
+      //         this._debug('popup window has an error. rejecting and closing popup', {
+      //           error: `[${hash.error}] ${hash.error_description}`,
+      //           href: popupWindow.location.href
+      //         });
+      //         reject(new Error(`[${hash.error}] ${hash.error_description}`));
+      //         popupWindow && popupWindow.close();
+      //       }
+      //     }
 
-          this._debug('popup window IS closed. turning off interval');
-          clearInterval(checker);
-        } catch (e) {
-          const silence = e instanceof DOMException || e.message === 'Permission denied';
+      //     this._debug('popup window IS closed. turning off interval');
+      //     clearInterval(checker);
+      //   } catch (e) {
+      //     const silence = e instanceof DOMException || e.message === 'Permission denied';
 
-          this._debug('popup window checker threw an error: ', { error: e, silence });
+      //     this._debug('popup window checker threw an error: ', { error: e, silence });
 
-          clearInterval(checker);
+      //     clearInterval(checker);
 
-          /* if we have a cross-origin error, we won't reject */
-          if (silence) return;
+      //     /* if we have a cross-origin error, we won't reject */
+      //     if (silence) return;
 
-          // TODO: we really need a timeout incase there is a cross-origin error that causes issues and there are actually errors authenticating
+      //     // TODO: we really need a timeout incase there is a cross-origin error that causes issues and there are actually errors authenticating
 
-          reject(e);
-        }
-      }, 100);
+      //     reject(e);
+      //   }
+      // }, 100);
 
     });
   }

@@ -34,6 +34,7 @@ export interface IAuthRequestParams {
 
 export interface IRedirectStorageParams extends IAuthRequestParams {
   storageKey: string;
+  debug?: boolean;
 }
 
 export interface ILoginOptions {
@@ -61,4 +62,10 @@ export interface ILoginOptions {
    * Use a popup window to open to the login page.
    */
   usePopupAuth?: boolean;
+  /**
+   * Timeout for how long the auth pop should remain open before timing out
+   *  and rejecting the loginImplicitGrant call. This is only used in conjunction
+   *  with `usePopupAuth`.
+   */
+  popupTimeout?: number;
 }

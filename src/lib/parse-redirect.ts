@@ -21,7 +21,7 @@ export const handleRedirectFromLogin = (): void => {
   const data: IRedirectStorageParams = JSON.parse(localStorage.getItem(storageId) || 'false');
 
   if (!data || !data.storageKey) {
-    throw new Error('Unable to parse needed information from localStorage.');
+    throw new Error('Unable to parse information from localStorage.');
   }
 
   /* merge the states */
@@ -33,8 +33,18 @@ export const handleRedirectFromLogin = (): void => {
 
   debug(`setting auth data to key: ${data.storageKey}`, authData);
   localStorage.setItem(data.storageKey, JSON.stringify(authData));
-  debug(`removing temp storage key: ${storageId}`);
-  localStorage.removeItem(storageId);
 
-  debug('Now we would normally close this window');
+  if (!data.debug) {
+    debug(`removing temp storage key: ${storageId}`);
+    localStorage.removeItem(storageId);
+
+    debug('closing window');
+    window.close();
+  } else {
+    debug('In debug mode. Not closing window or removing storageId', {
+      storageId,
+      authData,
+      href: window.location.href
+    });
+  }
 };
