@@ -1,0 +1,10 @@
+{
+  "successMsg": "You have successfully logged into Genesys Cloud.",
+  "closeWindowMsg": "You may close this window now.",
+  "closeWindow": "CLOSE",
+  "error": "ERROR: ",
+  "errorToken": "No access token provided.",
+  "errorParse": "Unable to parse information from localStorage",
+  "errorTokenNotSet": "Token is not set.",
+  "errorStateParam": "No 'state' param on redirect. Unable to determine location to save auth data."
+}
