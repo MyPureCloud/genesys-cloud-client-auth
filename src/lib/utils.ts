@@ -37,11 +37,18 @@ export const parseOauthParams = (hash: string = window.location.hash): IAuthData
   return authData;
 };
 
-export const debug = (message: string, details?: any): void => {
-  console.log(`%c [DEBUG:gc-client-auth:${VERSION}] ${message}`, 'color: #f29f2c', details);
+export const debug = (message: string, details?: string | boolean | null | Array<any> | Record<string, unknown>): void => {
+  if (details) {
+    console.log(`%c [DEBUG:gc-client-auth:${VERSION}] ${message}`, 'color: #f29f2c', details);
+    if (typeof details === 'object') {
+      console.log(`%c [DEBUG:gc-client-auth:${VERSION}] ^ stringified: ${JSON.stringify(details)}`, 'color: #f29f2c');
+    }
+  } else {
+    console.log(`%c [DEBUG:gc-client-auth:${VERSION}] ${message}`, 'color: #f29f2c');
+  }
 };
 
-export const isIssuedTimeWithinWindow = (expiresAtMs: number, expiresInMs: number = 691199000 /* 8 days */, windowMs: number = 1680 * 1000 /* default: 28 minutes */): boolean => {
+export const isIssuedTimeWithinWindow = (expiresAtMs: number, expiresInMs = 691199000 /* 8 days */, windowMs = 1680 * 1000 /* default: 28 minutes */): boolean => {
   const issuedAt = expiresAtMs - expiresInMs;
 
   /* if current time is within the window from issuedAt */

@@ -85,7 +85,7 @@ export class GenesysCloudClientAuthenticator {
 
     if (environment.startsWith('http://')) {
       environment = environment.substring(7)
-    };
+    }
 
     if (environment.startsWith('api.')) {
       environment = environment.substring(4);
@@ -191,7 +191,7 @@ export class GenesysCloudClientAuthenticator {
   /**
    * Redirects the user to the PureCloud logout page
    */
-  logout (logoutRedirectUri: string) {
+  logout (logoutRedirectUri: string): void {
     this.clearAuthData();
 
     const query: { [key: string]: string } = {
@@ -210,7 +210,7 @@ export class GenesysCloudClientAuthenticator {
    * Sets the access token to be used with requests
    * @param token - The access token
    */
-  setAccessToken (token: string) {
+  setAccessToken (token: string): void {
     this._saveSettings({ accessToken: token });
   }
 
@@ -219,7 +219,7 @@ export class GenesysCloudClientAuthenticator {
    * @param param The actual parameter.
    * @returns The string representation of <code>param</code>.
    */
-  paramToString (param?: Date | Object): string {
+  paramToString (param?: Date | Record<string, unknown> | string): string {
     if (!param) {
       return '';
     }
@@ -236,14 +236,14 @@ export class GenesysCloudClientAuthenticator {
    * @param pathParams The parameter values to append.
    * @returns The encoded path with parameter values substituted.
    */
-  buildUrl (path: string, pathParams: { [key: string]: string } = {}) {
+  buildUrl (path: string, pathParams: { [key: string]: string } = {}): string {
     if (!path.match(/^\//)) {
       path = `/${path}`;
     }
-    var url = this.basePath + path;
+    let url = this.basePath + path;
     url = url.replace(/\{([\w-]+)\}/g, (fullMatch, key) => {
-      var value;
-      if (pathParams.hasOwnProperty(key)) {
+      let value: string;
+      if (!!Object.getOwnPropertyDescriptor(pathParams, key)) {
         value = this.paramToString(pathParams[key]);
       } else {
         value = fullMatch;
@@ -260,7 +260,7 @@ export class GenesysCloudClientAuthenticator {
 
   /**
    * Invokes the REST service using the supplied settings and parameters.
-   * @param path The path of the resource – this will be appended to base url.
+   * @param path The path of the resource - this will be appended to base url.
    * @param httpMethod The HTTP method to use.
    * @returns A Promise request object.
    */
@@ -313,7 +313,7 @@ export class GenesysCloudClientAuthenticator {
       }
 
       // Remove state from data so it's not persisted
-      let tempData = JSON.parse(JSON.stringify(this.authData));
+      const tempData = JSON.parse(JSON.stringify(this.authData));
 
       delete tempData.state;
 

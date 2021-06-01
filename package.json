@@ -23,6 +23,9 @@
     "compile:module": "tsc -p ./tsconfig.json",
     "compile:webpack": "webpack --mode production",
     "test": "jest && cd src/react-app && yarn test",
+    "lint": "npm run lint:lib",
+    "lint:lib": "eslint ./src/lib --ext .ts",
+    "lint:react": "",
     "_build:test": "npm run build:lib && cp test/index.html dist/lib && stupid-server -s dist/lib"
   },
   "files": [
@@ -35,7 +38,11 @@
   "devDependencies": {
     "@types/superagent": "^4.1.10",
     "@types/uuid": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
+    "@typescript-eslint/parser": "^4.26.0",
     "concurrently": "^6.1.0",
+    "eslint": "^7.27.0",
+    "pre-push": "^0.1.1",
     "rimraf": "^3.0.2",
     "ts-loader": "^8.2.0",
     "tslib": "^2.2.0",
@@ -43,5 +50,8 @@
     "webpack": "4.44.2",
     "webpack-cli": "^4.6.0"
   },
+  "pre-push": [
+    "lint"
+  ],
   "false": {}
 }
