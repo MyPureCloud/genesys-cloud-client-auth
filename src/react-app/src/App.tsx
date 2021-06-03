@@ -14,8 +14,8 @@ export default function App() {
   } catch (e) {
     response = (
       <div>
-        <h2 style={{ color: '#ea0b0b' }}>{t('error')}</h2>
-        <h3>{t(e.message)}</h3>
+        <p style={{ color: '#ea0b0b' }}>{t('error')}</p>
+        <p>{t(e.message)}</p>
       </div>
     );
   }
@@ -29,7 +29,7 @@ export default function App() {
           decorative={true}
         ></gux-icon>
         {response}
-        <h4>{t('closeWindowMsg')}</h4>
+        <h1>{t('closeWindowMsg')}</h1>
       </div>
     </div>
   );
