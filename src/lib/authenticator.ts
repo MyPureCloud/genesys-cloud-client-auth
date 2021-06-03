@@ -8,7 +8,7 @@ import {
   ILoginOptions,
   IRedirectStorageParams,
 } from './types';
-import { debug, parseOauthParams } from './utils';
+import { debug, parseOauthParams, TranslatableError } from './utils';
 import VERSION from './version';
 
 export class GenesysCloudClientAuthenticator {
@@ -444,7 +444,10 @@ export class GenesysCloudClientAuthenticator {
 
     // Check if there is a token to test
     if (!this.authentications['PureCloud OAuth'].accessToken) {
-      throw new Error('Token is not set');
+      throw new TranslatableError(
+        'errorTokenNotSet',
+        'No access token provided.'
+      );
     }
 
     try {
