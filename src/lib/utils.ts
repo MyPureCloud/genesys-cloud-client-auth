@@ -49,10 +49,10 @@ export const isIssuedTimeWithinWindow = (expiresAtMs: number, expiresInMs: numbe
 }
 
 export class TranslatableError extends Error {
-  translationKey: string;
+  translationKey: 'errorToken' | 'errorStateParam' | 'errorParse' | 'errorTokenNotSet';
   
   /* istanbul ignore next */
-  constructor (translationKey: string, messageOrError: string | Error) {
+  constructor (translationKey, messageOrError: string | Error) {
     /* if a Error is passed in, use its message and name properties */
     const isError = messageOrError && messageOrError instanceof Error;
     super(isError ? (messageOrError as any).message : messageOrError);

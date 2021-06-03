@@ -13,8 +13,9 @@ i18n
   .use(initReactI18next)
   .init({
     backend: backendOptions,
-    fallbackLng: 'en-US',
+    fallbackLng: 'en-us',
     debug: true,
+    lowerCaseLng: true,
     interpolation: {
       escapeValue: false,
     },

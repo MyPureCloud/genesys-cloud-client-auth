@@ -15,7 +15,7 @@ export default function App() {
     response = (
       <div>
         <p style={{ color: '#ea0b0b' }}>{t('error')}</p>
-        <p>{t(e.message)}</p>
+        <p>{t(e.translationKey)}</p>
       </div>
     );
   }
