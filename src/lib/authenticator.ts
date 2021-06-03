@@ -444,7 +444,7 @@ export class GenesysCloudClientAuthenticator {
 
     // Check if there is a token to test
     if (!this.authentications['PureCloud OAuth'].accessToken) {
-      throw new Error('Token is not set');
+      throw new Error('errorTokenNotSet');
     }
 
     try {
