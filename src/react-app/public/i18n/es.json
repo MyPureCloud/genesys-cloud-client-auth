@@ -1,2 +1,10 @@
 {
+  "successMsg": "Inició sesión correctamente en Genesys Cloud.",
+  "closeWindowMsg": "Ya puede cerrar esta ventana.",
+  "closeWindow": "CERRAR",
+  "error": "ERROR: ",
+  "errorToken": "No se proporcionó ningún token de acceso.",
+  "errorParse": "No se puede analizar la información de almacenamiento local",
+  "errorTokenNotSet": "Token no establecido.",
+  "errorStateParam": "No hay ningún parámetro 'state' en la redirección. No se puede determinar la ubicación para guardar los datos de autenticidad."
 }

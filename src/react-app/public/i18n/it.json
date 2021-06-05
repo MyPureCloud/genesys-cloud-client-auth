@@ -1,2 +1,10 @@
 {
+  "successMsg": "L'utente si è connesso correttamente a Genesys Cloud.",
+  "closeWindowMsg": "Ora è possibile chiudere questa finestra.",
+  "closeWindow": "CHIUDI",
+  "error": "ERRORE: ",
+  "errorToken": "Nessun token di accesso fornito.",
+  "errorParse": "Impossibile analizzare le informazioni dall'archiviazione locale",
+  "errorTokenNotSet": "Token non impostato.",
+  "errorStateParam": "Nessun parametro 'stato' nel reindirizzamento. Impossibile determinare la posizione per salvare i dati di autenticazione."
 }

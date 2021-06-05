@@ -1,2 +1,10 @@
 {
+  "successMsg": "您已成功登入 Genesys Cloud。",
+  "closeWindowMsg": "現在您可關閉此視窗。",
+  "closeWindow": "關閉",
+  "error": "錯誤：",
+  "errorToken": "未提供存取標記。",
+  "errorParse": "無法剖析出自 localStorage 的資訊",
+  "errorTokenNotSet": "未設定標記。",
+  "errorStateParam": "重新導向時無 'state' 參數。無法判定儲存授權資料的位置。"
 }

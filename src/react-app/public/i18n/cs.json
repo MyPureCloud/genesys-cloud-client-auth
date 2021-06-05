@@ -1,2 +1,10 @@
 {
+  "successMsg": "Úspěšně jste se přihlásili do Genesys Cloud.",
+  "closeWindowMsg": "Nyní můžete toto okno zavřít.",
+  "closeWindow": "ZAVŘÍT",
+  "error": "CHYBA:",
+  "errorToken": "Nebyl zadán přístupový token.",
+  "errorParse": "Nepodařilo se načíst informace z místního úložiště.",
+  "errorTokenNotSet": "Není nastaven token.",
+  "errorStateParam": "U přesměrování nebyl uveden parametr „state“. Nepodařilo se určit umístění pro uložení autorizačních dat."
 }

@@ -1,2 +1,10 @@
 {
+  "successMsg": "Genesys Cloud'da başarıyla oturum açtınız.",
+  "closeWindowMsg": "Şimdi bu pencereyi kapatabilirsiniz.",
+  "closeWindow": "KAPAT",
+  "error": "HATA:",
+  "errorToken": "Hiçbir erişim belirteci sağlanmadı.",
+  "errorParse": "localStorage öğesinden bilgi ayrıştırılamıyor",
+  "errorTokenNotSet": "Belirteç ayarlanmadı.",
+  "errorStateParam": "Yeniden yönlendirmede \"durum\" parametresi yok. Kimlik doğrulama verilerinin kaydedilmesi için konum belirlenemiyor."
 }

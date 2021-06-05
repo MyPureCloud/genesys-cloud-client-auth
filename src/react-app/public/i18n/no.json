@@ -1,2 +1,10 @@
 {
+  "successMsg": "Du er logget inn i Genesys Cloud.",
+  "closeWindowMsg": "Du kan lukke dette vinduet.",
+  "closeWindow": "LUKK",
+  "error": "FEIL:",
+  "errorToken": "Ingen tilgangstoken gitt.",
+  "errorParse": "Kan ikke analysere informasjon fra lokal lagring",
+  "errorTokenNotSet": "Token ikke angitt.",
+  "errorStateParam": "Ingen 'status'-parameter på omdirigering. Kan ikke fastslå lokasjon for å lagre autorisasjonsdata."
 }
