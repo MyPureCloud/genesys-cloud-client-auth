@@ -1,2 +1,10 @@
 {
+  "successMsg": "U bent aangemeld bij Genesys Cloud.",
+  "closeWindowMsg": "U kunt dit venster nu sluiten.",
+  "closeWindow": "SLUITEN",
+  "error": "FOUT:",
+  "errorToken": "Geen toegangstoken opgegeven.",
+  "errorParse": "Kan informatie van lokale opslag niet parseren",
+  "errorTokenNotSet": "Token is niet ingesteld.",
+  "errorStateParam": "Geen 'staat'-parameter bij omleiding. Kan de locatie voor de opslag van authenticaitegegevens niet bepalen."
 }

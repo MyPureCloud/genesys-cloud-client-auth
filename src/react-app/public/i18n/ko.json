@@ -1,2 +1,10 @@
 {
+  "successMsg": "Genesys Cloud에 성공적으로 로그인했습니다.",
+  "closeWindowMsg": "이제 창을 닫아도 됩니다.",
+  "closeWindow": "닫기",
+  "error": "오류:",
+  "errorToken": "제공된 접근 토큰이 없습니다.",
+  "errorParse": "로컬 저장소에서 정보를 분석할 수 없음",
+  "errorTokenNotSet": "토큰이 설정되지 않았습니다.",
+  "errorStateParam": "리다이렉트 중인 '상태' 변수가 없습니다. 승인 데이터를 저장할 위치를 결정할 수 없습니다."
 }
