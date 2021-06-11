@@ -19,7 +19,6 @@ webappPipeline {
     buildType = getBranchType
     manifest = staticManifest([
         'index.html',
-        'favicon.ico',
         'robots.txt',
         'genesys-cloud-client-auth.browser.min.js',
         'genesys-cloud-client-auth.browser.min.js.map'

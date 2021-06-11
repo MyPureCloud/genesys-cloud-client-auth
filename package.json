@@ -22,7 +22,13 @@
     "compile:cjs": "tsc -p ./tsconfig.json --outDir ./dist/lib/cjs --target es2018 --module commonjs",
     "compile:module": "tsc -p ./tsconfig.json",
     "compile:webpack": "webpack --mode production",
-    "test": "jest && cd src/react-app && yarn test",
+    "test": "npm run test:lib && npm run test:react",
+    "test:lib": "jest",
+    "test:react": "cd src/react-app && yarn test",
+    "test:watch": "jest --watch --collectCoverage=false",
+    "lint": "npm run lint:lib",
+    "lint:lib": "eslint ./src/lib --ext .ts",
+    "lint:react": "",
     "_build:test": "npm run build:lib && cp test/index.html dist/lib && stupid-server -s dist/lib"
   },
   "files": [
@@ -33,15 +39,30 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "@babel/preset-typescript": "^7.13.0",
+    "@types/jest": "^26.0.23",
+    "@types/nock": "^11.1.0",
     "@types/superagent": "^4.1.10",
     "@types/uuid": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
+    "@typescript-eslint/parser": "^4.26.0",
     "concurrently": "^6.1.0",
+    "eslint": "^7.27.0",
+    "jest": "^27.0.3",
+    "nock": "^13.1.0",
+    "pre-push": "^0.1.1",
     "rimraf": "^3.0.2",
     "ts-loader": "^8.2.0",
+    "ts-node": "^10.0.0",
     "tslib": "^2.2.0",
     "typescript": "^4.2.4",
     "webpack": "4.44.2",
     "webpack-cli": "^4.6.0"
   },
+  "pre-push": [
+    "lint"
+  ],
   "false": {}
 }
