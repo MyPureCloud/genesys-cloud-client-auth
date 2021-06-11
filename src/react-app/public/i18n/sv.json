@@ -1,0 +1,10 @@
+{
+  "successMsg": "Du har loggat in på Genesys Cloud.",
+  "closeWindowMsg": "Du kan nu stänga det här fönstret.",
+  "closeWindow": "STÄNG",
+  "error": "FEL:",
+  "errorToken": "Ingen åtkomsttoken har angivits.",
+  "errorParse": "Det gick inte att parsa information från localStorage",
+  "errorTokenNotSet": "Token är inte inställd.",
+  "errorStateParam": "Inga lägesparametrar vid omdirigering. Det går inte att identifiera platsen för att spara autentiseringsdata."
+}

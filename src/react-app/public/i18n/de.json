@@ -1,0 +1,10 @@
+{
+  "successMsg": "Sie wurden erfolgreich bei Genesys Cloud angemeldet.",
+  "closeWindowMsg": "Sie können dieses Fenster jetzt schließen.",
+  "closeWindow": "SCHLIESSEN",
+  "error": "FEHLER:",
+  "errorToken": "Kein Zugangs-Token bereitgestellt.",
+  "errorParse": "Analyse von Informationen aus localStorage nicht möglich",
+  "errorTokenNotSet": "Token ist nicht festgelegt.",
+  "errorStateParam": "Kein Parameter 'state' bei Umleitung. Ort zum Speichern der Authentifizierungsdaten kann nicht bestimmt werden"
+}

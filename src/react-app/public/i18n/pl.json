@@ -1,0 +1,10 @@
+{
+  "successMsg": "Pomyślnie zalogowano do Genesys Cloud.",
+  "closeWindowMsg": "Teraz można zamknąć to okno.",
+  "closeWindow": "ZAMKNIJ",
+  "error": "BŁĄD:",
+  "errorToken": "Nie podano tokenu dostępowego.",
+  "errorParse": "Nie można przetworzyć informacji z magazynu lokalnego.",
+  "errorTokenNotSet": "Nie ustawiono tokenu.",
+  "errorStateParam": "Brak parametru state podczas przekierowania. Nie można określić lokalizacji do zapisu danych autoryzacji."
+}

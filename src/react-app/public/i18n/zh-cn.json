@@ -1,0 +1,10 @@
+{
+  "successMsg": "您已成功登录 Genesys Cloud。",
+  "closeWindowMsg": "您现在可以关闭这个窗口了。",
+  "closeWindow": "关闭",
+  "error": "错误：",
+  "errorToken": "未提供访问标记。",
+  "errorParse": "无法解析来自 localStorage 的信息",
+  "errorTokenNotSet": "未设置标记。",
+  "errorStateParam": "重定向时没有 'state' 参数。无法确定保存验证数据的位置。"
+}

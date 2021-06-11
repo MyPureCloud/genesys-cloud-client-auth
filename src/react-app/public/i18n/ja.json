@@ -1,0 +1,10 @@
+{
+  "successMsg": "Genesys Cloud に正常にログインできました。",
+  "closeWindowMsg": "このウィンドウは閉じることができます。",
+  "closeWindow": "閉じる",
+  "error": "エラー:",
+  "errorToken": "アクセス トークンが入力されていません。",
+  "errorParse": "ローカル ストレージからの情報を解析できません",
+  "errorTokenNotSet": "トークンが設定されていません。",
+  "errorStateParam": "リダイレクトに 'state' パラメーターがありません。認証データを保存する場所を特定できません。"
+}

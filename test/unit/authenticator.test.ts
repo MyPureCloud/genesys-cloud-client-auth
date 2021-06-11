@@ -620,7 +620,7 @@ describe('GenesysCloudClientAuthenticator', () => {
         await authenticator['_testTokenAccess']();
         fail('should have thrown for lack of token');
       } catch (e) {
-        expect(e.message).toBe('Token is not set');
+        expect(e.message).toBe('No access token provided.');
       }
     });
 

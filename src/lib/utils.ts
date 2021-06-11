@@ -7,6 +7,24 @@ export class TimeoutError extends Error {
   name = 'TIMEOUT_ERROR';
 }
 
+export class TranslatableError extends Error {
+  translationKey: 'errorToken' | 'errorStateParam' | 'errorParse' | 'errorTokenNotSet';
+
+  /* istanbul ignore next */
+  constructor (translationKey, messageOrError: string | Error) {
+    /* if a Error is passed in, use its message and name properties */
+    const isError = messageOrError && messageOrError instanceof Error;
+    super(isError ? (messageOrError as any).message : messageOrError);
+
+    if (isError) {
+      this.name = (messageOrError as any).name;
+    }
+
+    this.translationKey = translationKey;
+  }
+}
+
+
 export const parseOauthParams = (hash: string = window.location.hash): IAuthData => {
   const hashAsObj: IAuthReturnData = {};
   const authData: IAuthData = {};

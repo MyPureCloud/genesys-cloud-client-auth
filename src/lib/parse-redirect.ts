@@ -1,4 +1,4 @@
-import { debug, parseOauthParams } from './utils';
+import { debug, parseOauthParams, TranslatableError } from './utils';
 import { IRedirectStorageParams } from './types';
 
 export const handleRedirectFromLogin = (): void => {
@@ -10,18 +10,18 @@ export const handleRedirectFromLogin = (): void => {
   }
 
   if (!authData.accessToken) {
-    throw new Error('No accessToken provided');
+    throw new TranslatableError('errorToken', 'No access token provided.');
   }
 
   const storageId = authData.state;
   if (!storageId) {
-    throw new Error('No `state` param on redirect. Unable to determine location to save auth data');
+    throw new TranslatableError('errorStateParam', 'No state param on redirect. Unable to determine location to save auth data.');
   }
 
   const data: IRedirectStorageParams = JSON.parse(localStorage.getItem(storageId) || 'false');
 
   if (!data || !data.storageKey) {
-    throw new Error('Unable to parse information from localStorage.');
+    throw new TranslatableError('errorParse', 'Unable to parse information from localStorage.');
   }
 
   /* merge the states */
