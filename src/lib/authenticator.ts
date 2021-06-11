@@ -8,7 +8,7 @@ import {
   ILoginOptions,
   IRedirectStorageParams,
 } from './types';
-import { debug, parseOauthParams } from './utils';
+import { debug, parseOauthParams, TimeoutError } from './utils';
 import VERSION from './version';
 
 export class GenesysCloudClientAuthenticator {
@@ -35,8 +35,7 @@ export class GenesysCloudClientAuthenticator {
       config.persist = false;
     }
 
-
-    this.config = config as IAuthenticatorConfig;
+    this.config = { ...config } as IAuthenticatorConfig;
 
     this.setEnvironment(config.environment);
 
@@ -172,20 +171,20 @@ export class GenesysCloudClientAuthenticator {
             const url = this._buildAuthUrl('oauth/authorize', query as any);
             this._debug('Implicit grant: redirecting to: ' + url);
             window.location.replace(url);
+            /* reject for testing purposes */
+            reject(new Error(`Routing to login: "${url}"`));
           }
         });
     });
   }
 
   clearAuthData (): void {
-    if (this.hasLocalStorage) {
-      this._saveSettings({
-        accessToken: undefined,
-        state: undefined,
-        tokenExpiryTime: undefined,
-        tokenExpiryTimeString: undefined
-      });
-    }
+    this._saveSettings({
+      accessToken: undefined,
+      state: undefined,
+      tokenExpiryTime: undefined,
+      tokenExpiryTimeString: undefined
+    });
   }
 
   /**
@@ -199,7 +198,7 @@ export class GenesysCloudClientAuthenticator {
     };
 
     if (logoutRedirectUri) {
-      query.redirect_uri = encodeURI(logoutRedirectUri);
+      query.redirect_uri = encodeURIComponent(logoutRedirectUri);
     }
 
     const url = this._buildAuthUrl('logout', query);
@@ -240,16 +239,16 @@ export class GenesysCloudClientAuthenticator {
     if (!path.match(/^\//)) {
       path = `/${path}`;
     }
-    let url = this.basePath + path;
-    url = url.replace(/\{([\w-]+)\}/g, (fullMatch, key) => {
-      let value: string;
-      if (!!Object.getOwnPropertyDescriptor(pathParams, key)) {
-        value = this.paramToString(pathParams[key]);
-      } else {
-        value = fullMatch;
-      }
-      return encodeURIComponent(value);
-    });
+    const url = (this.basePath + path)
+      .replace(/\{([\w-]+)\}/g, (fullMatch, key) => {
+        let value: string;
+        if (!!Object.getOwnPropertyDescriptor(pathParams, key)) {
+          value = this.paramToString(pathParams[key]);
+        } else {
+          value = fullMatch;
+        }
+        return encodeURIComponent(value);
+      });
     return url;
   }
 
@@ -304,7 +303,10 @@ export class GenesysCloudClientAuthenticator {
       }
 
       // Don't save settings if we aren't supposed to be persisting them
-      if (!this.config.persist) return;
+      if (!this.config.persist) {
+        this._debug('persist is not true. Settings will not be saved.');
+        return;
+      }
 
       // Ensure we can access local storage
       if (!this.hasLocalStorage) {
@@ -355,12 +357,11 @@ export class GenesysCloudClientAuthenticator {
       this._debug('Implicit grant: opening new window: ' + loginUrl);
 
       /* this will always be `null` if `nofererrer` or `noopener` is set */
-      /* const popupWindow =  */window.open(loginUrl, '_blank', 'width=500px,height=500px,noreferrer,noopener,resizable,scrollbars,status') as Window;
+      window.open(loginUrl, '_blank', 'width=500px,height=500px,noreferrer,noopener,resizable,scrollbars,status') as Window;
 
       const timeoutId = setTimeout(() => {
         this._debug('timeout for loginImplicitGrant using popup', query);
-        const error = new Error('Popup timeout. It is possible that the popup was blocked.');
-        error.name = 'POPUP_TIMEOUT';
+        const error = new TimeoutError('Popup authentation timeout. It is possible that the popup was blocked or the login page encountered an error');
         reject(error);
       }, timeout);
 
@@ -385,53 +386,6 @@ export class GenesysCloudClientAuthenticator {
       };
 
       window.addEventListener('storage', storageListener);
-      // if (!popupWindow) {
-      //   const error = new Error('Unable to open the popup window, its likely that the popup was blocked.');
-      //   error.name = 'POPUP_BLOCKED_ERROR';
-      //   return reject(error);
-      // }
-
-      // const checker = setInterval(() => {
-      //   try {
-      //     if (popupWindow && !popupWindow.closed) {
-      //       // if we aren't on the login page, we don't need to check for errors
-      //       // This could throw cross-domain errors, so we need to silence them.
-      //       if (popupWindow.location.href.indexOf(this.authUrl) !== 0) return;
-
-      //       this._debug('popup window is not closed: ' + popupWindow.location.href);
-
-      //       // if we are on the login page, check for errors
-      //       const hash = parseOauthParams();
-
-      //       // if there are errors, reject and close the popup window
-      //       if (hash.error) {
-      //         this._debug('popup window has an error. rejecting and closing popup', {
-      //           error: `[${hash.error}] ${hash.error_description}`,
-      //           href: popupWindow.location.href
-      //         });
-      //         reject(new Error(`[${hash.error}] ${hash.error_description}`));
-      //         popupWindow && popupWindow.close();
-      //       }
-      //     }
-
-      //     this._debug('popup window IS closed. turning off interval');
-      //     clearInterval(checker);
-      //   } catch (e) {
-      //     const silence = e instanceof DOMException || e.message === 'Permission denied';
-
-      //     this._debug('popup window checker threw an error: ', { error: e, silence });
-
-      //     clearInterval(checker);
-
-      //     /* if we have a cross-origin error, we won't reject */
-      //     if (silence) return;
-
-      //     // TODO: we really need a timeout incase there is a cross-origin error that causes issues and there are actually errors authenticating
-
-      //     reject(e);
-      //   }
-      // }, 100);
-
     });
   }
 

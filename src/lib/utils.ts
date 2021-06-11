@@ -1,6 +1,12 @@
 import { IAuthReturnData, IAuthData } from './types';
 import VERSION from './version';
 
+const debugColor = 'color: #f29f2c';
+
+export class TimeoutError extends Error {
+  name = 'TIMEOUT_ERROR';
+}
+
 export const parseOauthParams = (hash: string = window.location.hash): IAuthData => {
   const hashAsObj: IAuthReturnData = {};
   const authData: IAuthData = {};
@@ -10,7 +16,9 @@ export const parseOauthParams = (hash: string = window.location.hash): IAuthData
 
   hash.split('&').forEach((h) => {
     const match = hashRegex.exec(h);
-    if (match) (hashAsObj as any)[match[1]] = decodeURIComponent(decodeURIComponent(match[2].replace(/\+/g, '%20')));
+    if (match) {
+      (hashAsObj as any)[match[1]] = decodeURIComponent(decodeURIComponent(match[2].replace(/\+/g, '%20')));
+    }
   });
 
   /* if there is an error, return and don't attempt to parse the rest */
@@ -26,7 +34,9 @@ export const parseOauthParams = (hash: string = window.location.hash): IAuthData
 
     /* calculate expiry time */
     if (hashAsObj.expires_in) {
-      authData.tokenExpiryTime = (new Date()).getTime() + (parseInt(hashAsObj.expires_in.replace(/\+/g, '%20')) * 1000);
+      const expiresInMs = (parseInt(hashAsObj.expires_in.replace(/\+/g, '%20')) * 1000);
+
+      authData.tokenExpiryTime = Date.now() + expiresInMs;
       authData.tokenExpiryTimeString = (new Date(authData.tokenExpiryTime)).toISOString();
     }
 
@@ -37,40 +47,24 @@ export const parseOauthParams = (hash: string = window.location.hash): IAuthData
   return authData;
 };
 
-export const debug = (message: string, details?: string | boolean | null | Array<any> | Record<string, unknown>): void => {
+export const debug = (message: string, details?: any): void => {
   if (details) {
-    console.log(`%c [DEBUG:gc-client-auth:${VERSION}] ${message}`, 'color: #f29f2c', details);
+    console.log(`%c [DEBUG:gc-client-auth:${VERSION}] ${message}`, debugColor, details);
     if (typeof details === 'object') {
-      console.log(`%c [DEBUG:gc-client-auth:${VERSION}] ^ stringified: ${JSON.stringify(details)}`, 'color: #f29f2c');
+      console.log(`%c [DEBUG:gc-client-auth:${VERSION}] ^ stringified: ${JSON.stringify(details)}`, debugColor);
     }
   } else {
-    console.log(`%c [DEBUG:gc-client-auth:${VERSION}] ${message}`, 'color: #f29f2c');
+    console.log(`%c [DEBUG:gc-client-auth:${VERSION}] ${message}`, debugColor);
   }
 };
 
 export const isIssuedTimeWithinWindow = (expiresAtMs: number, expiresInMs = 691199000 /* 8 days */, windowMs = 1680 * 1000 /* default: 28 minutes */): boolean => {
-  const issuedAt = expiresAtMs - expiresInMs;
+  const issuedAt = tokenWasIssuedAt(expiresAtMs, expiresInMs);
 
   /* if current time is within the window from issuedAt */
   return Date.now() - issuedAt < windowMs;
-}
+};
 
-// function calcIssuedAt (expiresAt) {
-//   const issuedAt = expiresAt - 691199 * 1000;
-//   const issuedAtDate = new Date(issuedAt);
-//   console.log({ issuedAt, issuedAtDate });
-//   return issuedAtDate;
-// }
-
-// const TWENTY_EIGHT_MINUTES_MS = 1680 * 1000
-
-// function add28Minutes (date) {
-//   const futureDate = new Date(
-//     date.getTime() + TWENTY_EIGHT_MINUTES_MS // add 28 minutes to issued date
-//   );
-//   return futureDate;
-// }
-
-// function isWithinWindow (futureDate) {
-//   return futureDate - Date.now() < TWENTY_EIGHT_MINUTES_MS;
-// }
+export const tokenWasIssuedAt = (expiresAtMs: number, expiresInMs: number): number => {
+  return expiresAtMs - expiresInMs;
+};
