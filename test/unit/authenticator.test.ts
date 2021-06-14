@@ -299,6 +299,14 @@ describe('GenesysCloudClientAuthenticator', () => {
         'https://login.mypurecloud.com/logout?&client_id=client-id&redirect_uri=https%3A%2F%2Fexample.com%2Flogin'
       );
     });
+
+    it('should replace window location with no logoutRedirectUri', () => {
+      authenticator.logout('');
+
+      expect(window.location.replace).toHaveBeenCalledWith(
+        'https://login.mypurecloud.com/logout?&client_id=client-id'
+      );
+    });
   });
 
   describe('setAccessToken()', () => {
@@ -545,6 +553,7 @@ describe('GenesysCloudClientAuthenticator', () => {
         newValue: JSON.stringify(authData),
         oldValue: undefined,
       };
+      const mockStorageEventToIgnore = new StorageEvent('storage', { key: 'some_other_storage_key' });
       const mockStorageEvent = new StorageEvent('storage', mockStorageEventPayload);
       const loginUrl = authenticator['_buildAuthUrl']('oauth/authorize', {
         ...query,
@@ -569,6 +578,7 @@ describe('GenesysCloudClientAuthenticator', () => {
       );
 
       /* simulate the event firing */
+      storageListener(mockStorageEventToIgnore);
       storageListener(mockStorageEvent);
 
       const returnedAuthData = await promise;
@@ -702,6 +712,33 @@ describe('GenesysCloudClientAuthenticator', () => {
         state: currentAuthData.state,
         accessToken: savedAuthData.accessToken
       });
+    });
+  });
+
+  describe('_buildAuthUrl()', () => {
+    it('should return login url with passed in params', () => {
+      const path = 'login';
+      const options = { redirectUri: 'redirect-to-this-page' };
+
+      expect(authenticator['_buildAuthUrl'](path, options)).toBe(
+        'https://login.mypurecloud.com/login?&redirectUri=redirect-to-this-page'
+      );
+    });
+
+    it('should return login url with default params', () => {
+      const path = 'login';
+
+      expect(authenticator['_buildAuthUrl'](path)).toBe(
+        'https://login.mypurecloud.com/login?'
+      );
+    });
+
+    it('should return login url without using falsy params', () => {
+      const path = 'login';
+
+      expect(authenticator['_buildAuthUrl'](path, { falsy: null })).toBe(
+        'https://login.mypurecloud.com/login?'
+      );
     });
   });
 });

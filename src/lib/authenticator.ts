@@ -106,10 +106,7 @@ export class GenesysCloudClientAuthenticator {
     // // TODO: add logic for `usePopupAuth` _without_ a redirectUri (ie. using our standalone app)
     // this.redirectUri = opts.redirectUri;
 
-    if (!opts) opts = {};
-
     return new Promise((resolve, reject) => {
-
       // Abort if org and provider are not set together
       if (opts.org && !opts.provider) {
         reject(new Error('opts.provider must be set if opts.org is set'));
@@ -377,7 +374,7 @@ export class GenesysCloudClientAuthenticator {
           window.removeEventListener('storage', storageListener);
           clearTimeout(timeoutId);
 
-          const authData = JSON.parse(evt.newValue || '');
+          const authData = JSON.parse(evt.newValue as string);
           localStorage.removeItem(id);
 
           // TODO: do something with the saved temp state (if saved)
