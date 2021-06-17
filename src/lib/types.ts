@@ -1,16 +1,42 @@
 export interface IAuthenticatorConfig {
+  /**
+   * Genesys Cloud domain.
+   * Defaults to: `'mypurecloud.com'`
+   */
   environment: string;
+
+  /**
+   * Persist authentication data to localStorage.
+   * Note: this is required if using popup authentication
+   * Defaults to: `false`
+   */
   persist: boolean;
+
+  /**
+   * Storage key to save auth data to localStorage.
+   * Defaults to: `gc_client_auth_data`
+   */
   storageKey: string;
+
+  /**
+   * Allow for extra console logs for debugging
+   * Defaults to: `false`
+   */
   debugMode: boolean;
 }
 
 export interface IAuthData {
+  /** access token received from login */
   accessToken?: string;
+  /** optional state returned from login */
   state?: string;
+  /** time at which the token expires */
   tokenExpiryTime?: number;
+  /** time at which the token expires  in ISO string format */
   tokenExpiryTimeString?: string;
+  /** error that may have occurred during login */
   error?: string;
+  /** error description that may have occurred during login */
   error_description?: string;
 }
 

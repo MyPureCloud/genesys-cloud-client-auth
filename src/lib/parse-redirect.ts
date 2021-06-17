@@ -1,6 +1,11 @@
 import { debug, parseOauthParams, TranslatableError } from './utils';
 import { IRedirectStorageParams } from './types';
 
+/**
+ * Helper function to parse the auth data opened from a popup authentication window.
+ *  It will save the auth data to localStorage.
+ * Note: this will throw errors if it cannot parse or save the data correctly
+ */
 export const handleRedirectFromLogin = (): void => {
   const authData = parseOauthParams();
 
