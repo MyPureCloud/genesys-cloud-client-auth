@@ -69,3 +69,5 @@ export interface ILoginOptions {
    */
   popupTimeout?: number;
 }
+
+export type ErrorTranslationKeys = 'errorToken' | 'errorStateParam' | 'errorParse' | 'errorTokenNotSet';

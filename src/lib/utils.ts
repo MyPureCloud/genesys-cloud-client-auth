@@ -1,4 +1,4 @@
-import { IAuthReturnData, IAuthData } from './types';
+import { IAuthReturnData, IAuthData, ErrorTranslationKeys } from './types';
 import VERSION from './version';
 
 const debugColor = 'color: #f29f2c';
@@ -8,10 +8,10 @@ export class TimeoutError extends Error {
 }
 
 export class TranslatableError extends Error {
-  translationKey: 'errorToken' | 'errorStateParam' | 'errorParse' | 'errorTokenNotSet';
+  translationKey: ErrorTranslationKeys;
 
   /* istanbul ignore next */
-  constructor (translationKey, messageOrError: string | Error) {
+  constructor (translationKey: ErrorTranslationKeys, messageOrError: string | Error) {
     /* if a Error is passed in, use its message and name properties */
     const isError = messageOrError && messageOrError instanceof Error;
     super(isError ? (messageOrError as any).message : messageOrError);
@@ -23,7 +23,6 @@ export class TranslatableError extends Error {
     this.translationKey = translationKey;
   }
 }
-
 
 export const parseOauthParams = (hash: string = window.location.hash): IAuthData => {
   const hashAsObj: IAuthReturnData = {};

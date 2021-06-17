@@ -59,18 +59,21 @@ webappPipeline {
         return [
             managerEmail: 'purecloud-client-media@genesys.com',
             rollbackPlan: 'Patch version with fix',
-            testResults: 'https://jenkins.ininica.com/job/web-pipeline-genesys-cloud-client-auth/job/main/'
+            testResults:  'https://jenkins.ininica.com/job/web-pipeline-genesys-cloud-client-auth/job/main/',
+            qaId:         '5d41d9195ca9700dac0ef53a'
         ]
     }
 
     shouldTagOnRelease = { true }
 
-    postReleaseStep = {
-        sh("""
-            # patch to prep for the next version
-            npm version patch --no-git-tag-version
-            git commit -am "Prep next version"
-            git push origin HEAD:main --tags
-        """)
-    }
+    // postReleaseStep = {
+    //   sshagent(credentials: [constants.credentials.github.inin_dev_evangelists]) {
+    //         sh("""
+    //             # patch to prep for the next version
+    //             npm version patch --no-git-tag-version
+    //             git commit -am "Prep next version"
+    //             git push origin HEAD:main --tags
+    //         """)
+    //     }
+    // }
 }

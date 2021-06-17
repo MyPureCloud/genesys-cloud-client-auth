@@ -37,7 +37,7 @@ describe('parse-redirect', () => {
         handleRedirectFromLogin();
         fail('should have thrown');
       } catch (error) {
-        expect(error.message).toBe('No accessToken provided');
+        expect(error.message).toBe('No access token provided.');
       }
     });
 
@@ -48,7 +48,7 @@ describe('parse-redirect', () => {
         handleRedirectFromLogin();
         fail('should have thrown');
       } catch (error) {
-        expect(error.message).toBe('No `state` param on redirect. Unable to determine location to save auth data');
+        expect(error.message).toBe('No state param on redirect. Unable to determine location to save auth data.');
       }
     });
 
