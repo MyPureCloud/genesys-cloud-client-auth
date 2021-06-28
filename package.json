@@ -16,7 +16,7 @@
     "start:lib": "webpack -c webpack.config.dev.js",
     "start:react": "cd src/react-app && yarn start",
     "prebuild": "rimraf dist",
-    "build": "npm run build:react && npm run build:lib && node replace-version.js",
+    "build": "npm run build:react && npm run build:lib && node scripts/replace-version.js",
     "build:react": "cd src/react-app && yarn build",
     "build:lib": "npm run compile:cjs && npm run compile:module && npm run compile:webpack",
     "compile:cjs": "tsc -p ./tsconfig.json --outDir ./dist/lib/cjs --target es2018 --module commonjs",
@@ -29,7 +29,8 @@
     "lint": "npm run lint:lib",
     "lint:lib": "eslint ./src/lib --ext .ts",
     "lint:react": "",
-    "_build:test": "npm run build:lib && cp test/index.html dist/lib && stupid-server -s dist/lib"
+    "_build:test": "npm run build:lib && cp test/index.html dist/lib && stupid-server -s dist/lib",
+    "codecov": "node scripts/merge-coverage-reports.js && codecov"
   },
   "files": [
     "dist"
@@ -48,8 +49,10 @@
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
+    "codecov": "^3.8.2",
     "concurrently": "^6.1.0",
     "eslint": "^7.27.0",
+    "istanbul-api": "^3.0.0",
     "jest": "^27.0.3",
     "nock": "^13.1.0",
     "pre-push": "^0.1.1",

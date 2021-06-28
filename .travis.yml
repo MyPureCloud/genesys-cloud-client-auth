@@ -1,0 +1,25 @@
+# tell travis what language you want to use
+language: node_js
+
+# these are the versions of node to run the tests on
+node_js:
+  - 12
+  - 14
+
+# use `npm` cache to speed up the builds
+cache: npm
+
+# skip version branches (ie. v1.1.1)
+branches:
+  except:
+    - '/^v\d+\.\d+\.\d+$/'
+
+# install deps
+install:
+  - npm install
+
+script:
+  - npm run lint
+  - npm run test
+  - npm run codecov
+  - npm run build

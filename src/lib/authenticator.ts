@@ -11,19 +11,37 @@ import {
 import { debug, parseOauthParams, TimeoutError, TranslatableError } from './utils';
 import VERSION from './version';
 
+/**
+ * Class to manage authentication and state. It is recommended to use the `authenticatorFactory`
+ *  to construct a singleton instance of this class.
+ */
 export class GenesysCloudClientAuthenticator {
+  /** Oauth client id */
   readonly clientId: string;
+  /** client-auth version */
   readonly VERSION: string = VERSION;
-  config: IAuthenticatorConfig;
-  environment!: string;
-  basePath!: string;
-  authUrl!: string;
+  /** current authencation data for this instance. default is an empty object `{}`*/
   authData: IAuthData;
+  /** current configuration for this instance */
+  config: IAuthenticatorConfig;
+  /** current environment. Ex. `mypurecloud.com` */
+  environment!: string;
+  /** base api path - utilizing the `environment` varialbe */
+  basePath!: string;
+  /** base auth path - utilizing the `environment` varialbe */
+  authUrl!: string;
 
   private hasLocalStorage: boolean;
   private authentications: { [authenitcation: string]: any };
   private timeout: number;
 
+  /**
+   * Construct a new Authenticator instance. It is recommended you use the `authenticatorFactory()`
+   *  to construct a singleton for each necessary Oauth client.
+   *
+   * @param clientId oauth client id
+   * @param config optional configuration options
+   */
   constructor (clientId: string, config: Partial<IAuthenticatorConfig> = {}) {
     this.clientId = clientId;
 
@@ -57,54 +75,15 @@ export class GenesysCloudClientAuthenticator {
   }
 
   /**
-   * Parses an ISO-8601 string representation of a date value.
-   * @param str The date value as a string.
-   * @returns The parsed date object.
-   */
-  parseDate (str: string): Date {
-    return new Date(str.replace(/T/i, ' '));
-  }
-
-  /**
-   * Sets the environment used by the session
-   * @param environment - (Optional, default "mypurecloud.com") Environment the session use, e.g. mypurecloud.ie, mypurecloud.com.au, etc.
-   */
-  setEnvironment (environment?: string): void {
-    if (!environment) {
-      environment = 'mypurecloud.com';
-    }
-
-    // Strip trailing slash
-    environment = environment.replace(/\/+$/, '');
-
-    // Strip protocol and subdomain
-    if (environment.startsWith('https://')) {
-      environment = environment.substring(8);
-    }
-
-    if (environment.startsWith('http://')) {
-      environment = environment.substring(7)
-    }
-
-    if (environment.startsWith('api.')) {
-      environment = environment.substring(4);
-    }
-
-    // Set vars
-    this.environment = environment;
-    this.basePath = `https://api.${environment}`;
-    this.authUrl = `https://login.${environment}`;
-  }
-
-  /**
    * Initiates the implicit grant login flow. Will attempt to load the token from local storage, if enabled.
+   *
+   * @param opts Optional options to login with
+   * @param existingAuthData optional authentication data to use. default will be parsed from url hash
+   * @returns Promise with the authentication data
    */
   loginImplicitGrant (opts: ILoginOptions = {}, existingAuthData?: IAuthData): Promise<IAuthData | undefined> {
     // Check for auth token in hash
     const hash = existingAuthData || parseOauthParams();
-
-    // // TODO: add logic for `usePopupAuth` _without_ a redirectUri (ie. using our standalone app)
-    // this.redirectUri = opts.redirectUri;
 
     return new Promise((resolve, reject) => {
       // Abort if org and provider are not set together
@@ -175,6 +154,42 @@ export class GenesysCloudClientAuthenticator {
     });
   }
 
+  /**
+   * Sets the environment, baseUrl, and authUrl used by the session
+   * @param environment - (Optional, default "mypurecloud.com") Environment the instance uses, e.g. mypurecloud.ie, mypurecloud.com.au, etc.
+   */
+  setEnvironment (environment?: string): void {
+    if (!environment) {
+      environment = 'mypurecloud.com';
+    }
+
+    // Strip trailing slash
+    environment = environment.replace(/\/+$/, '');
+
+    // Strip protocol and subdomain
+    if (environment.startsWith('https://')) {
+      environment = environment.substring(8);
+    }
+
+    if (environment.startsWith('http://')) {
+      environment = environment.substring(7)
+    }
+
+    if (environment.startsWith('api.')) {
+      environment = environment.substring(4);
+    }
+
+    // Set vars
+    this.environment = environment;
+    this.basePath = `https://api.${environment}`;
+    this.authUrl = `https://login.${environment}`;
+  }
+
+  /**
+   * Will clear current auth data from localStorage.
+   * NOTE: this will _not_ log the user out. Using `logout()`
+   *  for logging out
+   */
   clearAuthData (): void {
     this._saveSettings({
       accessToken: undefined,
@@ -185,9 +200,11 @@ export class GenesysCloudClientAuthenticator {
   }
 
   /**
-   * Redirects the user to the PureCloud logout page
+   * Clears auth data from localStorage and redirects the user to the GenesysCloud logout page
+   *
+   * @param logoutRedirectUri optional, redirectUri to pass to the logout page
    */
-  logout (logoutRedirectUri: string): void {
+  logout (logoutRedirectUri?: string): void {
     this.clearAuthData();
 
     const query: { [key: string]: string } = {
@@ -203,7 +220,7 @@ export class GenesysCloudClientAuthenticator {
   }
 
   /**
-   * Sets the access token to be used with requests
+   * Sets the access token on the authenticator instance and localStorage (if configured)
    * @param token - The access token
    */
   setAccessToken (token: string): void {
@@ -211,7 +228,27 @@ export class GenesysCloudClientAuthenticator {
   }
 
   /**
+   * Test an accessToken by using it to make an API call. It will resolve
+   *  if the token is valid, and will reject if it is not valid.
+   * @param token accessToken to test
+   * @returns a promise that will resolve is successful
+   */
+  testAccessToken (token: string): Promise<any> {
+    return this.callApi('/api/v2/tokens/me', 'get', token)
+  }
+
+  /**
+   * Parses an ISO-8601 string representation of a date value.
+   * @param str The date value as a string.
+   * @returns The parsed date object.
+   */
+  parseDate (str: string): Date {
+    return new Date(str.replace(/T/i, ' '));
+  }
+
+  /**
    * Returns a string representation for an actual parameter.
+   *
    * @param param The actual parameter.
    * @returns The string representation of <code>param</code>.
    */
@@ -247,11 +284,6 @@ export class GenesysCloudClientAuthenticator {
         return encodeURIComponent(value);
       });
     return url;
-  }
-
-  testAccessToken (token: string): Promise<any> {
-    // Test token
-    return this.callApi('/api/v2/tokens/me', 'get', token)
   }
 
   /**
@@ -324,11 +356,22 @@ export class GenesysCloudClientAuthenticator {
     }
   }
 
+  /**
+   * Return a unique id for client-auth
+   * @param id optional id string
+   * @returns unique id specific to client-auth
+   */
   private _getId (id?: string): string {
     id = id || v4();
     return `gc-ca_${id}`;
   }
 
+  /**
+   * Authenticate using a popup with and localStorage.
+   * @param query query params
+   * @param timeout milliseconds for our long to wait for successful authentication
+   * @returns promiise with the authentication data
+   */
   private _authenticateViaPopup (query: IAuthRequestParams, timeout: number): Promise<IAuthData> {
     /* save original options */
     const id = this._getId();
