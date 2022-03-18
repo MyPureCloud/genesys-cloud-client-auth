@@ -134,3 +134,72 @@ export const isIssuedTimeWithinWindow = (expiresAtMs: number, expiresInMs?: numb
 export const tokenWasIssuedAt = (expiresAtMs: number, expiresInMs: number): number => {
   return expiresAtMs - expiresInMs;
 };
+
+
+// This util only keeps the value of the query param last specified in the query string if duplicates are specified.
+export const getQueryParams = (searchStr: string): Record<string, string | undefined> => {
+  // @ts-expect-error URLSearchParams is truly iterable and can be converted to an object via `fromEntries`
+  return Object.fromEntries(new URLSearchParams(searchStr));
+};
+
+function assertNonEmptyStringQueryParam(
+    maybeStr: string | undefined,
+    name: string
+): asserts maybeStr is string {
+    if (!maybeStr) throw new Error(`'${name}' query param is not a non-empty string`);
+}
+
+export interface EmbeddedAppState {
+    href: string;
+    env: string;
+    locale: string;
+    branch?: string;
+    interactionId: string;
+    usePopupAuth: boolean;
+}
+
+export const getEmbeddedAppState = (href: string): EmbeddedAppState => {
+    const url = new URL(href);
+    const branchPath = url.pathname.split('/').slice(2).join('/');
+    const branch = branchPath.endsWith('/') ? branchPath.slice(0, -1) : branchPath;
+
+    const [, queryFromHash] = url.hash.split('?');
+    if (!queryFromHash) throw new Error('Unable to extract query params from the hash');
+
+    const { interactionId, pcEnvironment, usePopupAuth, locale = 'en-us' } = getQueryParams(
+        queryFromHash
+    );
+    assertNonEmptyStringQueryParam(interactionId, 'interactionId');
+    assertNonEmptyStringQueryParam(pcEnvironment, 'pcEnvironment');
+
+    return {
+        href,
+        locale,
+        interactionId,
+        branch: branch ? branch : undefined,
+        env: pcEnvironment === 'localhost' ? 'inindca.com' : pcEnvironment,
+        usePopupAuth: usePopupAuth === 'true'
+    };
+};
+
+interface BuildRedirectUrlProps {
+  usePopupAuth: boolean;
+  location: Pick<Location, 'origin' | 'hostname'>;
+}
+
+/**
+* Builds up our redirect url based on the current window location and
+* whether or not we should use popup auth.
+*/
+export const buildRedirectUrl = ({ usePopupAuth, location }: BuildRedirectUrlProps) => {
+  const redirectUrl = new URL(location.origin);
+  if (location.hostname === 'localhost') {
+      redirectUrl.pathname = '/';
+  } else {
+      redirectUrl.pathname = '/agent-conversation-summary/';
+  }
+  if (usePopupAuth) {
+      redirectUrl.searchParams.set('authPopupWindow', 'true');
+  }
+  return redirectUrl.href;
+};

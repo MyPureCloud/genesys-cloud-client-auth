@@ -392,18 +392,39 @@ export class GenesysCloudClientAuthenticator {
     }
 
     const loginUrl = this._buildAuthUrl('oauth/authorize', query as any);
+    if(this.config.saveLoginRedirectToLocalStorage){
+      localStorage.setItem("gcca-redirect-url", loginUrl);
+    }
 
     return new Promise<IAuthData>((resolve, reject) => {
       this._debug('Implicit grant: opening new window: ' + loginUrl);
 
-      /* this will always be `null` if `nofererrer` or `noopener` is set */
-      window.open(loginUrl, '_blank', 'width=500px,height=500px,noreferrer,noopener,resizable,scrollbars,status') as Window;
+      let openWindow: Window | null;
+      let timeoutId;
+      let newWindowInterval;
 
-      const timeoutId = setTimeout(() => {
-        this._debug('timeout for loginImplicitGrant using popup', query);
-        const error = new TimeoutError('Popup authentation timeout. It is possible that the popup was blocked or the login page encountered an error');
-        reject(error);
-      }, timeout);
+      if(this.config.saveLoginRedirectToLocalStorage){
+        setCurrentPopupState(window, "before_popup");
+        openWindow = window.open(window.location.href, '_blank', 'width=500px,height=500px,resizable,scrollbars,status') as Window;
+        newWindowInterval = setInterval(()=>{
+          if(openWindow === null || openWindow.closed){
+            clearInterval(newWindowInterval);
+            this._debug('popup was closed or never opened', query);
+            const error = new Error('Popup was closed or never open');
+            reject(error);
+          }
+        }, 1000)
+      }else{
+        /* this will always be `null` if `nofererrer` or `noopener` is set */
+        window.open(loginUrl, '_blank', 'width=500px,height=500px,noreferrer,noopener,resizable,scrollbars,status') as Window;
+        timeoutId = setTimeout(() => {
+          this._debug('timeout for loginImplicitGrant using popup', query);
+          const error = new TimeoutError('Popup authentation timeout. It is possible that the popup was blocked or the login page encountered an error');
+          reject(error);
+        }, timeout);
+      }
+
+      
 
       const storageListener = (evt: StorageEvent) => {
         this._debug('value was just written to storage by another app', {
@@ -416,6 +437,10 @@ export class GenesysCloudClientAuthenticator {
           this._debug('keys matched. resolving value', { key: evt.key, value: evt.newValue });
           window.removeEventListener('storage', storageListener);
           clearTimeout(timeoutId);
+          clearInterval(newWindowInterval);
+          if(openWindow){
+            openWindow.close();
+          }
 
           const authData = JSON.parse(evt.newValue as string);
           localStorage.removeItem(id);
@@ -495,4 +520,41 @@ export class GenesysCloudClientAuthenticator {
         `${this.authUrl}/${path}?`
       );
   }
+}
+
+
+const authenticators = new Map<string, GenesysCloudClientAuthenticator>();
+
+/**
+ * Factory function to generate a singleton instance of a ClientAuthenticator class.
+ *  If an instance has already been created for passed in `clientId`, that instance
+ *  will be returned _without_ updating the original configuration.
+ *
+ * @param clientId Oauth client ID
+ * @param config Optional configuration for the ClientAuthenticator instance
+ * @returns Singleton GenesysCloudClientAuthenticator instance
+ */
+export const authenticatorFactory = (clientId: string, config: Partial<IAuthenticatorConfig>): GenesysCloudClientAuthenticator => {
+  let authenticator = authenticators.get(clientId);
+
+  if (!authenticator) {
+    authenticator = new GenesysCloudClientAuthenticator(clientId, config);
+    authenticators.set(clientId, authenticator);
+  }
+
+  return authenticator;
+};
+
+export type POPUP_STATES = "before_popup" | "popup_loaded" 
+
+export const setCurrentPopupState = ({localStorage}: Pick<Window, "localStorage">, popupState: POPUP_STATES) :void => {
+  localStorage.setItem("gcca-flow-popup-state", popupState);
+}
+
+export const getCurrentPopupState = ({localStorage}: Pick<Window, "localStorage">) : POPUP_STATES | null => {
+  return localStorage.getItem("gcca-flow-popup-state") as POPUP_STATES;
+}
+
+export const clearCurrentPopupState = ({localStorage}: Pick<Window, "localStorage">) : void => {
+  return localStorage.removeItem("gcca-flow-popup-state");
 }

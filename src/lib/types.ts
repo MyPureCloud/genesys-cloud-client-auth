@@ -23,6 +23,12 @@ export interface IAuthenticatorConfig {
    * Defaults to: `false`
    */
   debugMode: boolean;
+
+  /**
+   * Set this if you want to save the login redirect to localStorage and 
+   * open the current url in a popup window instead. 
+   */
+  saveLoginRedirectToLocalStorage: boolean;
 }
 
 export interface IAuthData {
