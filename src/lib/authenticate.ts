@@ -83,10 +83,6 @@ export const authenticate = async ({
             usePopupAuth,
             state: stateKey,
             redirectUri: buildRedirectUrl({ usePopupAuth, location }),
-            // Shorten our popup timeout to 5s so the agent isn't looking at a blank screen
-            // for 15s, this is also right outside our interapptions bootstrap timeout,
-            // so the app should show and immediately render 'Auth Failed'
-            popupTimeout: POPUP_AUTH_TIMEOUT_MS
         });
 
         restoreHref({ href, branch, location, history });
