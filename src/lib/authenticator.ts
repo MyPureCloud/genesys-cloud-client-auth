@@ -400,13 +400,23 @@ export class GenesysCloudClientAuthenticator {
       let throwErrorTimeout: ReturnType<typeof setTimeout> | null;
       let newWindowInterval: ReturnType<typeof setInterval> | null;
 
+      let closePopupWindowOnUnloadListener: ((e:PageTransitionEvent)=>void) | null = null;
+
       if(this.config.useUpdatedPopupAuthFlow){
         openWindow = window.open(loginUrl, '_blank', 'width=500px,height=500px,resizable,scrollbars,status');
+        closePopupWindowOnUnloadListener = (e)=>{
+          openWindow?.close();
+        }
+        window.addEventListener("pagehide", closePopupWindowOnUnloadListener)
         newWindowInterval = setInterval(()=>{
           if(openWindow === null || openWindow.closed){
             if(newWindowInterval){
               clearInterval(newWindowInterval);
             }
+            if(closePopupWindowOnUnloadListener){
+              window.removeEventListener("pagehide", closePopupWindowOnUnloadListener);
+            }
+            
             this._debug('popup was closed or never opened', query);
             const error = new Error('Popup was closed or never open');
             reject(error);
@@ -439,6 +449,9 @@ export class GenesysCloudClientAuthenticator {
           }
           if(newWindowInterval){
             clearInterval(newWindowInterval);
+          }
+          if(closePopupWindowOnUnloadListener){
+            window.removeEventListener("pagehide", closePopupWindowOnUnloadListener);
           }
           if(openWindow){
             openWindow.close();
