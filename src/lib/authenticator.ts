@@ -392,9 +392,6 @@ export class GenesysCloudClientAuthenticator {
     }
 
     const loginUrl = this._buildAuthUrl('oauth/authorize', query as any);
-    if(this.config.saveLoginRedirectToLocalStorage){
-      localStorage.setItem("gcca-redirect-url", loginUrl);
-    }
 
     return new Promise<IAuthData>((resolve, reject) => {
       this._debug('Implicit grant: opening new window: ' + loginUrl);
@@ -403,9 +400,8 @@ export class GenesysCloudClientAuthenticator {
       let throwErrorTimeout: ReturnType<typeof setTimeout> | null;
       let newWindowInterval: ReturnType<typeof setInterval> | null;
 
-      if(this.config.saveLoginRedirectToLocalStorage){
-        setCurrentPopupState(window, "before_popup");
-        openWindow = window.open(window.location.href, '_blank', 'width=500px,height=500px,resizable,scrollbars,status');
+      if(this.config.useUpdatedPopupAuthFlow){
+        openWindow = window.open(loginUrl, '_blank', 'width=500px,height=500px,resizable,scrollbars,status');
         newWindowInterval = setInterval(()=>{
           if(openWindow === null || openWindow.closed){
             if(newWindowInterval){
@@ -550,17 +546,3 @@ export const authenticatorFactory = (clientId: string, config: Partial<IAuthenti
 
   return authenticator;
 };
-
-export type POPUP_STATES = "before_popup" | "popup_loaded" 
-
-export const setCurrentPopupState = ({localStorage}: Pick<Window, "localStorage">, popupState: POPUP_STATES) :void => {
-  localStorage.setItem("gcca-flow-popup-state", popupState);
-}
-
-export const getCurrentPopupState = ({localStorage}: Pick<Window, "localStorage">) : POPUP_STATES | null => {
-  return localStorage.getItem("gcca-flow-popup-state") as POPUP_STATES;
-}
-
-export const clearCurrentPopupState = ({localStorage}: Pick<Window, "localStorage">) : void => {
-  return localStorage.removeItem("gcca-flow-popup-state");
-}

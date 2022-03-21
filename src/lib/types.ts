@@ -25,10 +25,10 @@ export interface IAuthenticatorConfig {
   debugMode: boolean;
 
   /**
-   * Set this if you want to save the login redirect to localStorage and 
-   * open the current url in a popup window instead. 
+   * Set this if you want to prevent the auth from sending an error on timeout
+   * even when the login window is still displayed to the user
    */
-  saveLoginRedirectToLocalStorage: boolean;
+  useUpdatedPopupAuthFlow: boolean;
 }
 
 export interface IAuthData {

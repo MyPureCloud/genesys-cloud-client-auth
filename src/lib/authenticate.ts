@@ -1,7 +1,7 @@
 import { handleRedirectFromLogin } from './parse-redirect';
 import { EmbeddedAppState, getEmbeddedAppState, parseOauthParams, getQueryParams, buildRedirectUrl } from "./utils";
 import { v4 as uuid } from 'uuid';
-import { authenticatorFactory, clearCurrentPopupState, getCurrentPopupState, setCurrentPopupState } from "./authenticator";
+import { authenticatorFactory } from "./authenticator";
 import { IAuthData } from "./types";
 
 export const POPUP_AUTH_TIMEOUT_MS = 5000;
@@ -51,10 +51,6 @@ export const authenticate = async ({
     const { authPopupWindow } = getQueryParams(location.search);
     const isPopupWindow = authPopupWindow === 'true';
 
-    if(checkIfLoginPopupStatus()){
-        return { state: 'popupWindow', appState:getEmbeddedAppState(window.location.href) };
-    }
-
     if (isPopupWindow) {
         const appState = handlePopupWindowRedirect(localStorage, oauthParams);
         return { state: 'popupWindow', appState };
@@ -79,7 +75,7 @@ export const authenticate = async ({
         storageKey: authDataStoragekey,
         environment: env,
         debugMode:true,
-        saveLoginRedirectToLocalStorage:true
+        useUpdatedPopupAuthFlow:true
     });
 
     try {
@@ -127,20 +123,6 @@ export const handlePopupWindowRedirect = (storage: Storage, authData: IAuthData)
 
     return getEmbeddedAppState(href);
 };
-
-export const checkIfLoginPopupStatus = (): boolean => {
-    const redirectUrl = localStorage.getItem("gcca-redirect-url");
-    if(getCurrentPopupState(window) === "before_popup" && redirectUrl ){
-        setCurrentPopupState(window, "popup_loaded");
-        window.location.href = redirectUrl;
-        return true;
-    } else if(getCurrentPopupState(window) === "popup_loaded"){
-        clearCurrentPopupState(window);
-        localStorage.removeItem("gcca-redirect-url");
-    }
-    return false;
-}
-
 
 const STATE_KEY_PREFIX = 'cs-auth';
 
