@@ -400,24 +400,26 @@ export class GenesysCloudClientAuthenticator {
       this._debug('Implicit grant: opening new window: ' + loginUrl);
 
       let openWindow: Window | null;
-      let timeoutId;
-      let newWindowInterval;
+      let throwErrorTimeout: ReturnType<typeof setTimeout> | null;
+      let newWindowInterval: ReturnType<typeof setInterval> | null;
 
       if(this.config.saveLoginRedirectToLocalStorage){
         setCurrentPopupState(window, "before_popup");
-        openWindow = window.open(window.location.href, '_blank', 'width=500px,height=500px,resizable,scrollbars,status') as Window;
+        openWindow = window.open(window.location.href, '_blank', 'width=500px,height=500px,resizable,scrollbars,status');
         newWindowInterval = setInterval(()=>{
           if(openWindow === null || openWindow.closed){
-            clearInterval(newWindowInterval);
+            if(newWindowInterval){
+              clearInterval(newWindowInterval);
+            }
             this._debug('popup was closed or never opened', query);
             const error = new Error('Popup was closed or never open');
             reject(error);
           }
-        }, 1000)
+        }, 500)
       }else{
         /* this will always be `null` if `nofererrer` or `noopener` is set */
-        window.open(loginUrl, '_blank', 'width=500px,height=500px,noreferrer,noopener,resizable,scrollbars,status') as Window;
-        timeoutId = setTimeout(() => {
+        window.open(loginUrl, '_blank', 'width=500px,height=500px,noreferrer,noopener,resizable,scrollbars,status');
+        throwErrorTimeout = setTimeout(() => {
           this._debug('timeout for loginImplicitGrant using popup', query);
           const error = new TimeoutError('Popup authentation timeout. It is possible that the popup was blocked or the login page encountered an error');
           reject(error);
@@ -436,8 +438,12 @@ export class GenesysCloudClientAuthenticator {
         if (evt.key === this.config.storageKey) {
           this._debug('keys matched. resolving value', { key: evt.key, value: evt.newValue });
           window.removeEventListener('storage', storageListener);
-          clearTimeout(timeoutId);
-          clearInterval(newWindowInterval);
+          if(throwErrorTimeout){
+            clearTimeout(throwErrorTimeout);
+          }
+          if(newWindowInterval){
+            clearInterval(newWindowInterval);
+          }
           if(openWindow){
             openWindow.close();
           }
