@@ -1,4 +1,4 @@
-import { restoreHref } from './../../src/lib/authenticate';
+import { restoreHref } from './../../src/lib/utils';
 
 const APP_URL = 'https://apps.mypurecloud.com/agent-conversation-summary';
 

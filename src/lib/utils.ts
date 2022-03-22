@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid';
 import { IAuthReturnData, IAuthData, ErrorTranslationKeys } from './types';
 import VERSION from './version';
 
@@ -202,4 +203,52 @@ export const buildRedirectUrl = ({ usePopupAuth, location }: BuildRedirectUrlPro
       redirectUrl.searchParams.set('authPopupWindow', 'true');
   }
   return redirectUrl.href;
+};
+
+const STATE_KEY_PREFIX = 'cs-auth';
+
+export const createStateKey = () => {
+    return [STATE_KEY_PREFIX, uuid()].join('-');
+};
+
+export const persistPreAuthFlowHref = (storage: Pick<Storage, 'setItem'>, href: string) => {
+    const stateKey = createStateKey();
+    storage.setItem(stateKey, href);
+    return stateKey;
+};
+
+
+
+export const clearAuthStateEntries = (storage: Storage) => {
+    Object.keys(storage)
+        .filter(key => key.startsWith(STATE_KEY_PREFIX))
+        .forEach(key => storage.removeItem(key));
+};
+
+interface RestoreHrefProps {
+  href: string;
+  branch?: string;
+  location: Pick<Location, 'href' | 'pathname' | 'replace'>;
+  history: Pick<History, 'replaceState'>;
+}
+
+/**
+* Restores our pre-auth href if necessary and possibly reloads the window
+* using a time machine branch
+*/
+export const restoreHref = ({ href, branch, location, history }: RestoreHrefProps): void => {
+  if (branch && !location.pathname.includes(branch)) {
+      // If branch build and we're not on the branch, do a full reload
+      // to pull the branch build from S3
+      location.replace(href);
+  } else if (location.href !== href) {
+      // Otherwise, we can just restore the window's old href
+      history.replaceState(null, '', href);
+  }
+};
+
+export const getPreAuthFlowHref = (storage: Pick<Storage, 'getItem'>, key: string) => {
+  const href = storage.getItem(key);
+  if (!href) throw new Error('unable to find auth state stored locally');
+  return href;
 };

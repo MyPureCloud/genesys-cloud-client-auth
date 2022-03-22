@@ -1,14 +1,27 @@
-import { handlePopupWindowRedirect, getPreAuthFlowHref as getPreAuthFlowHrefNonMock } from './../../src/lib/authenticate';
-import { getEmbeddedAppState } from './../../src/lib/utils';
-import { handleRedirectFromLogin } from './../../src/lib/parse-redirect';
+import { handlePopupWindowRedirect} from './../../src/lib/handlePopupWindowRedirect';
+import { getEmbeddedAppState, getPreAuthFlowHref as getPreAuthFlowHrefNonMock } from './../../src/lib/utils';
+import { handleRedirectFromLogin as _handleRedirectFromLogin } from './../../src/lib/parse-redirect';
 import { v4 as uuid } from 'uuid';
 
-// jest.mock('auth/storageHelpers');
-// jest.mock('genesys-cloud-client-auth');
+
+jest.mock('./../../src/lib/utils', ()=>{
+    const original = jest.requireActual("../../src/lib/utils");
+    return {
+        _esModule: true,
+        ...original,
+        getPreAuthFlowHref: jest.fn(),
+        parseOauthParams: jest.fn(),
+    }
+})
+
+jest.mock("../../src/lib/parse-redirect");
 
 const getPreAuthFlowHref = getPreAuthFlowHrefNonMock as jest.MockedFunction<
     typeof getPreAuthFlowHrefNonMock
 >;
+
+const handleRedirectFromLogin = _handleRedirectFromLogin as jest.MockedFunction<typeof _handleRedirectFromLogin>;
+
 
 describe('redirectHandlers', () => {
     afterEach(() => {
@@ -56,10 +69,12 @@ describe('redirectHandlers', () => {
             mockStorage.getItem.mockReturnValueOnce(JSON.stringify({ state: ourState }));
             getPreAuthFlowHref.mockReturnValueOnce(href);
 
-            const result = handlePopupWindowRedirect(mockStorage, {
+            const authData = {
                 accessToken,
                 state: gcAuthState
-            });
+            }
+
+            const result = handlePopupWindowRedirect(mockStorage, authData);
 
             expect(result).toEqual(getEmbeddedAppState(href));
             expect(getPreAuthFlowHref).toHaveBeenCalledTimes(1);

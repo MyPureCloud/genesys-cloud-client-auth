@@ -1,8 +1,7 @@
-import { handleRedirectFromLogin } from './parse-redirect';
-import { EmbeddedAppState, getEmbeddedAppState, parseOauthParams, getQueryParams, buildRedirectUrl } from "./utils";
-import { v4 as uuid } from 'uuid';
+import { EmbeddedAppState, getEmbeddedAppState, parseOauthParams, getQueryParams, buildRedirectUrl, persistPreAuthFlowHref, clearAuthStateEntries, restoreHref, getPreAuthFlowHref } from "./utils";
 import { authenticatorFactory } from "./authenticator";
 import { IAuthData } from "./types";
+import { handlePopupWindowRedirect } from "./handlePopupWindowRedirect";
 
 export const POPUP_AUTH_TIMEOUT_MS = 5000;
 
@@ -74,7 +73,6 @@ export const authenticate = async ({
         persist: true,
         storageKey: authDataStoragekey,
         environment: env,
-        debugMode:true,
         useUpdatedPopupAuthFlow:true
     });
 
@@ -104,70 +102,12 @@ export const authenticate = async ({
     }
 };
 
-export const handlePopupWindowRedirect = (storage: Storage, authData: IAuthData) => {
-    // Retrieve the state set by `genesys-cloud-client-auth`
-    if (!authData.state) throw new Error('could not find `state` hash param');
-    const gcAuthState = storage.getItem(authData.state);
-    if (!gcAuthState) throw new Error('could not find gc-auth state stored locally');
-    const { state: popupAuthState } = JSON.parse(gcAuthState);
-    if (!popupAuthState || typeof popupAuthState !== 'string') {
-        throw new Error('could not parse our popup auth state key from gc-auth state entry');
-    }
-    const href = getPreAuthFlowHref(storage, popupAuthState);
 
-    handleRedirectFromLogin();
 
-    return getEmbeddedAppState(href);
-};
 
-const STATE_KEY_PREFIX = 'cs-auth';
-
-export const createStateKey = () => {
-    return [STATE_KEY_PREFIX, uuid()].join('-');
-};
-
-export const persistPreAuthFlowHref = (storage: Pick<Storage, 'setItem'>, href: string) => {
-    const stateKey = createStateKey();
-    storage.setItem(stateKey, href);
-    return stateKey;
-};
-
-export const getPreAuthFlowHref = (storage: Pick<Storage, 'getItem'>, key: string) => {
-    const href = storage.getItem(key);
-    if (!href) throw new Error('unable to find auth state stored locally');
-    return href;
-};
-
-export const clearAuthStateEntries = (storage: Storage) => {
-    Object.keys(storage)
-        .filter(key => key.startsWith(STATE_KEY_PREFIX))
-        .forEach(key => storage.removeItem(key));
-};
 
 export const extractAccessToken = (authData?: IAuthData) => {
     if (!authData) throw new Error('Invalid auth data');
     if (!authData.accessToken) throw new Error('Unable to extract access token');
     return authData.accessToken;
-};
-
-interface RestoreHrefProps {
-    href: string;
-    branch?: string;
-    location: Pick<Location, 'href' | 'pathname' | 'replace'>;
-    history: Pick<History, 'replaceState'>;
-}
-
-/**
- * Restores our pre-auth href if necessary and possibly reloads the window
- * using a time machine branch
- */
-export const restoreHref = ({ href, branch, location, history }: RestoreHrefProps) => {
-    if (branch && !location.pathname.includes(branch)) {
-        // If branch build and we're not on the branch, do a full reload
-        // to pull the branch build from S3
-        location.replace(href);
-    } else if (location.href !== href) {
-        // Otherwise, we can just restore the window's old href
-        history.replaceState(null, '', href);
-    }
 };
