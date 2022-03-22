@@ -310,7 +310,7 @@ describe("authenticate", () => {
     const expectedAppState = getEmbeddedAppState(location.href);
     const errorSpy = jest
       .spyOn(console, "error")
-      .mockImplementationOnce(() => {});
+      .mockImplementationOnce(() => {/**do nothing */});
     parseOauthParams.mockReturnValueOnce({});
 
     // Simulate a popup auth timeout error

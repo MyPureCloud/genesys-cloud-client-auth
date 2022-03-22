@@ -1,6 +1,5 @@
 import { GenesysCloudClientAuthenticator, authenticatorFactory } from './authenticator';
 import { handleRedirectFromLogin } from './parse-redirect';
-import { IAuthenticatorConfig } from './types';
 import { isIssuedTimeWithinWindow, parseOauthParams, tokenWasIssuedAt, TimeoutError, isIssuedTimeWithinTimeframe } from './utils';
 import VERSION from './version';
 import { authenticate, AuthResponse } from './authenticate';

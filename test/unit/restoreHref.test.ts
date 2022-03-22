@@ -13,7 +13,7 @@ describe("restoreHref", () => {
       branch,
       href: hrefToRestore,
       location,
-      history: { replaceState: () => {} },
+      history: { replaceState: () => {/**do nothing */} },
     });
 
     expect(location.replace).toBeCalledTimes(1);
@@ -32,7 +32,7 @@ describe("restoreHref", () => {
       location: {
         pathname: `/${branch}`,
         href: currentHref,
-        replace: () => {},
+        replace: () => {/**do nothing */},
       },
       history,
     });
@@ -48,7 +48,7 @@ describe("restoreHref", () => {
 
     restoreHref({
       href: hrefToRestore,
-      location: { pathname: "/", href: currentHref, replace: () => {} },
+      location: { pathname: "/", href: currentHref, replace: () => {/**do nothing */} },
       history,
     });
 
