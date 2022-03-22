@@ -1,6 +1,4 @@
-import {
-  handlePopupWindowRedirect as _handlePopupWindowRedirect,
-} from "./../../src/lib/handlePopupWindowRedirect";
+import { handlePopupWindowRedirect as _handlePopupWindowRedirect } from "./../../src/lib/handlePopupWindowRedirect";
 import { v4 as uuid } from "uuid";
 import {
   authenticatorFactory as _authenticatorFactory,
@@ -13,7 +11,7 @@ import {
   persistPreAuthFlowHref as _persistPreAuthFlowHref,
   clearAuthStateEntries as _clearAuthStateEntries,
   getPreAuthFlowHref as _getPreAuthFlowHref,
-  restoreHref
+  restoreHref,
 } from "../../src/lib/utils";
 import {
   authenticate,
@@ -206,7 +204,7 @@ describe("authenticate", () => {
       persist: true,
       storageKey: "conversation-summary-auth-data",
       environment: expectedAppState.env,
-      useUpdatedPopupAuthFlow:true,
+      useUpdatedPopupAuthFlow: true,
     });
     expect(loginImplicitGrant).toHaveBeenCalledTimes(1);
     expect(loginImplicitGrant).toHaveBeenCalledWith({
