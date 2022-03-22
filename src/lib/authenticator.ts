@@ -404,7 +404,7 @@ export class GenesysCloudClientAuthenticator {
 
       if(this.config.useUpdatedPopupAuthFlow){
         openWindow = window.open(loginUrl, '_blank', 'width=500px,height=500px,resizable,scrollbars,status');
-        closePopupWindowOnUnloadListener = (e)=>{
+        closePopupWindowOnUnloadListener = ()=>{
           openWindow?.close();
         }
         window.addEventListener("pagehide", closePopupWindowOnUnloadListener)
