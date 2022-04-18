@@ -23,6 +23,12 @@ export interface IAuthenticatorConfig {
    * Defaults to: `false`
    */
   debugMode: boolean;
+
+  /**
+   * Set this if you want to prevent the auth from sending an error on timeout
+   * even when the login window is still displayed to the user
+   */
+  useUpdatedPopupAuthFlow: boolean;
 }
 
 export interface IAuthData {

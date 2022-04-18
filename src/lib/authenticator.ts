@@ -396,14 +396,43 @@ export class GenesysCloudClientAuthenticator {
     return new Promise<IAuthData>((resolve, reject) => {
       this._debug('Implicit grant: opening new window: ' + loginUrl);
 
-      /* this will always be `null` if `nofererrer` or `noopener` is set */
-      window.open(loginUrl, '_blank', 'width=500px,height=500px,noreferrer,noopener,resizable,scrollbars,status') as Window;
+      let openWindow: Window | null;
+      let throwErrorTimeout: ReturnType<typeof setTimeout> | null;
+      let newWindowInterval: ReturnType<typeof setInterval> | null;
 
-      const timeoutId = setTimeout(() => {
-        this._debug('timeout for loginImplicitGrant using popup', query);
-        const error = new TimeoutError('Popup authentation timeout. It is possible that the popup was blocked or the login page encountered an error');
-        reject(error);
-      }, timeout);
+      let closePopupWindowOnUnloadListener: ((e:PageTransitionEvent)=>void) | null = null;
+
+      if(this.config.useUpdatedPopupAuthFlow){
+        openWindow = window.open(loginUrl, '_blank', 'width=500px,height=500px,resizable,scrollbars,status');
+        closePopupWindowOnUnloadListener = ()=>{
+          openWindow?.close();
+        }
+        window.addEventListener("pagehide", closePopupWindowOnUnloadListener)
+        newWindowInterval = setInterval(()=>{
+          if(openWindow === null || openWindow.closed){
+            if(newWindowInterval){
+              clearInterval(newWindowInterval);
+            }
+            if(closePopupWindowOnUnloadListener){
+              window.removeEventListener("pagehide", closePopupWindowOnUnloadListener);
+            }
+            
+            this._debug('popup was closed or never opened', query);
+            const error = new Error('Popup was closed or never open');
+            reject(error);
+          }
+        }, 500)
+      }else{
+        /* this will always be `null` if `nofererrer` or `noopener` is set */
+        window.open(loginUrl, '_blank', 'width=500px,height=500px,noreferrer,noopener,resizable,scrollbars,status');
+        throwErrorTimeout = setTimeout(() => {
+          this._debug('timeout for loginImplicitGrant using popup', query);
+          const error = new TimeoutError('Popup authentation timeout. It is possible that the popup was blocked or the login page encountered an error');
+          reject(error);
+        }, timeout);
+      }
+
+      
 
       const storageListener = (evt: StorageEvent) => {
         this._debug('value was just written to storage by another app', {
@@ -415,7 +444,18 @@ export class GenesysCloudClientAuthenticator {
         if (evt.key === this.config.storageKey) {
           this._debug('keys matched. resolving value', { key: evt.key, value: evt.newValue });
           window.removeEventListener('storage', storageListener);
-          clearTimeout(timeoutId);
+          if(throwErrorTimeout){
+            clearTimeout(throwErrorTimeout);
+          }
+          if(newWindowInterval){
+            clearInterval(newWindowInterval);
+          }
+          if(closePopupWindowOnUnloadListener){
+            window.removeEventListener("pagehide", closePopupWindowOnUnloadListener);
+          }
+          if(openWindow){
+            openWindow.close();
+          }
 
           const authData = JSON.parse(evt.newValue as string);
           localStorage.removeItem(id);
@@ -496,3 +536,26 @@ export class GenesysCloudClientAuthenticator {
       );
   }
 }
+
+
+const authenticators = new Map<string, GenesysCloudClientAuthenticator>();
+
+/**
+ * Factory function to generate a singleton instance of a ClientAuthenticator class.
+ *  If an instance has already been created for passed in `clientId`, that instance
+ *  will be returned _without_ updating the original configuration.
+ *
+ * @param clientId Oauth client ID
+ * @param config Optional configuration for the ClientAuthenticator instance
+ * @returns Singleton GenesysCloudClientAuthenticator instance
+ */
+export const authenticatorFactory = (clientId: string, config: Partial<IAuthenticatorConfig>): GenesysCloudClientAuthenticator => {
+  let authenticator = authenticators.get(clientId);
+
+  if (!authenticator) {
+    authenticator = new GenesysCloudClientAuthenticator(clientId, config);
+    authenticators.set(clientId, authenticator);
+  }
+
+  return authenticator;
+};
