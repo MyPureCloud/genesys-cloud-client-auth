@@ -100,7 +100,7 @@ VERSION      : ${env.VERSION}
         sh("""
             echo 'CDN_URL ${cdnUrl}'
             npm --versions
-            PUBLIC_URL=${cdnUrl} npm run build
+            PUBLIC_URL=${cdnUrl} CI=false npm run build
         """)
     }
 
