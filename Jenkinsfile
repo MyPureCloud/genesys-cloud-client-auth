@@ -69,7 +69,7 @@ webappPipeline {
     snykConfig = {
         return [
             organization: 'genesys-client-media-webrtc',
-            targetFiles: ['package.json', 'src/react-app/package.json']
+            targetFiles: ['package.json', 'src/react-app/package.json'],
             wait: true
         ]
     }
