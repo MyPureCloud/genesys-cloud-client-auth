@@ -5,4 +5,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Unreleased](https://github.com/MyPureCloud/genesys-cloud-client-auth/compare/v0.0.1...HEAD)
 
+### Added
+* [PCM-1937](https://inindca.atlassian.net/browse/PCM-1937) – migrated to new build pipeline
+
 # [v0.0.1](https://github.com/MyPureCloud/genesys-cloud-client-auth/tags/v0.0.1)
