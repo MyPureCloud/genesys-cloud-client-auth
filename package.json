@@ -1,7 +1,7 @@
 {
   "name": "genesys-cloud-client-auth",
   "description": "Small, lightweight library and app to handle authentication for client applications. Big advantage is utilization of popup windows to authenticate apps within iframes.",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "main": "dist/lib/cjs/index.js",
   "module": "dist/lib/es/index.js",
   "browser": "dist/lib/es/index.js",
@@ -16,7 +16,7 @@
     "start:lib": "webpack -c webpack.config.dev.js",
     "start:react": "cd src/react-app && yarn start",
     "prebuild": "rimraf dist",
-    "build": "npm run build:react && npm run build:lib && node scripts/replace-version.js",
+    "build": "npm run build:react && npm run build:lib && node scripts/version-manifest.js",
     "build:react": "cd src/react-app && yarn build",
     "build:lib": "npm run compile:cjs && npm run compile:module && npm run compile:webpack",
     "compile:cjs": "tsc -p ./tsconfig.json --outDir ./dist/lib/cjs --target es2018 --module commonjs",

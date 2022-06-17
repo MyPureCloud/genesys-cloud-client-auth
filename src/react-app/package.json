@@ -20,12 +20,16 @@
     "i18next": "^20.3.0",
     "i18next-browser-languagedetector": "^6.1.1",
     "i18next-http-backend": "^1.2.6",
+    "nth-check": "^2.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-i18next": "^11.9.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^5.0.0",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
+  },
+  "resolutions": {
+    "nth-check": "^2.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
