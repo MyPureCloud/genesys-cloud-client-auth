@@ -1,25 +1,29 @@
-import { Complete, PubSubEvent, InProgress, Failure } from './interfaces';
+import { CompleteEvent, PubSubEvent, InProgressEvent, FailureEvent, AuthData, InProgressBody, CompleteBody, FailureBody } from './interfaces';
 import { debug, testForLocalStorage } from './utils';
-
 
 export class LocalStoragePubSub {
   private _storageListenerRef: any;
   private _listeners: ((event: PubSubEvent) => void)[] = [];
-  private _sentMessages: string[] = [];
+  private _lastEvent?: PubSubEvent;
 
   constructor (public key: string) {
     testForLocalStorage();
     this._setupListener();
+    this._loadInitialValue();
   }
 
-  on (callback: (event: PubSubEvent) => void) {
+  subscribe (callback: (event: PubSubEvent) => void) {
     const index = this._listeners.findIndex(l => l === callback);
     if (!index) {
       this._listeners.push(callback);
+
+      /* replay the last event */
+      const lastEvent = this.getLastEventEmitted();
+      lastEvent && callback(lastEvent);
     }
   }
 
-  off (callback?: (event: PubSubEvent) => void) {
+  unsubscribe (callback?: (event: PubSubEvent) => void) {
     if (!callback) {
       this._listeners = [];
     }
@@ -40,16 +44,43 @@ export class LocalStoragePubSub {
     this.key = '';
   }
 
-  isCompleteEvent (event: PubSubEvent | Complete): event is Complete {
-    return event && event.event === 'COMPLETE';
+  getLastEventEmitted (): PubSubEvent | undefined {
+    return this._lastEvent
   }
 
-  isInProgressEvent (event: PubSubEvent | InProgress): event is InProgress {
-    return event && event.event === 'IN_PROGRESS';
+  replayLastEvent (): void {
+    const lastEvent = this.getLastEventEmitted();
+
+    debug('replaying lastEvent from storage PubSub', {
+      storageKey: this.key,
+      lastEvent
+    });
+
+    lastEvent && this.emit(lastEvent);
   }
 
-  isFailureEvent (event: PubSubEvent | Failure): event is Failure {
-    return event && event.event === 'FAILURE';
+  isCompleteEvent (event?: PubSubEvent | CompleteEvent): event is CompleteEvent {
+    return event?.event === 'COMPLETE';
+  }
+
+  isInProgressEvent (event?: PubSubEvent | InProgressEvent): event is InProgressEvent {
+    return event?.event === 'IN_PROGRESS';
+  }
+
+  isFailureEvent (event?: PubSubEvent | FailureEvent): event is FailureEvent {
+    return event?.event === 'FAILURE';
+  }
+
+  writeInProgressEvent (body: InProgressBody) {
+    this._write({ event: 'IN_PROGRESS', body });
+  }
+
+  writeCompleteEvent (body: CompleteBody) {
+    this._write({ event: 'COMPLETE', body });
+  }
+
+  writeFailureEvent (body: FailureBody) {
+    this._write({ event: 'FAILURE', body });
   }
 
   _write (event: PubSubEvent) {
@@ -58,13 +89,14 @@ export class LocalStoragePubSub {
     }
 
     const stringified = JSON.stringify(event);
-    this._sentMessages.push(stringified);
-    if (this._sentMessages.length > 3) {
-      this._sentMessages.shift();
-    }
 
     debug('writing value', { key: this.key, event, stringified });
     localStorage.setItem(this.key, stringified);
+  }
+
+  _emitAuthData (authData: AuthData) {
+    const event: CompleteEvent = { event: 'COMPLETE', body: { authData } };
+    authData && this._storageListener({ key: this.key, newValue: JSON.stringify(event), oldValue: '' } as StorageEvent);
   }
 
   private _removeListener () {
@@ -92,13 +124,6 @@ export class LocalStoragePubSub {
       return;
     }
 
-    /* if we sent the message from this pub/sub client, we want to ignore it */
-    // const strValue = JSON.stringify(newValue);
-    if (this._sentMessages.includes(newValue || 'DOES-NOT-EXIST')) {
-      return;
-    }
-
-
     const value = JSON.parse(newValue || '{}') as PubSubEvent;
 
     if (
@@ -109,5 +134,15 @@ export class LocalStoragePubSub {
       debug('keys matched. processing value', { key, newValue });
       this.emit(value);
     }
+  }
+
+
+  private _loadInitialValue () {
+    const value = localStorage.getItem(this.key);
+    debug('processing localStorage value on LocalStoragePubSub initialization', {
+      storageKey: this.key,
+      value
+    });
+    value && this._storageListener({ key: this.key, newValue: value, oldValue: '' } as StorageEvent);
   }
 }

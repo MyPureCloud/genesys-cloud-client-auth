@@ -1,3 +1,5 @@
+import { LocalStoragePubSub } from './messaging';
+
 export type ParseQueryStrategies = 'both' | 'regular' | 'hash';
 
 export interface ParseQueryParamsOptions {
@@ -6,44 +8,50 @@ export interface ParseQueryParamsOptions {
   requiredParams?: string[];
 }
 
-export type PubSubEventTypes = 'COMPLETE' | 'IN_PROGRESS' | 'FAILURE';
+export type PubSubEvent = CompleteEvent | InProgressEvent | FailureEvent;
 
-export interface PubSubEvent {
-  event: string;
-  body: any;
-}
-
-export interface Complete extends PubSubEvent {
+export interface CompleteEvent {
   event: 'COMPLETE';
-  body: {
-    href?: string;
-    authData: AuthData;
-  } // auth data
+  body: CompleteBody;
 }
 
-export interface InProgress extends PubSubEvent {
+export interface CompleteBody {
+  authData: AuthData;
+}
+
+export interface InProgressEvent {
   event: 'IN_PROGRESS';
-  body: {
-    href?: string;
-  } // nothing?
+  body: InProgressBody;
 }
 
-export interface Failure extends PubSubEvent {
-  event: 'FAILURE';
-  body: {
-    type: 'TIMEOUT' | 'BLOCKED' | 'CLOSED' | 'OAUTH_ERROR' | 'OTHER';
-    error: Error | string;
-    error_Description?: string;
-  } // ERROR
+export interface InProgressBody {
+  debug?: boolean;
+  href?: string;
+  state?: string | POJO;
 }
+
+export interface FailureEvent {
+  event: 'FAILURE';
+  body: FailureBody;
+}
+
+export interface FailureBody {
+  type: 'TIMEOUT' | 'BLOCKED' | 'CLOSED' | 'OAUTH_ERROR' | 'OTHER'; // TODO: not sure about these
+  error: Error | string;
+  error_Description?: string;
+}
+
+export type POJO = { [key: string]: any }; //<T = RecordTypes> = { [key: string]: T | POJO<T> };
+export type RecordTypes = string | boolean | number | null | undefined;
+export type ShallowPOJO = Record<string, RecordTypes | Array<RecordTypes>>;
 export interface AuthData {
   /** access token received from login */
   accessToken?: string;
   /** optional state returned from login */
-  state?: string;
+  state?: POJO | string;
   /** time at which the token expires */
   tokenExpiryTime?: number;
-  /** time at which the token expires  in ISO string format */
+  /** time at which the token expires in ISO string format */
   tokenExpiryTimeString?: string;
   /** error that may have occurred during login */
   error?: string;
@@ -83,7 +91,7 @@ export interface OAuthReturnedData {
   error_description?: string;
 }
 
-export interface OAuthRequestParams {
+export interface OAuthRequestParams extends POJO {
   client_id: string;
   response_type: string;
   redirect_uri?: string;
@@ -120,9 +128,9 @@ export interface AuthenticatorConfig {
 
   timeout?: number;
   /**
- * The organization name that would normally used when specifying an organization name when logging in.
- *  This is only used when a provider is also specified.
- */
+   * The organization name that would normally be used when specifying an organization name when logging in.
+   *  This is only used when a provider is also specified.
+   */
   org?: string;
   /**
    * Authentication provider to log in with e.g. okta, adfs, salesforce, onelogin.
@@ -148,7 +156,7 @@ export interface LoginOptions {
   /**
    * Any state needed when returning from login
    */
-  state?: string;
+  state?: string | POJO;
   /**
    * The organization name that would normally used when specifying an organization name when logging in.
    *  This is only used when a provider is also specified.
@@ -160,13 +168,16 @@ export interface LoginOptions {
    */
   provider?: string;
   /**
-   * Use a popup window to open to the login page.
-   */
-  usePopupAuth?: boolean;
-  /**
    * Timeout for how long the auth pop should remain open before timing out
    *  and rejecting the loginImplicitGrant call. This is only used in conjunction
    *  with `usePopupAuth`.
    */
   popupTimeout?: number;
 }
+
+export interface PopupAuthReturnType {
+  messenger: LocalStoragePubSub;
+  popupUrl: string;
+}
+
+export type ErrorTranslationKeys = 'errorToken' | 'errorStateParam' | 'errorParse' | 'errorTokenNotSet';

@@ -1,9 +1,9 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
-import { AuthData, InternalAuthenticatorConfig, LoginOptions, OAuthReturnedData, ParseQueryParamsOptions } from './interfaces';
+import { AuthData, ErrorTranslationKeys, InternalAuthenticatorConfig, LoginOptions, OAuthReturnedData, ParseQueryParamsOptions } from './interfaces';
 import { DEBUG_MODE, VERSION } from './config';
 
-export const parseQueryParams = (options: ParseQueryParamsOptions) => {
+export const parseQueryParams = (options: ParseQueryParamsOptions = {}) => {
   /* defaults */
   const win = options.window || window;
   const strategy = options.strategy || 'both';
@@ -31,10 +31,7 @@ export const parseQueryParams = (options: ParseQueryParamsOptions) => {
     throw new Error(`Missing required query params: "${errors.join('", "')}"`);
   }
 
-  return {
-    url,
-    queryParams
-  };
+  return queryParams;
 }
 
 export const parseString = (str: string): { [key: string]: string } => {
@@ -57,7 +54,7 @@ export const parseString = (str: string): { [key: string]: string } => {
 export const debug = (message: string, details?: any): void => {
   if (!DEBUG_MODE) return;
 
-  const debugColor = "color: #f29f2c";
+  const debugColor = 'color: #f29f2c';
 
   if (details) {
     console.log(
@@ -66,7 +63,7 @@ export const debug = (message: string, details?: any): void => {
       details
     );
 
-    if (typeof details === "object") {
+    if (typeof details === 'object') {
       console.log(
         `%c [DEBUG:gc-client-auth:${VERSION}] ^ stringified: ${JSON.stringify(
           details
@@ -133,13 +130,13 @@ export const parseOauthParams = (hash: string): AuthData => {
   const authData: AuthData = {};
 
   // Process hash string into object
-  const hashRegex = new RegExp(`^#*(.+?)=(.+?)$`, "i");
+  const hashRegex = new RegExp(`^#*(.+?)=(.+?)$`, 'i');
 
-  hash.split("&").forEach((h) => {
+  hash.split('&').forEach((h) => {
     const match = hashRegex.exec(h);
     if (match) {
       (hashAsObj as any)[match[1]] = decodeURIComponent(
-        decodeURIComponent(match[2].replace(/\+/g, "%20"))
+        decodeURIComponent(match[2].replace(/\+/g, '%20'))
       );
     }
   });
@@ -157,7 +154,7 @@ export const parseOauthParams = (hash: string): AuthData => {
 
     /* calculate expiry time */
     if (hashAsObj.expires_in) {
-      const expiresInMs = parseInt(hashAsObj.expires_in.replace(/\+/g, "%20")) * 1000;
+      const expiresInMs = parseInt(hashAsObj.expires_in.replace(/\+/g, '%20')) * 1000;
 
       authData.tokenExpiryTime = Date.now() + expiresInMs;
       authData.tokenExpiryTimeString = new Date(
@@ -166,7 +163,7 @@ export const parseOauthParams = (hash: string): AuthData => {
     }
 
     /* set the access token */
-    authData.accessToken = hashAsObj.access_token.replace(/\+/g, "%20");
+    authData.accessToken = hashAsObj.access_token.replace(/\+/g, '%20');
   }
 
   return authData;
@@ -197,7 +194,7 @@ export const parseOauthParams = (hash: string): AuthData => {
  * @param startTime time to count `timeframe` back from (in epoch time). Default is `Date.now()`
  * @returns boolean of whether the token was issued within the given timeframe (from now)
  */
- export const isIssuedTimeWithinTimeframe = (
+export const isIssuedTimeWithinTimeframe = (
   expiresAtMs: number,
   expiresInMs = 691199000 /* 8 days */,
   timeframe = 1680 * 1000 /* default: 28 minutes */,
@@ -233,3 +230,23 @@ export const tokenWasIssuedAt = (
 ): number => {
   return expiresAtMs - expiresInMs;
 };
+
+export class TranslatableError extends Error {
+  translationKey: ErrorTranslationKeys;
+
+  /* istanbul ignore next */
+  constructor (
+    translationKey: ErrorTranslationKeys,
+    messageOrError: string | Error
+  ) {
+    /* if a Error is passed in, use its message and name properties */
+    const isError = messageOrError && messageOrError instanceof Error;
+    super(isError ? (messageOrError as any).message : messageOrError);
+
+    if (isError) {
+      this.name = (messageOrError as any).name;
+    }
+
+    this.translationKey = translationKey;
+  }
+}
