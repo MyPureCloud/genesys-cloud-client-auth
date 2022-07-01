@@ -36,6 +36,7 @@
     "dist"
   ],
   "dependencies": {
+    "axios": "^0.27.2",
     "superagent": "^6.1.0",
     "uuid": "^8.3.2"
   },
