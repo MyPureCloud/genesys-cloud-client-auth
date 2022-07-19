@@ -1,2 +1,10 @@
 {
+  "successMsg": "התחברת בהצלחה אל Genesys Cloud.",
+  "closeWindowMsg": "אפשר לסגור את החלון עכשיו.",
+  "closeWindow": "סגור",
+  "error": "שגיאה:",
+  "errorToken": "אין אסימון גישה.",
+  "errorParse": "לא ניתן לנתח מידע מ-localStorage",
+  "errorTokenNotSet": "האסימון לא הוגדר.",
+  "errorStateParam": "אין פרמטר 'state' בניתוב מחדש. אין אפשרות לקבוע את המיקום כדי לשמור נתוני אימות."
 }
