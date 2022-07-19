@@ -1,2 +1,10 @@
 {
+  "successMsg": "لقد قمت بتسجيل الدخول إلى Genesys Cloud بنجاح.",
+  "closeWindowMsg": "يمكنك إغلاق هذه النافذة الآن.",
+  "closeWindow": "إغلاق",
+  "error": "خطأ:",
+  "errorToken": "لم يتم توفير رمز وصول.",
+  "errorParse": "تعذر تحليل المعلومات من localStorage",
+  "errorTokenNotSet": "لم يتم تعيين الرمز.",
+  "errorStateParam": "لا توجد معلمة \"حالة\" عند إعادة التوجيه. تعذر تحديد الموقع لحفظ بيانات المصادقة."
 }
