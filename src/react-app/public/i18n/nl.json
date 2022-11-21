@@ -1,10 +1,1 @@
-{
-  "successMsg": "U bent aangemeld bij Genesys Cloud.",
-  "closeWindowMsg": "U kunt dit venster nu sluiten.",
-  "closeWindow": "SLUITEN",
-  "error": "FOUT:",
-  "errorToken": "Geen toegangstoken opgegeven.",
-  "errorParse": "Kan informatie van lokale opslag niet parseren",
-  "errorTokenNotSet": "Token is niet ingesteld.",
-  "errorStateParam": "Geen 'staat'-parameter bij omleiding. Kan de locatie voor de opslag van authenticaitegegevens niet bepalen."
-}
+{"data":{"id":"db961c2c-272d-46f6-941a-365509eb0a77","type":"resource_translations_async_downloads","attributes":{"status":"pending","errors":[],"date_created":"2022-11-21T21:58:37Z","date_modified":"2022-11-21T21:58:37Z"},"relationships":{"resource":{"links":{"related":"https://rest.api.transifex.com/resources/o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"},"data":{"type":"resources","id":"o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"}},"language":{"links":{"related":"https://rest.api.transifex.com/languages/l:nl"},"data":{"type":"languages","id":"l:nl"}}},"links":{"self":"https://rest.api.transifex.com/resource_translations_async_downloads/db961c2c-272d-46f6-941a-365509eb0a77"}}}

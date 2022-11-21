@@ -1,10 +1,1 @@
-{
-  "successMsg": "لقد قمت بتسجيل الدخول إلى Genesys Cloud بنجاح.",
-  "closeWindowMsg": "يمكنك إغلاق هذه النافذة الآن.",
-  "closeWindow": "إغلاق",
-  "error": "خطأ:",
-  "errorToken": "لم يتم توفير رمز وصول.",
-  "errorParse": "تعذر تحليل المعلومات من localStorage",
-  "errorTokenNotSet": "لم يتم تعيين الرمز.",
-  "errorStateParam": "لا توجد معلمة \"حالة\" عند إعادة التوجيه. تعذر تحديد الموقع لحفظ بيانات المصادقة."
-}
+{"data":{"id":"077cd996-4422-4230-8aab-1769a0daf90b","type":"resource_translations_async_downloads","attributes":{"status":"pending","errors":[],"date_created":"2022-11-21T21:58:12Z","date_modified":"2022-11-21T21:58:12Z"},"relationships":{"resource":{"links":{"related":"https://rest.api.transifex.com/resources/o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"},"data":{"type":"resources","id":"o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"}},"language":{"links":{"related":"https://rest.api.transifex.com/languages/l:ar"},"data":{"type":"languages","id":"l:ar"}}},"links":{"self":"https://rest.api.transifex.com/resource_translations_async_downloads/077cd996-4422-4230-8aab-1769a0daf90b"}}}

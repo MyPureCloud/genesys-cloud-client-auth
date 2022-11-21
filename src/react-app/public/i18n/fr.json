@@ -1,10 +1,1 @@
-{
-  "successMsg": "Vous êtes été connecté à Genesys Cloud.",
-  "closeWindowMsg": "Vous pouvez fermer cette fenêtre maintenant.",
-  "closeWindow": "FERMER",
-  "error": "ERREUR :",
-  "errorToken": "Aucun jeton d'accès fourni.",
-  "errorParse": "Impossible d'analyser les informations provenant du stockage local",
-  "errorTokenNotSet": "Aucun jeton défini.",
-  "errorStateParam": "Aucun paramètre 'état' pour la redirection. Impossible de déterminer l'emplacement de sauvegarde des données d'authentification."
-}
+{"data":{"id":"d0044e39-36f9-44a3-b564-4800ab731a43","type":"resource_translations_async_downloads","attributes":{"status":"pending","errors":[],"date_created":"2022-11-21T21:58:27Z","date_modified":"2022-11-21T21:58:27Z"},"relationships":{"resource":{"links":{"related":"https://rest.api.transifex.com/resources/o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"},"data":{"type":"resources","id":"o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"}},"language":{"links":{"related":"https://rest.api.transifex.com/languages/l:fr"},"data":{"type":"languages","id":"l:fr"}}},"links":{"self":"https://rest.api.transifex.com/resource_translations_async_downloads/d0044e39-36f9-44a3-b564-4800ab731a43"}}}

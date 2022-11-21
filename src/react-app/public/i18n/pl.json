@@ -1,10 +1,1 @@
-{
-  "successMsg": "Pomyślnie zalogowano do Genesys Cloud.",
-  "closeWindowMsg": "Teraz można zamknąć to okno.",
-  "closeWindow": "ZAMKNIJ",
-  "error": "BŁĄD:",
-  "errorToken": "Nie podano tokenu dostępowego.",
-  "errorParse": "Nie można przetworzyć informacji z magazynu lokalnego.",
-  "errorTokenNotSet": "Nie ustawiono tokenu.",
-  "errorStateParam": "Brak parametru state podczas przekierowania. Nie można określić lokalizacji do zapisu danych autoryzacji."
-}
+{"data":{"id":"0e0ed2bd-70b2-46f7-ac6c-fb1ec93c2d05","type":"resource_translations_async_downloads","attributes":{"status":"pending","errors":[],"date_created":"2022-11-21T21:58:43Z","date_modified":"2022-11-21T21:58:43Z"},"relationships":{"resource":{"links":{"related":"https://rest.api.transifex.com/resources/o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"},"data":{"type":"resources","id":"o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"}},"language":{"links":{"related":"https://rest.api.transifex.com/languages/l:pl"},"data":{"type":"languages","id":"l:pl"}}},"links":{"self":"https://rest.api.transifex.com/resource_translations_async_downloads/0e0ed2bd-70b2-46f7-ac6c-fb1ec93c2d05"}}}

@@ -1,10 +1,1 @@
-{
-  "successMsg": "Вход в Genesys Cloud выполнен успешно.",
-  "closeWindowMsg": "Теперь это окно можно закрыть.",
-  "closeWindow": "ЗАКРЫТЬ",
-  "error": "ОШИБКА:",
-  "errorToken": "Токен доступа не предоставлен.",
-  "errorParse": "Не удалось выполнить синтаксический анализ информации из localStorage",
-  "errorTokenNotSet": "Токен не установлен.",
-  "errorStateParam": "Отсутствует параметр 'state' при перенаправлении. Не удалось определить расположение для сохранения данных проверки подлинности."
-}
+{"data":{"id":"6208fcde-df35-494d-a235-56f26daa4754","type":"resource_translations_async_downloads","attributes":{"status":"pending","errors":[],"date_created":"2022-11-21T21:58:18Z","date_modified":"2022-11-21T21:58:18Z"},"relationships":{"resource":{"links":{"related":"https://rest.api.transifex.com/resources/o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"},"data":{"type":"resources","id":"o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"}},"language":{"links":{"related":"https://rest.api.transifex.com/languages/l:ru"},"data":{"type":"languages","id":"l:ru"}}},"links":{"self":"https://rest.api.transifex.com/resource_translations_async_downloads/6208fcde-df35-494d-a235-56f26daa4754"}}}

@@ -1,10 +1,1 @@
-{
-  "successMsg": "Genesys Cloud'da başarıyla oturum açtınız.",
-  "closeWindowMsg": "Şimdi bu pencereyi kapatabilirsiniz.",
-  "closeWindow": "KAPAT",
-  "error": "HATA:",
-  "errorToken": "Hiçbir erişim belirteci sağlanmadı.",
-  "errorParse": "localStorage öğesinden bilgi ayrıştırılamıyor",
-  "errorTokenNotSet": "Belirteç ayarlanmadı.",
-  "errorStateParam": "Yeniden yönlendirmede \"durum\" parametresi yok. Kimlik doğrulama verilerinin kaydedilmesi için konum belirlenemiyor."
-}
+{"data":{"id":"c5247136-a831-45c8-b460-c7e89f91bf92","type":"resource_translations_async_downloads","attributes":{"status":"pending","errors":[],"date_created":"2022-11-21T21:58:50Z","date_modified":"2022-11-21T21:58:50Z"},"relationships":{"resource":{"links":{"related":"https://rest.api.transifex.com/resources/o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"},"data":{"type":"resources","id":"o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"}},"language":{"links":{"related":"https://rest.api.transifex.com/languages/l:tr"},"data":{"type":"languages","id":"l:tr"}}},"links":{"self":"https://rest.api.transifex.com/resource_translations_async_downloads/c5247136-a831-45c8-b460-c7e89f91bf92"}}}

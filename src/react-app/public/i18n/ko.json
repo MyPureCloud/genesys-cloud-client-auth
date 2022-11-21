@@ -1,10 +1,1 @@
-{
-  "successMsg": "Genesys Cloud에 성공적으로 로그인했습니다.",
-  "closeWindowMsg": "이제 창을 닫아도 됩니다.",
-  "closeWindow": "닫기",
-  "error": "오류:",
-  "errorToken": "제공된 접근 토큰이 없습니다.",
-  "errorParse": "로컬 저장소에서 정보를 분석할 수 없음",
-  "errorTokenNotSet": "토큰이 설정되지 않았습니다.",
-  "errorStateParam": "리다이렉트 중인 '상태' 변수가 없습니다. 승인 데이터를 저장할 위치를 결정할 수 없습니다."
-}
+{"data":{"id":"b9c7afc9-616d-49e0-bb8c-668142de5d38","type":"resource_translations_async_downloads","attributes":{"status":"pending","errors":[],"date_created":"2022-11-21T21:58:34Z","date_modified":"2022-11-21T21:58:35Z"},"relationships":{"resource":{"links":{"related":"https://rest.api.transifex.com/resources/o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"},"data":{"type":"resources","id":"o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"}},"language":{"links":{"related":"https://rest.api.transifex.com/languages/l:ko"},"data":{"type":"languages","id":"l:ko"}}},"links":{"self":"https://rest.api.transifex.com/resource_translations_async_downloads/b9c7afc9-616d-49e0-bb8c-668142de5d38"}}}

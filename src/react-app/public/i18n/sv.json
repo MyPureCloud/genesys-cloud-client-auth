@@ -1,10 +1,1 @@
-{
-  "successMsg": "Du har loggat in på Genesys Cloud.",
-  "closeWindowMsg": "Du kan nu stänga det här fönstret.",
-  "closeWindow": "STÄNG",
-  "error": "FEL:",
-  "errorToken": "Ingen åtkomsttoken har angivits.",
-  "errorParse": "Det gick inte att parsa information från localStorage",
-  "errorTokenNotSet": "Token är inte inställd.",
-  "errorStateParam": "Inga lägesparametrar vid omdirigering. Det går inte att identifiera platsen för att spara autentiseringsdata."
-}
+{"data":{"id":"57a9ac9a-e672-45cb-844c-9bef6224f5c9","type":"resource_translations_async_downloads","attributes":{"status":"pending","errors":[],"date_created":"2022-11-21T21:58:45Z","date_modified":"2022-11-21T21:58:45Z"},"relationships":{"resource":{"links":{"related":"https://rest.api.transifex.com/resources/o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"},"data":{"type":"resources","id":"o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"}},"language":{"links":{"related":"https://rest.api.transifex.com/languages/l:sv"},"data":{"type":"languages","id":"l:sv"}}},"links":{"self":"https://rest.api.transifex.com/resource_translations_async_downloads/57a9ac9a-e672-45cb-844c-9bef6224f5c9"}}}

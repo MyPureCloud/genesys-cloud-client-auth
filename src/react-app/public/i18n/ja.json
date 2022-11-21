@@ -1,10 +1,1 @@
-{
-  "successMsg": "Genesys Cloud に正常にログインできました。",
-  "closeWindowMsg": "このウィンドウは閉じることができます。",
-  "closeWindow": "閉じる",
-  "error": "エラー:",
-  "errorToken": "アクセス トークンが入力されていません。",
-  "errorParse": "ローカル ストレージからの情報を解析できません",
-  "errorTokenNotSet": "トークンが設定されていません。",
-  "errorStateParam": "リダイレクトに 'state' パラメーターがありません。認証データを保存する場所を特定できません。"
-}
+{"data":{"id":"9e7dc629-d580-4ae5-9f77-cbd15c9e94e4","type":"resource_translations_async_downloads","attributes":{"status":"pending","errors":[],"date_created":"2022-11-21T21:58:32Z","date_modified":"2022-11-21T21:58:32Z"},"relationships":{"resource":{"links":{"related":"https://rest.api.transifex.com/resources/o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"},"data":{"type":"resources","id":"o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"}},"language":{"links":{"related":"https://rest.api.transifex.com/languages/l:ja"},"data":{"type":"languages","id":"l:ja"}}},"links":{"self":"https://rest.api.transifex.com/resource_translations_async_downloads/9e7dc629-d580-4ae5-9f77-cbd15c9e94e4"}}}

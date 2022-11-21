@@ -1,10 +1,1 @@
-{
-  "successMsg": "Du er logget inn i Genesys Cloud.",
-  "closeWindowMsg": "Du kan lukke dette vinduet.",
-  "closeWindow": "LUKK",
-  "error": "FEIL:",
-  "errorToken": "Ingen tilgangstoken gitt.",
-  "errorParse": "Kan ikke analysere informasjon fra lokal lagring",
-  "errorTokenNotSet": "Token ikke angitt.",
-  "errorStateParam": "Ingen 'status'-parameter på omdirigering. Kan ikke fastslå lokasjon for å lagre autorisasjonsdata."
-}
+{"data":{"id":"b88c9da6-375e-4486-b129-2b47429d3702","type":"resource_translations_async_downloads","attributes":{"status":"pending","errors":[],"date_created":"2022-11-21T21:58:40Z","date_modified":"2022-11-21T21:58:40Z"},"relationships":{"resource":{"links":{"related":"https://rest.api.transifex.com/resources/o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"},"data":{"type":"resources","id":"o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"}},"language":{"links":{"related":"https://rest.api.transifex.com/languages/l:no"},"data":{"type":"languages","id":"l:no"}}},"links":{"self":"https://rest.api.transifex.com/resource_translations_async_downloads/b88c9da6-375e-4486-b129-2b47429d3702"}}}

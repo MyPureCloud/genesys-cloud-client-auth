@@ -1,10 +1,1 @@
-{
-  "successMsg": "คุณเข้าสู่ระบบ Genesys Cloud สำเร็จแล้ว",
-  "closeWindowMsg": "ปิดหน้าต่างนี้ได้เลย",
-  "closeWindow": "ปิด",
-  "error": "ข้อผิดพลาด:",
-  "errorToken": "ไม่มีโทเค็นเข้าถึง",
-  "errorParse": "แยกวิเคราะห์ข้อมูลจาก localStorage ไม่ได้",
-  "errorTokenNotSet": "ไม่ได้ตั้งค่าโทเค็น",
-  "errorStateParam": "ไม่มีพารามิเตอร์ 'สถานะ' ในการเปลี่ยนเส้นทาง ระบุตำแหน่งเพื่อบันทึกข้อมูลการอนุญาตไม่ได้"
-}
+{"data":{"id":"1d84519d-0dfa-473a-bf92-bf7b9b9c46a1","type":"resource_translations_async_downloads","attributes":{"status":"pending","errors":[],"date_created":"2022-11-21T21:58:48Z","date_modified":"2022-11-21T21:58:48Z"},"relationships":{"resource":{"links":{"related":"https://rest.api.transifex.com/resources/o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"},"data":{"type":"resources","id":"o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"}},"language":{"links":{"related":"https://rest.api.transifex.com/languages/l:th"},"data":{"type":"languages","id":"l:th"}}},"links":{"self":"https://rest.api.transifex.com/resource_translations_async_downloads/1d84519d-0dfa-473a-bf92-bf7b9b9c46a1"}}}

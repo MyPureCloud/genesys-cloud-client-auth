@@ -1,10 +1,1 @@
-{
-  "successMsg": "Úspěšně jste se přihlásili do Genesys Cloud.",
-  "closeWindowMsg": "Nyní můžete toto okno zavřít.",
-  "closeWindow": "ZAVŘÍT",
-  "error": "CHYBA:",
-  "errorToken": "Nebyl zadán přístupový token.",
-  "errorParse": "Nepodařilo se načíst informace z místního úložiště.",
-  "errorTokenNotSet": "Není nastaven token.",
-  "errorStateParam": "U přesměrování nebyl uveden parametr „state“. Nepodařilo se určit umístění pro uložení autorizačních dat."
-}
+{"data":{"id":"effd1b97-5e77-4d94-9b76-48f7414f4c6e","type":"resource_translations_async_downloads","attributes":{"status":"pending","errors":[],"date_created":"2022-11-21T21:58:20Z","date_modified":"2022-11-21T21:58:20Z"},"relationships":{"resource":{"links":{"related":"https://rest.api.transifex.com/resources/o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"},"data":{"type":"resources","id":"o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"}},"language":{"links":{"related":"https://rest.api.transifex.com/languages/l:cs"},"data":{"type":"languages","id":"l:cs"}}},"links":{"self":"https://rest.api.transifex.com/resource_translations_async_downloads/effd1b97-5e77-4d94-9b76-48f7414f4c6e"}}}

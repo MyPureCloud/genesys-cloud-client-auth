@@ -1,10 +1,1 @@
-{
-  "successMsg": "Inició sesión correctamente en Genesys Cloud.",
-  "closeWindowMsg": "Ya puede cerrar esta ventana.",
-  "closeWindow": "CERRAR",
-  "error": "ERROR: ",
-  "errorToken": "No se proporcionó ningún token de acceso.",
-  "errorParse": "No se puede analizar la información de almacenamiento local",
-  "errorTokenNotSet": "Token no establecido.",
-  "errorStateParam": "No hay ningún parámetro 'state' en la redirección. No se puede determinar la ubicación para guardar los datos de autenticidad."
-}
+{"data":{"id":"ac7930cf-9aab-4a43-8a3d-bc0cc8913f4c","type":"resource_translations_async_downloads","attributes":{"status":"pending","errors":[],"date_created":"2022-11-21T21:58:25Z","date_modified":"2022-11-21T21:58:25Z"},"relationships":{"resource":{"links":{"related":"https://rest.api.transifex.com/resources/o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"},"data":{"type":"resources","id":"o:interactive-intelligence-1:p:inin-onboarding:r:inin-acb7d4375d6a56f8b7b53026aa679724066dd97b"}},"language":{"links":{"related":"https://rest.api.transifex.com/languages/l:es"},"data":{"type":"languages","id":"l:es"}}},"links":{"self":"https://rest.api.transifex.com/resource_translations_async_downloads/ac7930cf-9aab-4a43-8a3d-bc0cc8913f4c"}}}
