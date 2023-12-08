@@ -11,7 +11,7 @@ export default function App() {
 
   try {
     GenesysCloudClientAuth.handleRedirectFromLogin();
-  } catch (e) {
+  } catch (e: any) {
     response = (
       <div>
         <p style={{ color: '#ea0b0b' }}>{t('error')}</p>
