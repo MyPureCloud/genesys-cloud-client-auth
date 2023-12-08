@@ -4,10 +4,6 @@ def isBitbucket = false
 def MAIN_BRANCH = 'main'
 def DEVELOP_BRANCH = 'develop'
 
-def getBranchType = {
-  isMainline() ? 'MAINLINE' : 'FEATURE'
-}
-
 def getVersion = {
     getBranchType() == 'MAINLINE'
         ? env.VERSION
