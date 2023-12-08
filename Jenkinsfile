@@ -64,7 +64,6 @@ webappPipeline {
         'genesys-cloud-client-auth.browser.min.js',
         'genesys-cloud-client-auth.browser.min.js.map'
     ])
-    useArtifactoryRepo = false
     testJob = null
 
     deployConfig = getDeployConfig()
