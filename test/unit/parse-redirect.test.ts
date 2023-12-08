@@ -82,6 +82,8 @@ describe('parse-redirect', () => {
       const accessToken = 'my-token';
       const storageKey = 'my_app_auth_data';
 
+      const closeSpy = jest.spyOn(window, 'close').mockImplementation(() => {});
+
       window.location.href = `http://localhost:8000/app/#access_token=${accessToken}&state=${storageId}`;
 
       localStorage.setItem(storageId, JSON.stringify({ storageKey, state }));
@@ -89,7 +91,7 @@ describe('parse-redirect', () => {
       handleRedirectFromLogin();
 
       expect(setItemSpy).toHaveBeenCalledWith(storageKey, JSON.stringify({  state, accessToken }));
-      expect(window.close).toHaveBeenCalled();
+      expect(closeSpy).toHaveBeenCalled();
     });
 
     it('should not use state if not present and not close the window if in debug mode', () => {
