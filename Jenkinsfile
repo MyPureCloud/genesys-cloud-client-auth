@@ -64,7 +64,7 @@ webappPipeline {
         'genesys-cloud-client-auth.browser.min.js',
         'genesys-cloud-client-auth.browser.min.js.map'
     ])
-    testJob = null
+    testJob = 'no-tests'
 
     deployConfig = getDeployConfig()
     chatGroupId = chatGroupId
