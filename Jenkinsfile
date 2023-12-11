@@ -91,7 +91,6 @@ VERSION      : ${env.VERSION}
 
       sh("""
         npm i -g npm@7
-        CDN_URL="\$(npx cdn --ecosystem pc --name \$APP_NAME --build \$BUILD_ID --version ${getVersion()})"
         npm run install:all
         npm run test
       """)
@@ -99,8 +98,8 @@ VERSION      : ${env.VERSION}
 
     buildStep = {cdnUrl ->
         sh("""
-            CDN_URL="\$(npx cdn --ecosystem pc --name \$APP_NAME --build \$BUILD_ID --version ${getVersion()})"
-            echo "CDN_URL: \$CDN_URL"
+            CDN_URL='${cdnUrl}'
+            echo 'CDN_URL ${cdnUrl}'
             npm run install:all && PUBLIC_URL=\$CDN_URL npm run build
         """)
     }
