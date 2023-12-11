@@ -57,7 +57,7 @@ webappPipeline {
     projectName = 'client-auth'
     nodeVersion = '14.x'
     mailer = 'genesyscloud-client-media@genesys.com'
-    buildType = getBranchType()
+    buildType = getBranchType
     manifest = staticManifest([
         'index.html',
         'robots.txt',
