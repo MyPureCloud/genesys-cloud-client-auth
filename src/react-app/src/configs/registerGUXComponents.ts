@@ -20,6 +20,7 @@ type ReactProps<T> = {
 
 // These lines below restrict to pulling in just the gux prefex web components.
 // You need typescript 4.1 or above
+/* eslint-disable-next-line */ 
 type IsGux<K> = K extends `gux${infer _}` ? K : never;
 type GuxKeys<T> = Pick<T, IsGux<keyof T>>;
 
