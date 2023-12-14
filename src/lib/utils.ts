@@ -1,17 +1,21 @@
-import { IAuthReturnData, IAuthData, ErrorTranslationKeys } from './types';
-import VERSION from './version';
+import { v4 as uuid } from "uuid";
+import { IAuthReturnData, IAuthData, ErrorTranslationKeys } from "./types";
+import VERSION from "./version";
 
-const debugColor = 'color: #f29f2c';
+const debugColor = "color: #f29f2c";
 
 export class TimeoutError extends Error {
-  name = 'TIMEOUT_ERROR';
+  name = "TIMEOUT_ERROR";
 }
 
 export class TranslatableError extends Error {
   translationKey: ErrorTranslationKeys;
 
   /* istanbul ignore next */
-  constructor (translationKey: ErrorTranslationKeys, messageOrError: string | Error) {
+  constructor(
+    translationKey: ErrorTranslationKeys,
+    messageOrError: string | Error
+  ) {
     /* if a Error is passed in, use its message and name properties */
     const isError = messageOrError && messageOrError instanceof Error;
     super(isError ? (messageOrError as any).message : messageOrError);
@@ -30,17 +34,21 @@ export class TranslatableError extends Error {
  * @param hash hash to parse (default `window.location.hash`)
  * @returns authentication data parsed from the passed in hash
  */
-export const parseOauthParams = (hash: string = window.location.hash): IAuthData => {
+export const parseOauthParams = (
+  hash: string = window.location.hash
+): IAuthData => {
   const hashAsObj: IAuthReturnData = {};
   const authData: IAuthData = {};
 
   // Process hash string into object
-  const hashRegex = new RegExp(`^#*(.+?)=(.+?)$`, 'i');
+  const hashRegex = new RegExp(`^#*(.+?)=(.+?)$`, "i");
 
-  hash.split('&').forEach((h) => {
+  hash.split("&").forEach((h) => {
     const match = hashRegex.exec(h);
     if (match) {
-      (hashAsObj as any)[match[1]] = decodeURIComponent(decodeURIComponent(match[2].replace(/\+/g, '%20')));
+      (hashAsObj as any)[match[1]] = decodeURIComponent(
+        decodeURIComponent(match[2].replace(/\+/g, "%20"))
+      );
     }
   });
 
@@ -57,14 +65,17 @@ export const parseOauthParams = (hash: string = window.location.hash): IAuthData
 
     /* calculate expiry time */
     if (hashAsObj.expires_in) {
-      const expiresInMs = (parseInt(hashAsObj.expires_in.replace(/\+/g, '%20')) * 1000);
+      const expiresInMs =
+        parseInt(hashAsObj.expires_in.replace(/\+/g, "%20")) * 1000;
 
       authData.tokenExpiryTime = Date.now() + expiresInMs;
-      authData.tokenExpiryTimeString = (new Date(authData.tokenExpiryTime)).toISOString();
+      authData.tokenExpiryTimeString = new Date(
+        authData.tokenExpiryTime
+      ).toISOString();
     }
 
     /* set the access token */
-    authData.accessToken = hashAsObj.access_token.replace(/\+/g, '%20');
+    authData.accessToken = hashAsObj.access_token.replace(/\+/g, "%20");
   }
 
   return authData;
@@ -72,9 +83,18 @@ export const parseOauthParams = (hash: string = window.location.hash): IAuthData
 
 export const debug = (message: string, details?: any): void => {
   if (details) {
-    console.log(`%c [DEBUG:gc-client-auth:${VERSION}] ${message}`, debugColor, details);
-    if (typeof details === 'object') {
-      console.log(`%c [DEBUG:gc-client-auth:${VERSION}] ^ stringified: ${JSON.stringify(details)}`, debugColor);
+    console.log(
+      `%c [DEBUG:gc-client-auth:${VERSION}] ${message}`,
+      debugColor,
+      details
+    );
+    if (typeof details === "object") {
+      console.log(
+        `%c [DEBUG:gc-client-auth:${VERSION}] ^ stringified: ${JSON.stringify(
+          details
+        )}`,
+        debugColor
+      );
     }
   } else {
     console.log(`%c [DEBUG:gc-client-auth:${VERSION}] ${message}`, debugColor);
@@ -120,9 +140,13 @@ export const isIssuedTimeWithinTimeframe = (
 /**
  * @deprecated use `isIssuedTimeWithinTimeframe()`
  */
-export const isIssuedTimeWithinWindow = (expiresAtMs: number, expiresInMs?: number, timeframe?: number): boolean => {
+export const isIssuedTimeWithinWindow = (
+  expiresAtMs: number,
+  expiresInMs?: number,
+  timeframe?: number
+): boolean => {
   return isIssuedTimeWithinTimeframe(expiresAtMs, expiresInMs, timeframe);
-}
+};
 
 /**
  * Determine when a token was issued at by subtracting the validity
@@ -131,6 +155,146 @@ export const isIssuedTimeWithinWindow = (expiresAtMs: number, expiresInMs?: numb
  * @param expiresInMs milliseconds for how long the token is valid for
  * @returns milliseconds since epoch time
  */
-export const tokenWasIssuedAt = (expiresAtMs: number, expiresInMs: number): number => {
+export const tokenWasIssuedAt = (
+  expiresAtMs: number,
+  expiresInMs: number
+): number => {
   return expiresAtMs - expiresInMs;
+};
+
+// This util only keeps the value of the query param last specified in the query string if duplicates are specified.
+export const getQueryParams = (
+  searchStr: string
+): Record<string, string | undefined> => {
+  // @ts-expect-error URLSearchParams is truly iterable and can be converted to an object via `fromEntries`
+  return Object.fromEntries(new URLSearchParams(searchStr));
+};
+
+function assertNonEmptyStringQueryParam(
+  maybeStr: string | undefined,
+  name: string
+): asserts maybeStr is string {
+  if (!maybeStr)
+    throw new Error(`'${name}' query param is not a non-empty string`);
+}
+
+export interface EmbeddedAppState {
+  href: string;
+  env: string;
+  locale: string;
+  branch?: string;
+  interactionId: string;
+  usePopupAuth: boolean;
+}
+
+export const getEmbeddedAppState = (href: string): EmbeddedAppState => {
+  const url = new URL(href);
+  const branchPath = url.pathname.split("/").slice(2).join("/");
+  const branch = branchPath.endsWith("/")
+    ? branchPath.slice(0, -1)
+    : branchPath;
+
+  const [, queryFromHash] = url.hash.split("?");
+  if (!queryFromHash)
+    throw new Error("Unable to extract query params from the hash");
+
+  const {
+    interactionId,
+    pcEnvironment,
+    usePopupAuth,
+    locale = "en-us",
+  } = getQueryParams(queryFromHash);
+  assertNonEmptyStringQueryParam(interactionId, "interactionId");
+  assertNonEmptyStringQueryParam(pcEnvironment, "pcEnvironment");
+
+  return {
+    href,
+    locale,
+    interactionId,
+    branch: branch ? branch : undefined,
+    env: pcEnvironment === "localhost" ? "inindca.com" : pcEnvironment,
+    usePopupAuth: usePopupAuth === "true",
+  };
+};
+
+interface BuildRedirectUrlProps {
+  usePopupAuth: boolean;
+  location: Pick<Location, "origin" | "hostname">;
+}
+
+/**
+ * Builds up our redirect url based on the current window location and
+ * whether or not we should use popup auth.
+ */
+export const buildRedirectUrl = ({
+  usePopupAuth,
+  location,
+}: BuildRedirectUrlProps) : string => {
+  const redirectUrl = new URL(location.origin);
+  if (location.hostname === "localhost") {
+    redirectUrl.pathname = "/";
+  } else {
+    redirectUrl.pathname = "/agent-conversation-summary/";
+  }
+  if (usePopupAuth) {
+    redirectUrl.searchParams.set("authPopupWindow", "true");
+  }
+  return redirectUrl.href;
+};
+
+const STATE_KEY_PREFIX = "cs-auth";
+
+export const createStateKey = () : string => {
+  return [STATE_KEY_PREFIX, uuid()].join("-");
+};
+
+export const persistPreAuthFlowHref = (
+  storage: Pick<Storage, "setItem">,
+  href: string
+) :string => {
+  const stateKey = createStateKey();
+  storage.setItem(stateKey, href);
+  return stateKey;
+};
+
+export const clearAuthStateEntries = (storage: Storage) : void => {
+  Object.keys(storage)
+    .filter((key) => key.startsWith(STATE_KEY_PREFIX))
+    .forEach((key) => storage.removeItem(key));
+};
+
+interface RestoreHrefProps {
+  href: string;
+  branch?: string;
+  location: Pick<Location, "href" | "pathname" | "replace">;
+  history: Pick<History, "replaceState">;
+}
+
+/**
+ * Restores our pre-auth href if necessary and possibly reloads the window
+ * using a time machine branch
+ */
+export const restoreHref = ({
+  href,
+  branch,
+  location,
+  history,
+}: RestoreHrefProps): void => {
+  if (branch && !location.pathname.includes(branch)) {
+    // If branch build and we're not on the branch, do a full reload
+    // to pull the branch build from S3
+    location.replace(href);
+  } else if (location.href !== href) {
+    // Otherwise, we can just restore the window's old href
+    history.replaceState(null, "", href);
+  }
+};
+
+export const getPreAuthFlowHref = (
+  storage: Pick<Storage, "getItem">,
+  key: string
+): string => {
+  const href = storage.getItem(key);
+  if (!href) throw new Error("unable to find auth state stored locally");
+  return href;
 };
