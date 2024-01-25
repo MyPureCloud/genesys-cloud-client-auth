@@ -1,2 +1,10 @@
 {
+  "successMsg": "Kirjautuminen Genesys Cloudiin onnistui.",
+  "closeWindowMsg": "Voit nyt sulkea tämän ikkunan.",
+  "closeWindow": "SULJE",
+  "error": "VIRHE: ",
+  "errorToken": "Käyttöoikeustunnistetta ei ole annettu.",
+  "errorParse": "Tietojen jäsentäminen localStoragesta epäonnistui",
+  "errorTokenNotSet": "Tunnistetta ei ole asetettu.",
+  "errorStateParam": "Uudelleenohjauksessa ei ole 'state'-parametria. Valtuutustietojen tallennussijaintia ei voi määrittää."
 }
