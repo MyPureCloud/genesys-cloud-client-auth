@@ -1,2 +1,10 @@
 {
+  "successMsg": "Du har logget på Genesys Cloud.",
+  "closeWindowMsg": "Du kan lukke dette vindue nu.",
+  "closeWindow": "LUK",
+  "error": "FEJL:",
+  "errorToken": "Ingen tilgængelig adgangstoken.",
+  "errorParse": "Kunne ikke parse oplysninger fra localStorage",
+  "errorTokenNotSet": "Token er ikke indstillet.",
+  "errorStateParam": "Ingen 'tilstand'-param ved viderestilling. Kunne ikke bestemme placering, hvor godkendelsesdata skal gemmmes."
 }
