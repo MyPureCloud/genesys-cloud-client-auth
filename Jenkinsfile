@@ -12,10 +12,6 @@ def isMain = {
   env.BRANCH_NAME == MAIN_BRANCH
 }
 
-def isRelease = {
-  env.BRANCH_NAME.startsWith('release/')
-}
-
 def isDevelop = {
   env.BRANCH_NAME == DEVELOP_BRANCH
 }
