@@ -49,13 +49,13 @@ def gitFunctions = new com.genesys.jenkins.Git()
 def notifications = new com.genesys.jenkins.Notifications()
 
 def chatGroupId = 'adhoc-60e40c95-3d9c-458e-a48e-ca4b29cf486d'
+def name = client-auth
 
 webappPipeline {
-    team = 'Client Streaming and Signaling'
-    projectName = 'client-auth'
-    jiraProjectKey = 'STREAM'
-    nodeVersion = '14.x'
+    urlPrefix = name
+    nodeVersion = '20.x multiarch'
     mailer = 'GcMediaStreamSignal@genesys.com'
+    chatGroupId = chatGroupId
     buildType = getBranchType
     manifest = staticManifest([
         'index.html',
@@ -63,11 +63,8 @@ webappPipeline {
         'genesys-cloud-client-auth.browser.min.js',
         'genesys-cloud-client-auth.browser.min.js.map'
     ])
-    testJob = 'no-tests'
 
-    deployConfig = getDeployConfig()
     chatGroupId = chatGroupId
-    autoSubmitCm = true
 
     snykConfig = {
         return [
@@ -83,13 +80,11 @@ ENVIRONMENT  : ${env.ENVIRONMENT}
 BUILD_NUMBER : ${env.BUILD_NUMBER}
 BUILD_ID     : ${env.BUILD_ID}
 BRANCH_NAME  : ${env.BRANCH_NAME}
-APP_NAME     : ${env.APP_NAME}
 VERSION      : ${env.VERSION}
 ===================================
       """)
 
       sh("""
-        npm i -g npm@7
         npm run install:all
         npm run test
       """)
@@ -165,7 +160,7 @@ VERSION      : ${env.VERSION}
                     ])
                 }
 
-                def message = "**${env.APP_NAME}** ${version} (Build [#${env.BUILD_NUMBER}](${env.BUILD_URL})) has been published to **npm**"
+                def message = "**${name}** ${version} (Build [#${env.BUILD_NUMBER}](${env.BUILD_URL})) has been published to **npm**"
 
                 if (!tag) {
                   message = ":loudspeaker: ${message}"
