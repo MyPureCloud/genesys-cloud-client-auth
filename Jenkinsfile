@@ -1,4 +1,5 @@
 @Library('pipeline-library') _
+env.NPM_CONFIG_USERCONFIG = '/var/build/npmrc-nexus'
 
 def isBitbucket = false
 def MAIN_BRANCH = 'main'
