@@ -50,7 +50,7 @@ webappPipeline {
     team = 'Client Streaming and Signaling'
     projectName = 'client-auth'
     jiraProjectKey = 'STREAM'
-    nodeVersion = '14.x'
+    nodeVersion = '20.x multiarch'
     mailer = 'GcMediaStreamSignal@genesys.com'
     buildType = getBranchType
     manifest = staticManifest([
