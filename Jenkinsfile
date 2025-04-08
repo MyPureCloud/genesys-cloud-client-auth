@@ -4,10 +4,6 @@ def isBitbucket = false
 def MAIN_BRANCH = 'main'
 def DEVELOP_BRANCH = 'develop'
 
-def isRelease = {
-  env.BRANCH_NAME.startsWith('release/')
-}
-
 def isMain = {
   env.BRANCH_NAME == MAIN_BRANCH
 }
