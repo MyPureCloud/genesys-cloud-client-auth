@@ -9,7 +9,6 @@
   "version": "0.0.99",
   "private": true,
   "dependencies": {
-    "@genesys/common-webcomponents": "^2.59.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
@@ -18,6 +17,8 @@
     "@types/node": "^22.10.5",
     "@types/react": "^19.0.3",
     "@types/react-dom": "^19.0.2",
+    "genesys-spark-components": "^4.138.4",
+    "genesys-spark-components-react": "^4.138.4",
     "i18next": "^24.2.1",
     "i18next-browser-languagedetector": "^8.0.2",
     "i18next-http-backend": "^3.0.1",

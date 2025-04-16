@@ -1,5 +1,6 @@
 import './App.css';
 import { useTranslation } from 'react-i18next';
+import { GuxIcon } from 'genesys-spark-components-react';
 
 declare var GenesysCloudClientAuth: {
   handleRedirectFromLogin: () => void;
@@ -23,11 +24,11 @@ export default function App() {
   return (
     <div className='App'>
       <div className='content'>
-        <gux-icon
+        <GuxIcon
           className='logo'
-          icon-name='genesys-logo-full'
+          icon-name='legacy/genesys-logo-full'
           decorative={true}
-        ></gux-icon>
+        ></GuxIcon>
         {response}
         <h1>{t('closeWindowMsg')}</h1>
       </div>

@@ -1229,23 +1229,66 @@
   resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/@eslint/js/-/js-8.57.1.tgz#de633db3ec2ef6a3c89e2f19038063e8a122e2c2"
   integrity sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==
 
-"@formatjs/ecma402-abstract@1.5.4":
-  version "1.5.4"
-  resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/@formatjs/ecma402-abstract/-/ecma402-abstract-1.5.4.tgz#ed7e17fdf6f6c6c163ba95fb7a752404dea9324b"
-  integrity sha512-PyzVaiXHCp1WtXnR30P06BYqWHHY5YIkbwxfB2WE1yNa7XXvozmh6mSc099HgSoTY5ZmOAqwh78G2qOg0j5aPw==
+"@floating-ui/core@^1.6.0":
+  version "1.6.9"
+  resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-1.6.9.tgz#64d1da251433019dafa091de9b2886ff35ec14e6"
+  integrity sha512-uMXCuQ3BItDUbAMhIXw7UPXRfAlOAvZzdK9BWpE60MCn+Svt3aLn9jsPTi/WNGlRUu2uI0v5S7JiIUsbsvh3fw==
   dependencies:
-    tslib "^2.0.1"
+    "@floating-ui/utils" "^0.2.9"
 
-"@genesys/common-webcomponents@^2.59.1":
-  version "2.59.1"
-  resolved "https://purecloud.jfrog.io/purecloud/api/npm/inin-internal-npm-dev/@genesys/common-webcomponents/-/@genesys/common-webcomponents-2.59.1.tgz#ec1a2c471a73c44fdbe80a81070c894b2db1ff0f"
-  integrity sha512-op0/gVtKwu/MFCgFNlT6da/rZkrKxAW35LJLX79PEgj/2Bkg+IZA+zowl5r5GM9kSKM/WF3f/Fa2UkRuNpsagw==
+"@floating-ui/dom@^1.6.13":
+  version "1.6.13"
+  resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.6.13.tgz#a8a938532aea27a95121ec16e667a7cbe8c59e34"
+  integrity sha512-umqzocjDgNRGTuO7Q8CU32dkHkECqI8ZdMZ5Swb6QAM0t5rnlrN3lGo1hdpscRd3WS8T6DKYK4ephgIH9iRh3w==
   dependencies:
-    "@popperjs/core" "^2.10.2"
-    intl-messageformat "~9.4.9"
-    requestanimationframe-timer "^3.0.3"
-    sortablejs "^1.14.0"
-    stencil-click-outside "^1.7.1"
+    "@floating-ui/core" "^1.6.0"
+    "@floating-ui/utils" "^0.2.9"
+
+"@floating-ui/utils@^0.2.9":
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.9.tgz#50dea3616bc8191fb8e112283b49eaff03e78429"
+  integrity sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==
+
+"@formatjs/ecma402-abstract@2.3.4":
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-2.3.4.tgz#e90c5a846ba2b33d92bc400fdd709da588280fbc"
+  integrity sha512-qrycXDeaORzIqNhBOx0btnhpD1c+/qFIHAN9znofuMJX6QBwtbrmlpWfD4oiUUD2vJUOIYFA/gYtg2KAMGG7sA==
+  dependencies:
+    "@formatjs/fast-memoize" "2.2.7"
+    "@formatjs/intl-localematcher" "0.6.1"
+    decimal.js "^10.4.3"
+    tslib "^2.8.0"
+
+"@formatjs/fast-memoize@2.2.7":
+  version "2.2.7"
+  resolved "https://registry.yarnpkg.com/@formatjs/fast-memoize/-/fast-memoize-2.2.7.tgz#707f9ddaeb522a32f6715bb7950b0831f4cc7b15"
+  integrity sha512-Yabmi9nSvyOMrlSeGGWDiH7rf3a7sIwplbvo/dlz9WCIjzIQAfy1RMf4S0X3yG724n5Ghu2GmEl5NJIV6O9sZQ==
+  dependencies:
+    tslib "^2.8.0"
+
+"@formatjs/icu-messageformat-parser@2.11.2":
+  version "2.11.2"
+  resolved "https://registry.yarnpkg.com/@formatjs/icu-messageformat-parser/-/icu-messageformat-parser-2.11.2.tgz#85aea211bea40aa81ee1d44ac7accc3cf5500a73"
+  integrity sha512-AfiMi5NOSo2TQImsYAg8UYddsNJ/vUEv/HaNqiFjnI3ZFfWihUtD5QtuX6kHl8+H+d3qvnE/3HZrfzgdWpsLNA==
+  dependencies:
+    "@formatjs/ecma402-abstract" "2.3.4"
+    "@formatjs/icu-skeleton-parser" "1.8.14"
+    tslib "^2.8.0"
+
+"@formatjs/icu-skeleton-parser@1.8.14":
+  version "1.8.14"
+  resolved "https://registry.yarnpkg.com/@formatjs/icu-skeleton-parser/-/icu-skeleton-parser-1.8.14.tgz#b9581d00363908efb29817fdffc32b79f41dabe5"
+  integrity sha512-i4q4V4qslThK4Ig8SxyD76cp3+QJ3sAqr7f6q9VVfeGtxG9OhiAk3y9XF6Q41OymsKzsGQ6OQQoJNY4/lI8TcQ==
+  dependencies:
+    "@formatjs/ecma402-abstract" "2.3.4"
+    tslib "^2.8.0"
+
+"@formatjs/intl-localematcher@0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-localematcher/-/intl-localematcher-0.6.1.tgz#25dc30675320bf65a9d7f73876fc1e4064c0e299"
+  integrity sha512-ePEgLgVCqi2BBFnTMWPfIghu6FkbZnnBVhO2sSxvLfrdFw7wCHAHiDoM2h4NRgjbaY7+B7HgOLZGkK187pZTZg==
+  dependencies:
+    tslib "^2.8.0"
 
 "@humanwhocodes/config-array@^0.13.0":
   version "0.13.0"
@@ -1570,6 +1613,14 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@js-temporal/polyfill@^0.4.4":
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/@js-temporal/polyfill/-/polyfill-0.4.4.tgz#4c26b4a1a68c19155808363f520204712cfc2558"
+  integrity sha512-2X6bvghJ/JAoZO52lbgyAPFj8uCflhTo2g7nkFzEQdXd/D8rEeD4HtmTEpmtGCva260fcd66YNXBOYdnmHqSOg==
+  dependencies:
+    jsbi "^4.3.0"
+    tslib "^2.4.1"
+
 "@leichtgewicht/ip-codec@^2.0.1":
   version "2.0.5"
   resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/@leichtgewicht/ip-codec/-/ip-codec-2.0.5.tgz#4fc56c15c580b9adb7dc3c333a134e540b44bfb1"
@@ -1620,11 +1671,6 @@
     loader-utils "^2.0.4"
     schema-utils "^4.2.0"
     source-map "^0.7.3"
-
-"@popperjs/core@^2.10.2":
-  version "2.11.8"
-  resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
-  integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
 "@rollup/plugin-babel@^5.2.0":
   version "5.3.1"
@@ -2297,6 +2343,11 @@
   version "1.2.1"
   resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/@ungap/structured-clone/-/structured-clone-1.2.1.tgz#28fa185f67daaf7b7a1a8c1d445132c5d979f8bd"
   integrity sha512-fEzPV3hSkSMltkw152tJKNARhOupqbH96MZWyRjNaYZOMIzbrTeQDG+MTc6Mr2pgzFQzFxAfmhGDNP5QK++2ZA==
+
+"@vvo/tzdb@6.161.0":
+  version "6.161.0"
+  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.161.0.tgz#f946707d956620a1b3e05e3fc81df0515f53c3be"
+  integrity sha512-rvk2x77vnY87Tu1d8QuJk300WWzk8OP9/cDw2KgxEdjlYpLarJx82j2sPUpiy1wnjSuTTnYwpjBgZnNS5Iyb+w==
 
 "@webassemblyjs/ast@1.14.1", "@webassemblyjs/ast@^1.14.1":
   version "1.14.1"
@@ -3696,6 +3747,11 @@ decimal.js@^10.2.1:
   resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/decimal.js/-/decimal.js-10.4.3.tgz#1044092884d245d1b7f65725fa4ad4c6f781cc23"
   integrity sha512-VBBaLc1MgL5XpzgIP7ny5Z6Nx3UrRkIViUkPUdtl9aya5amy3De1gsUUSB1g3+3sExYNjCAsAznmukyxCb1GRA==
 
+decimal.js@^10.4.3:
+  version "10.5.0"
+  resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.5.0.tgz#0f371c7cf6c4898ce0afb09836db73cd82010f22"
+  integrity sha512-8vDa8Qxvr/+d94hSh5P3IJwI5t8/c0KsMp+g8bNw9cY2icONa5aPfvKeieW1WlG0WQYwwhJ7mjui2xtiePQSXw==
+
 dedent@^0.7.0:
   version "0.7.0"
   resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/dedent/-/dedent-0.7.0.tgz#2495ddbaf6eb874abb0e1be9df22d2e5a544326c"
@@ -4589,11 +4645,6 @@ fast-levenshtein@^2.0.6, fast-levenshtein@~2.0.6:
   resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==
 
-fast-memoize@^2.5.2:
-  version "2.5.2"
-  resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/fast-memoize/-/fast-memoize-2.5.2.tgz#79e3bb6a4ec867ea40ba0e7146816f6cdce9b57e"
-  integrity sha512-Ue0LwpDYErFbmNnZSF0UH6eImUwDmogUO1jyE+JbN2gsQz/jICm1Ve7t9QT0rNSsfJt+Hs4/S3GnsDVjL4HVrw==
-
 fast-uri@^3.0.1:
   version "3.0.5"
   resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/fast-uri/-/fast-uri-3.0.5.tgz#19f5f9691d0dab9b85861a7bb5d98fca961da9cd"
@@ -4827,6 +4878,26 @@ functions-have-names@^1.2.3:
   resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/functions-have-names/-/functions-have-names-1.2.3.tgz#0404fe4ee2ba2f607f0e0ec3c80bae994133b834"
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
 
+genesys-spark-components-react@^4.138.4:
+  version "4.138.4"
+  resolved "https://registry.yarnpkg.com/genesys-spark-components-react/-/genesys-spark-components-react-4.138.4.tgz#60c4b480270b6b3b97f2bc56a68998062289a7ed"
+  integrity sha512-K0iIoKif7xXPWJXU3b44gwW1nLAiDPqvsBtepnv7hKWQXJimAbyL6ZAd6XZqdZYuIiBkr43eO98odOZG3/pPjg==
+  dependencies:
+    genesys-spark-components "4.138.4"
+
+genesys-spark-components@4.138.4, genesys-spark-components@^4.138.4:
+  version "4.138.4"
+  resolved "https://registry.yarnpkg.com/genesys-spark-components/-/genesys-spark-components-4.138.4.tgz#f2a0eaddba8f749d5f4847208617cff9db1047e2"
+  integrity sha512-O0PQtV9iIfL8hFBnn0mRVdtKDmgFmcFd1Psk7WDg2omDT0kyz88xic65jObcIil7xFCJAOUnB9py1HQPhp0qJA==
+  dependencies:
+    "@floating-ui/dom" "^1.6.13"
+    "@js-temporal/polyfill" "^0.4.4"
+    "@vvo/tzdb" "6.161.0"
+    google-libphonenumber "3.2.40"
+    intl-messageformat "10.7.16"
+    requestanimationframe-timer "3.0.3"
+    sortablejs "1.15.6"
+
 gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"
   resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/gensync/-/gensync-1.0.0-beta.2.tgz#32a6ee76c3d7f52d46b2b1ae5d93fea8580a25e0"
@@ -4963,6 +5034,11 @@ globby@^11.0.4, globby@^11.1.0:
     ignore "^5.2.0"
     merge2 "^1.4.1"
     slash "^3.0.0"
+
+google-libphonenumber@3.2.40:
+  version "3.2.40"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.40.tgz#ed57d0db67a8745e8e6db7983dda7f94717fb4c9"
+  integrity sha512-bzGxX/vfggcV80LVcibki+JvR91x6zHpBpovDXSfmZUGn6uLzhbYXsWll2a80EG6qTmvf8lt7KZZ/pkMml8ckw==
 
 gopd@^1.0.1, gopd@^1.2.0:
   version "1.2.0"
@@ -5307,22 +5383,15 @@ internal-slot@^1.1.0:
     hasown "^2.0.2"
     side-channel "^1.1.0"
 
-intl-messageformat-parser@6.3.4:
-  version "6.3.4"
-  resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/intl-messageformat-parser/-/intl-messageformat-parser-6.3.4.tgz#1005ad4d3f7dcc8ec6f7e8e6933e3bf00b77db50"
-  integrity sha512-nlAjRbE52xxK6F6bdJ8nR7mQodP7VanP8dWPfLwby8Murt7pvyq4V49/f9l0LqvmZvqqKE4tS0+EHI6u0Xx+6A==
+intl-messageformat@10.7.16:
+  version "10.7.16"
+  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-10.7.16.tgz#d909f9f9f4ab857fbe681d559b958dd4dd9f665a"
+  integrity sha512-UmdmHUmp5CIKKjSoE10la5yfU+AYJAaiYLsodbjL4lji83JNvgOQUjGaGhGrpFCb0Uh7sl7qfP1IyILa8Z40ug==
   dependencies:
-    "@formatjs/ecma402-abstract" "1.5.4"
-    tslib "^2.0.1"
-
-intl-messageformat@~9.4.9:
-  version "9.4.9"
-  resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/intl-messageformat/-/intl-messageformat-9.4.9.tgz#a3c495aea22cc8bcc6d02f6ab2bbe44c9468f0c2"
-  integrity sha512-kzGWQKQbr+RWp0Y++mUq3xuria4kk8sGspD62tBaFixq2Pv0NGy/BOVI1VvdIELbgSz0fKl4jA/klH+cYDU2iQ==
-  dependencies:
-    fast-memoize "^2.5.2"
-    intl-messageformat-parser "6.3.4"
-    tslib "^2.0.1"
+    "@formatjs/ecma402-abstract" "2.3.4"
+    "@formatjs/fast-memoize" "2.2.7"
+    "@formatjs/icu-messageformat-parser" "2.11.2"
+    tslib "^2.8.0"
 
 ipaddr.js@1.9.1:
   version "1.9.1"
@@ -6235,6 +6304,11 @@ js-yaml@^4.1.0:
   integrity sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==
   dependencies:
     argparse "^2.0.1"
+
+jsbi@^4.3.0:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/jsbi/-/jsbi-4.3.2.tgz#8a4d05d4e09907d73042135b6aa55a6d161ee955"
+  integrity sha512-9fqMSQbhJykSeii05nxKl4m6Eqn2P6rOlYiS+C5Dr/HPIU/7yZxu5qzbs40tgaFORiw2Amd0mirjxatXYMkIew==
 
 jsdom@^16.6.0:
   version "16.7.0"
@@ -8157,9 +8231,9 @@ renderkid@^3.0.0:
     lodash "^4.17.21"
     strip-ansi "^6.0.1"
 
-requestanimationframe-timer@^3.0.3:
+requestanimationframe-timer@3.0.3:
   version "3.0.3"
-  resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/requestanimationframe-timer/-/requestanimationframe-timer-3.0.3.tgz#a3dcb7a70df6752858cab25f37b636a6cfff9133"
+  resolved "https://registry.yarnpkg.com/requestanimationframe-timer/-/requestanimationframe-timer-3.0.3.tgz#a3dcb7a70df6752858cab25f37b636a6cfff9133"
   integrity sha512-2gCvk7jCQTq0nyukEdLI06X5zogy0DSj0j+mwVz12q29DnelCefxByiUsRovpjdc06cvSLTV6vyhw7g8b0AZ1A==
   dependencies:
     raf "^3.4.1"
@@ -8592,9 +8666,9 @@ sockjs@^0.3.24:
     uuid "^8.3.2"
     websocket-driver "^0.7.4"
 
-sortablejs@^1.14.0:
+sortablejs@1.15.6:
   version "1.15.6"
-  resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/sortablejs/-/sortablejs-1.15.6.tgz#ff93699493f5b8ab8d828f933227b4988df1d393"
+  resolved "https://registry.yarnpkg.com/sortablejs/-/sortablejs-1.15.6.tgz#ff93699493f5b8ab8d828f933227b4988df1d393"
   integrity sha512-aNfiuwMEpfBM/CN6LY0ibyhxPfPbyFeBTYJKCvzkJ2GkUpazIt3H+QIPAMHwqQ7tMKaHz1Qj+rJJCqljnf4p3A==
 
 source-list-map@^2.0.0, source-list-map@^2.0.1:
@@ -8707,11 +8781,6 @@ statuses@2.0.1:
   version "1.5.0"
   resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/statuses/-/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
   integrity sha512-OpZ3zP+jT1PI7I8nemJX4AKmAX070ZkYPVWV/AaKTJl+tXCTGyVdC1a4SL8RUQYEwk/f34ZX8UTykN68FwrqAA==
-
-stencil-click-outside@^1.7.1:
-  version "1.8.0"
-  resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/stencil-click-outside/-/stencil-click-outside-1.8.0.tgz#ead2505540ec66c46b97d0c3957b4e77582e094d"
-  integrity sha512-eJiZbAAj3sE1nMK+F5Ihi4GzU9/P2sZmy94JaDm5ehAaVaWraDsBsA5+zAuXwORPnphJVEY4zIxX1uXhU19MFQ==
 
 string-length@^4.0.1:
   version "4.0.2"
@@ -9198,7 +9267,7 @@ tslib@^1.8.1:
   resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.0.1, tslib@^2.0.3:
+tslib@^2.0.3, tslib@^2.4.1, tslib@^2.8.0:
   version "2.8.1"
   resolved "https://nexus.use1.infra-pure.cloud/repository/npm-cache/tslib/-/tslib-2.8.1.tgz#612efe4ed235d567e8aba5f2a5fab70280ade83f"
   integrity sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==

@@ -1,17 +1,16 @@
 import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { registerElements } from './configs/registerGUXComponents';
+import { registerElements } from 'genesys-spark-components';
 import './configs/i18n';
 
 registerElements();
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Suspense fallback={<div>Loading i18n</div>}>
       <App />
     </Suspense>
   </React.StrictMode>,
-  document.getElementById('root')
 );
