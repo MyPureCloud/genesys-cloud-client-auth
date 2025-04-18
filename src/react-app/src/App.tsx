@@ -1,17 +1,15 @@
+import { GuxIcon } from 'genesys-spark-components-react';
 import './App.css';
 import { useTranslation } from 'react-i18next';
-import { GuxIcon } from 'genesys-spark-components-react';
+import { handleRedirectFromLogin } from '../../lib/parse-redirect';
 
-declare var GenesysCloudClientAuth: {
-  handleRedirectFromLogin: () => void;
-};
-
-export default function App() {
+const App = () => {
   const { t } = useTranslation();
   let response = <h3>{t('successMsg')}</h3>;
 
   try {
-    GenesysCloudClientAuth.handleRedirectFromLogin();
+    handleRedirectFromLogin();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
     response = (
       <div>
@@ -29,9 +27,11 @@ export default function App() {
           icon-name='legacy/genesys-logo-full'
           decorative={true}
         ></GuxIcon>
-        {response}
+        { response }
         <h1>{t('closeWindowMsg')}</h1>
       </div>
     </div>
   );
 }
+
+export default App;
