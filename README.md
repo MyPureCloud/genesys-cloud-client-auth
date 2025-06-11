@@ -41,7 +41,10 @@ const authenticator: GenesysCloudClientAuthenticator = authenticatorFactory(clie
   environment: 'mypurecloud.com',
   persist: false,
   storageKey: 'gc_client_auth_data',
-  debugMode: false
+  debugMode: false,
+  customHeaders: {
+    'X-My-Header': 'value'
+  }
 });
 
 authenticator.loginImplicitGrant({
@@ -184,6 +187,12 @@ Params:
       * Defaults to: `false`
       */
       debugMode: boolean;
+
+      /**
+       * Custom headers to include in all API requests.
+       * Example: { 'X-My-Header': 'value' }
+       */
+      customHeaders?: Record<string, string>;
     }
     ```
 
