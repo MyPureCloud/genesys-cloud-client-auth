@@ -37,7 +37,6 @@ import { GenesysCloudClientAuthenticator, authenticatorFactory, IAuthData } from
 
 const clientId = 'Your Oauth ClientID';
 const authenticator: GenesysCloudClientAuthenticator = authenticatorFactory(clientId, {
-  /* these are the defaults */
   environment: 'mypurecloud.com',
   persist: false,
   storageKey: 'gc_client_auth_data',
