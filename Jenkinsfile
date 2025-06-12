@@ -1,12 +1,9 @@
 @Library('pipeline-library') _
+env.NPM_CONFIG_USERCONFIG = '/var/build/npmrc-nexus'
 
 def isBitbucket = false
 def MAIN_BRANCH = 'main'
 def DEVELOP_BRANCH = 'develop'
-
-def isRelease = {
-  env.BRANCH_NAME.startsWith('release/')
-}
 
 def isMain = {
   env.BRANCH_NAME == MAIN_BRANCH
@@ -54,7 +51,7 @@ webappPipeline {
     team = 'Client Streaming and Signaling'
     projectName = 'client-auth'
     jiraProjectKey = 'STREAM'
-    nodeVersion = '14.x'
+    nodeVersion = '20.x multiarch'
     mailer = 'GcMediaStreamSignal@genesys.com'
     buildType = getBranchType
     manifest = staticManifest([

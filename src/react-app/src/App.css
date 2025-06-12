@@ -1,6 +1,5 @@
 .App {
   text-align: center;
-
 }
 
 .content {
@@ -14,8 +13,7 @@
   color: white;
 }
 
-
-gux-icon {
+.logo {
   width: 100%;
   font-size: 5em;
   margin: 50px 0 50px 0;
