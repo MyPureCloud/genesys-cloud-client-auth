@@ -34,6 +34,7 @@ export class GenesysCloudClientAuthenticator {
   private hasLocalStorage: boolean;
   private authentications: { [authenitcation: string]: any };
   private timeout: number;
+  private customHeaders: Record<string, string> = {};
 
   /**
    * Construct a new Authenticator instance. It is recommended you use the `authenticatorFactory()`
@@ -54,6 +55,7 @@ export class GenesysCloudClientAuthenticator {
     }
 
     this.config = { ...config } as IAuthenticatorConfig;
+    this.customHeaders = config.customHeaders || {};
 
     this.setEnvironment(config.environment);
 
@@ -293,11 +295,17 @@ export class GenesysCloudClientAuthenticator {
    */
   callApi (path: string, httpMethod: 'get' | 'post', token?: string): superagent.Request {
     const uri = this.buildUrl(path);
-    return superagent[httpMethod](uri)
+    let req = superagent[httpMethod](uri)
       .type('application/json')
       .timeout(this.timeout)
-      .set('Authorization', `Bearer ${token || this.authData?.accessToken}`)
-      .send();
+      .set('Authorization', `Bearer ${token || this.authData?.accessToken}`);
+    // Add custom headers
+    if (this.customHeaders) {
+      Object.entries(this.customHeaders).forEach(([key, value]) => {
+        req = req.set(key, value);
+      });
+    }
+    return req.send();
   }
 
   /**

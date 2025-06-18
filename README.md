@@ -37,11 +37,13 @@ import { GenesysCloudClientAuthenticator, authenticatorFactory, IAuthData } from
 
 const clientId = 'Your Oauth ClientID';
 const authenticator: GenesysCloudClientAuthenticator = authenticatorFactory(clientId, {
-  /* these are the defaults */
   environment: 'mypurecloud.com',
   persist: false,
   storageKey: 'gc_client_auth_data',
-  debugMode: false
+  debugMode: false,
+  customHeaders: {
+    'X-My-Header': 'value'
+  }
 });
 
 authenticator.loginImplicitGrant({
@@ -184,6 +186,12 @@ Params:
       * Defaults to: `false`
       */
       debugMode: boolean;
+
+      /**
+       * Custom headers to include in all API requests.
+       * Example: { 'X-My-Header': 'value' }
+       */
+      customHeaders?: Record<string, string>;
     }
     ```
 

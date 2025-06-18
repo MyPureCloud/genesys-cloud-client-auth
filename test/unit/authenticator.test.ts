@@ -392,6 +392,31 @@ describe('GenesysCloudClientAuthenticator', () => {
     });
   });
 
+  describe('customHeaders', () => {
+    it('should include custom headers in all API requests', async () => {
+      const customHeaders = {
+        'X-Custom-Header': 'custom-value'
+      };
+      authenticator = new GenesysCloudClientAuthenticator(clientId, {
+        environment: 'mypurecloud.com',
+        persist: false,
+        storageKey: 'gc_client_auth_data',
+        debugMode: false,
+        customHeaders
+      });
+      const token = 'header-token';
+      const path = '/my/endpoint';
+      const endpoint = createNock()
+        .get(path)
+        .matchHeader('Authorization', `Bearer ${token}`)
+        .matchHeader('Content-Type', 'application/json')
+        .matchHeader('X-Custom-Header', 'custom-value')
+        .reply(200);
+      await authenticator.callApi(path, 'get', token);
+      endpoint.done();
+    });
+  });
+
   describe('_debug()', () => {
     let debugSpy: jest.SpyInstance;
     beforeEach(() => {
