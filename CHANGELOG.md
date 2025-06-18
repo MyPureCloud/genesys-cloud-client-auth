@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [ATEAM-1719](https://inindca.atlassian.net/browse/ATEAM-1719) - Added ability to pass in custom headers to authentication requests.
 * [NO-JIRA] - Updated dependencies to resolve Snyk vulnerabilities. Updated CODEOWNERS file.
 
+### Changed
+* [STREAM-233](https://inindca.atlassian.net/browse/STREAM-233) - Switched to vite instead of create-react-app to resolve Snyk vulnerabilities.
+
 ### BREAKING CHANGES
 * [PCM-1939](https://inindca.atlassian.net/browse/PCM-1939) – Adjusted cdn version urls to specify major and exact versions. For example:
     * `/v1.0.0/genesys-cloud-client-auth.browser.min.js` (exact version)
