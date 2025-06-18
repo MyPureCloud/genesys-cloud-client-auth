@@ -34,7 +34,7 @@ export class GenesysCloudClientAuthenticator {
   private hasLocalStorage: boolean;
   private authentications: { [authenitcation: string]: any };
   private timeout: number;
-  private customHeaders: Record<string, string> = {};
+  private customHeaders?: Record<string, string>;
 
   /**
    * Construct a new Authenticator instance. It is recommended you use the `authenticatorFactory()`
@@ -55,7 +55,7 @@ export class GenesysCloudClientAuthenticator {
     }
 
     this.config = { ...config } as IAuthenticatorConfig;
-    this.customHeaders = config.customHeaders || {};
+    this.customHeaders = config.customHeaders;
 
     this.setEnvironment(config.environment);
 
