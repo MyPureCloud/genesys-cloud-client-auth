@@ -12,6 +12,7 @@
 # production
 /build
 /dist
+/legacy-build-output
 
 # misc
 .DS_Store

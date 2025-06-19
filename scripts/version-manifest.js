@@ -39,6 +39,32 @@ console.log('Copied built bundled file to versioned folders', {
   exactVersionPath
 });
 
+/* Create legacy-build-output directory for web-app-deploy compatibility */
+const legacyBuildOutputDir = 'legacy-build-output';
+if (!FS.existsSync(legacyBuildOutputDir)) {
+  FS.mkdirSync(legacyBuildOutputDir);
+}
+
+// Copy required files to legacy-build-output directory
+const filesToCopy = [
+  'index.html',
+  'robots.txt',
+  builtFileName,
+  `${builtFileName}.map`
+];
+
+filesToCopy.forEach(fileName => {
+  const srcPath = `dist/${fileName}`;
+  const destPath = `${legacyBuildOutputDir}/${fileName}`;
+  
+  if (FS.existsSync(srcPath)) {
+    FS.copyFileSync(srcPath, destPath);
+    console.log(`Copied ${srcPath} to ${destPath}`);
+  } else {
+    console.warn(`Warning: ${srcPath} does not exist, skipping copy to legacy-build-output`);
+  }
+});
+
 const buildDate = new Date();
 
 const manifest = {
