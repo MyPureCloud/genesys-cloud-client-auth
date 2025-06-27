@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 # [Unreleased](https://github.com/MyPureCloud/genesys-cloud-client-auth/compare/v0.0.1...HEAD)
+* [ATEAM-1719](https://inindca.atlassian.net/browse/ATEAM-1719) - Added ability to pass in custom headers to authentication requests.
+* [NO-JIRA] - Fix issues caused by Vite migration. Remove pipeline infra from open-source.
 * [NO-JIRA] - Updated dependencies to resolve Snyk vulnerabilities. Updated CODEOWNERS file.
 
 ### BREAKING CHANGES
