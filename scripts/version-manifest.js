@@ -48,7 +48,6 @@ const manifest = {
   buildDate: buildDate.toISOString(),
   indexFiles: [
     'index.html',
-    'robots.txt',
     majorVersionPath,
     exactVersionPath
   ].map(filename => ({ file: filename.replace('dist', '') }))
