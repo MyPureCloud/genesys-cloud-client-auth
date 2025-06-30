@@ -5,13 +5,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # [Unreleased](https://github.com/MyPureCloud/genesys-cloud-client-auth/compare/v1.0.0...HEAD)
 
-# [v1.0.0](https://github.com/MyPureCloud/genesys-cloud-client-auth/compare/v0.0.1...1.0.0)
+# [v1.0.0](https://github.com/MyPureCloud/genesys-cloud-client-auth/tags/v1.0.0)
 ### Added
 * [ATEAM-1719](https://inindca.atlassian.net/browse/ATEAM-1719) - Added ability to pass in custom headers to authentication requests.
-* [NO-JIRA] - Updated dependencies to resolve Snyk vulnerabilities. Updated CODEOWNERS file.
 
 ### Changed
 * [STREAM-233](https://inindca.atlassian.net/browse/STREAM-233) - Switched to vite instead of create-react-app to resolve Snyk vulnerabilities.
+* [STREAM-627](https://inindca.atlassian.net/browse/STREAM-627) - Fix issues caused by Vite migration. Remove pipeline infra from open-source.
+
+### Fixed
+* [NO-JIRA] - Updated dependencies to resolve Snyk vulnerabilities. Updated CODEOWNERS file.
 
 ### BREAKING CHANGES
 * [PCM-1939](https://inindca.atlassian.net/browse/PCM-1939) – Adjusted cdn version urls to specify major and exact versions. For example:

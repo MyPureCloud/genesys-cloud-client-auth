@@ -16,8 +16,8 @@
     "start:lib": "webpack -c webpack.config.dev.js",
     "start:react": "cd src/react-app && npm run dev",
     "prebuild": "rimraf dist",
-    "build": "npm run build:react && npm run build:lib && node scripts/version-manifest.js",
-    "build:react": "cd src/react-app && npm run build",
+    "build": "npm run build:react && npm run build:lib && npm run copy:react-dist && node scripts/version-manifest.js",
+    "build:react": "cd src/react-app && yarn build",
     "build:lib": "npm run compile:cjs && npm run compile:module && npm run compile:webpack",
     "compile:cjs": "tsc -p ./tsconfig.json --outDir ./dist/lib/cjs --target es2018 --module commonjs",
     "compile:module": "tsc -p ./tsconfig.json",
@@ -28,9 +28,9 @@
     "lint": "npm run lint:lib",
     "lint:lib": "eslint ./src/lib",
     "lint:fix": "npm run lint -- --fix",
-    "lint:react": "",
     "_build:test": "npm run build:lib && cp test/index.html dist/lib && stupid-server -s dist/lib",
-    "codecov": "node scripts/merge-coverage-reports.js && codecov"
+    "codecov": "node scripts/merge-coverage-reports.js && codecov",
+    "copy:react-dist": "cp -r src/react-app/dist/* dist/ || true"
   },
   "files": [
     "dist"
