@@ -20,7 +20,7 @@ export class GenesysCloudClientAuthenticator {
   readonly clientId: string;
   /** client-auth version */
   readonly VERSION: string = VERSION;
-  /** current authencation data for this instance. default is an empty object `{}`*/
+  /** current authencation data for this instance. default is an empty object `{}` */
   authData: IAuthData;
   /** current configuration for this instance */
   config: IAuthenticatorConfig;
@@ -34,6 +34,7 @@ export class GenesysCloudClientAuthenticator {
   private hasLocalStorage: boolean;
   private authentications: { [authenitcation: string]: any };
   private timeout: number;
+  private customHeaders?: Record<string, string>;
 
   /**
    * Construct a new Authenticator instance. It is recommended you use the `authenticatorFactory()`
@@ -54,6 +55,7 @@ export class GenesysCloudClientAuthenticator {
     }
 
     this.config = { ...config } as IAuthenticatorConfig;
+    this.customHeaders = config.customHeaders;
 
     this.setEnvironment(config.environment);
 
@@ -99,7 +101,7 @@ export class GenesysCloudClientAuthenticator {
       if (hash && hash.error) {
         hash.accessToken = undefined;
         this._saveSettings(hash);
-        reject(new Error(`[${hash.error}] ${hash.error_description}`))
+        reject(new Error(`[${hash.error}] ${hash.error_description}`));
       }
 
       /* if we have an acess token in the hash, save it before testing */
@@ -118,7 +120,6 @@ export class GenesysCloudClientAuthenticator {
         })
         .catch((error) => {
           this._debug('Error encountered during login. This is normal if the application has not yet been authorized.', error);
-
 
           const query: IAuthRequestParams = {
             client_id: encodeURIComponent(this.clientId),
@@ -172,7 +173,7 @@ export class GenesysCloudClientAuthenticator {
     }
 
     if (environment.startsWith('http://')) {
-      environment = environment.substring(7)
+      environment = environment.substring(7);
     }
 
     if (environment.startsWith('api.')) {
@@ -234,7 +235,7 @@ export class GenesysCloudClientAuthenticator {
    * @returns a promise that will resolve is successful
    */
   testAccessToken (token: string): Promise<any> {
-    return this.callApi('/api/v2/tokens/me', 'get', token)
+    return this.callApi('/api/v2/tokens/me', 'get', token);
   }
 
   /**
@@ -294,11 +295,17 @@ export class GenesysCloudClientAuthenticator {
    */
   callApi (path: string, httpMethod: 'get' | 'post', token?: string): superagent.Request {
     const uri = this.buildUrl(path);
-    return superagent[httpMethod](uri)
+    let req = superagent[httpMethod](uri)
       .type('application/json')
       .timeout(this.timeout)
-      .set('Authorization', `Bearer ${token || this.authData?.accessToken}`)
-      .send();
+      .set('Authorization', `Bearer ${token || this.authData?.accessToken}`);
+    // Add custom headers
+    if (this.customHeaders) {
+      Object.entries(this.customHeaders).forEach(([key, value]) => {
+        req = req.set(key, value);
+      });
+    }
+    return req.send();
   }
 
   /**

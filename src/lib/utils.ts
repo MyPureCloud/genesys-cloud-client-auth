@@ -122,7 +122,7 @@ export const isIssuedTimeWithinTimeframe = (
  */
 export const isIssuedTimeWithinWindow = (expiresAtMs: number, expiresInMs?: number, timeframe?: number): boolean => {
   return isIssuedTimeWithinTimeframe(expiresAtMs, expiresInMs, timeframe);
-}
+};
 
 /**
  * Determine when a token was issued at by subtracting the validity

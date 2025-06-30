@@ -1,54 +1,39 @@
 {
   "name": "react-app",
-  "jest": {
-    "watchPathIgnorePatterns": [
-      "src/configs",
-      "src/index"
-    ]
-  },
-  "version": "0.0.99",
   "private": true,
-  "dependencies": {
-    "@genesys/common-webcomponents": "^2.15.1",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "i18next": "^20.3.0",
-    "i18next-browser-languagedetector": "^6.1.1",
-    "i18next-http-backend": "^1.2.6",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-i18next": "^11.9.0",
-    "react-scripts": "4.0.3",
-    "typescript": "^4.1.2",
-    "web-vitals": "^1.0.1"
-  },
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "BUILD_PATH=../../dist react-scripts build",
-    "test": "react-scripts test --coverage",
-    "eject": "react-scripts eject"
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "dependencies": {
+    "@vitejs/plugin-basic-ssl": "^2.0.0",
+    "genesys-spark-components": "^4.138.5",
+    "genesys-spark-components-react": "^4.138.5",
+    "i18next": "^25.2.1",
+    "i18next-browser-languagedetector": "^8.0.5",
+    "i18next-http-backend": "^3.0.2",
+    "normalize.css": "^8.0.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-i18next": "^15.4.1",
+    "react-redux": "^9.2.0"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.22.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^16.0.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.26.1",
+    "vite": "^6.3.1",
+    "vitest": "^3.2.4"
   }
 }

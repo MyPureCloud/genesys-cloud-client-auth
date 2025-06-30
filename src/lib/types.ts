@@ -23,6 +23,11 @@ export interface IAuthenticatorConfig {
    * Defaults to: `false`
    */
   debugMode: boolean;
+
+  /**
+   * Custom headers to include in all API requests.
+   */
+  customHeaders?: Record<string, string>;
 }
 
 export interface IAuthData {

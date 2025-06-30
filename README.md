@@ -24,9 +24,11 @@ yarn add genesys-cloud-client-auth
 
 Or you can download directly from the browser:
 
+> NOTE: that since v1.0.0, you must specify the major version to download from the CDN. See v1.0.0's **BREAKING CHANGES** in the `CHANGELOG.md` for more details.
+
 ``` html
 <!-- change out the domain if desired -->
-<script src="https://apps.mypurecloud.com/client-auth/genesys-cloud-client-auth.browser.min.js"></script>
+<script src="https://apps.mypurecloud.com/client-auth/v1/genesys-cloud-client-auth.browser.min.js"></script>
 ```
 
 ## Usage
@@ -35,11 +37,13 @@ import { GenesysCloudClientAuthenticator, authenticatorFactory, IAuthData } from
 
 const clientId = 'Your Oauth ClientID';
 const authenticator: GenesysCloudClientAuthenticator = authenticatorFactory(clientId, {
-  /* these are the defaults */
   environment: 'mypurecloud.com',
   persist: false,
   storageKey: 'gc_client_auth_data',
-  debugMode: false
+  debugMode: false,
+  customHeaders: {
+    'X-My-Header': 'value'
+  }
 });
 
 authenticator.loginImplicitGrant({
@@ -126,7 +130,7 @@ try {
 It can also be used directly in the HTML:
 
 ``` html
-<script src="https://apps.mypurecloud.com/client-auth/genesys-cloud-client-auth.browser.min.js"></script>
+<script src="https://apps.mypurecloud.com/client-auth/v1/genesys-cloud-client-auth.browser.min.js"></script>
 <script>
 try {
   GenesysCloudClientAuth.handleRedirectFromLogin();
@@ -182,6 +186,12 @@ Params:
       * Defaults to: `false`
       */
       debugMode: boolean;
+
+      /**
+       * Custom headers to include in all API requests.
+       * Example: { 'X-My-Header': 'value' }
+       */
+      customHeaders?: Record<string, string>;
     }
     ```
 
