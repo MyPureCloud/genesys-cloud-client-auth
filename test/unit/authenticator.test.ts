@@ -1,7 +1,11 @@
 import { GenesysCloudClientAuthenticator, IAuthData, IAuthenticatorConfig, IAuthRequestParams, ILoginOptions } from '../../src/lib';
 import * as utils from '../../src/lib/utils';
 import { createNock } from '../utils/test-utils';
-import { TimeoutError } from '../../src/lib/utils';
+import { TimeoutError } from '../../src/lib';
+import axios from 'axios';
+
+// Reason https://www.npmjs.com/package/nock#axios
+axios.defaults.adapter = 'http'
 
 describe('GenesysCloudClientAuthenticator', () => {
   let authenticator: GenesysCloudClientAuthenticator;
