@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * [ATEAM-1719](https://inindca.atlassian.net/browse/ATEAM-1719) - Added ability to pass in custom headers to authentication requests.
 * [STREAM-627](https://inindca.atlassian.net/browse/STREAM-627) - Fix issues caused by Vite migration. Remove pipeline infra from open-source.
 * [STREAM-637](https://inindca.atlassian.net/browse/STREAM-637) - Move jest-environment-jsdom to dev-dependencies
+* [STREAM-633](https://inindca.atlassian.net/browse/STREAM-633) - Migrate away from superagent to Axios.
 * [NO-JIRA] - Updated dependencies to resolve Snyk vulnerabilities. Updated CODEOWNERS file.
 
 ### BREAKING CHANGES

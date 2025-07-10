@@ -1,4 +1,3 @@
-import superagent from 'superagent';
 import { v4 } from 'uuid';
 
 import {
@@ -10,6 +9,7 @@ import {
 } from './types';
 import { debug, parseOauthParams, TimeoutError, TranslatableError } from './utils';
 import VERSION from './version';
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 /**
  * Class to manage authentication and state. It is recommended to use the `authenticatorFactory`
@@ -26,9 +26,9 @@ export class GenesysCloudClientAuthenticator {
   config: IAuthenticatorConfig;
   /** current environment. Ex. `mypurecloud.com` */
   environment!: string;
-  /** base api path - utilizing the `environment` varialbe */
+  /** base api path - utilizing the `environment` variable */
   basePath!: string;
-  /** base auth path - utilizing the `environment` varialbe */
+  /** base auth path - utilizing the `environment` variable */
   authUrl!: string;
 
   private hasLocalStorage: boolean;
@@ -291,21 +291,29 @@ export class GenesysCloudClientAuthenticator {
    * Invokes the REST service using the supplied settings and parameters.
    * @param path The path of the resource - this will be appended to base url.
    * @param httpMethod The HTTP method to use.
+   * @param token The Bearer token.
    * @returns A Promise request object.
    */
-  callApi (path: string, httpMethod: 'get' | 'post', token?: string): superagent.Request {
+  callApi (path: string, httpMethod: 'get' | 'post', token?: string): Promise<AxiosResponse> {
     const uri = this.buildUrl(path);
-    let req = superagent[httpMethod](uri)
-      .type('application/json')
-      .timeout(this.timeout)
-      .set('Authorization', `Bearer ${token || this.authData?.accessToken}`);
-    // Add custom headers
+    const headers: Record<string, string> = {
+      'Authorization': `Bearer ${token || this.authData?.accessToken}`,
+      'Content-Type': 'application/json'
+    };
     if (this.customHeaders) {
       Object.entries(this.customHeaders).forEach(([key, value]) => {
-        req = req.set(key, value);
+        headers[key] = value;
       });
     }
-    return req.send();
+
+    const config: AxiosRequestConfig = {
+      method: httpMethod,
+      url: uri,
+      headers,
+      timeout: this.timeout
+    };
+
+    return axios.request(config);
   }
 
   /**
