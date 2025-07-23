@@ -17,7 +17,7 @@
     "start:react": "cd src/react-app && npm run dev",
     "prebuild": "rimraf dist",
     "build": "npm run build:react && npm run build:lib && npm run copy:react-dist && node scripts/version-manifest.js",
-    "build:react": "cd src/react-app && yarn build",
+    "build:react": "cd src/react-app && npm run build",
     "build:lib": "npm run compile:cjs && npm run compile:module && npm run compile:webpack",
     "compile:cjs": "tsc -p ./tsconfig.json --outDir ./dist/lib/cjs --target es2018 --module commonjs",
     "compile:module": "tsc -p ./tsconfig.json",
