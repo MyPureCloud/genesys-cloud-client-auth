@@ -4,6 +4,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 # [Unreleased](https://github.com/MyPureCloud/genesys-cloud-client-auth/compare/v1.0.0...HEAD)
+
+# [v1.0.1](https://github.com/MyPureCloud/genesys-cloud-client-auth/tags/v1.0.1)
+### Changed
 * [STREAM-637](https://inindca.atlassian.net/browse/STREAM-637) - Move jest-environment-jsdom to dev-dependencies
 * [STREAM-633](https://inindca.atlassian.net/browse/STREAM-633) - Migrate away from superagent to Axios.
 
