@@ -11,10 +11,10 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "install:all": "npm ci && cd src/react-app && yarn --pure-lockfile",
+    "install:all": "npm ci && cd src/react-app && npm install",
     "start": "concurrently \"npm run start:lib\" \"npm run start:react\"",
     "start:lib": "webpack -c webpack.config.dev.js",
-    "start:react": "cd src/react-app && yarn start",
+    "start:react": "cd src/react-app && npm run dev",
     "prebuild": "rimraf dist",
     "build": "npm run build:react && npm run build:lib && npm run copy:react-dist && node scripts/version-manifest.js",
     "build:react": "cd src/react-app && yarn build",
@@ -36,7 +36,7 @@
     "dist"
   ],
   "dependencies": {
-    "superagent": "^10.2.2",
+    "axios": "^1.10.0",
     "uuid": "^11.0.4"
   },
   "devDependencies": {
