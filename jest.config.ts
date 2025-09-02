@@ -199,4 +199,11 @@ export default {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+  reporters: [
+    'default',
+    ['jest-junit', {
+      outputDirectory: 'test-results/unit',
+      outputName: 'test-results.xml'
+    }]
+  ]
 };
