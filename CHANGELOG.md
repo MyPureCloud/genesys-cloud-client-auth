@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * [STREAM-883](https://inindca.atlassian.net/browse/STREAM-883) - Generate a test report in JUnit.xml format.
 
+### Changed
+* [STREAM-1209](https://inindca.atlassian.net/browse/STREAM-1209) - Updated axios to v1.14.0 to fix Snyk vulnerability.
+
 # [v1.0.1](https://github.com/MyPureCloud/genesys-cloud-client-auth/tags/v1.0.1)
 ### Changed
 * [STREAM-637](https://inindca.atlassian.net/browse/STREAM-637) - Move jest-environment-jsdom to dev-dependencies
