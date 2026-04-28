@@ -3,7 +3,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-# [Unreleased](https://github.com/MyPureCloud/genesys-cloud-client-auth/compare/v1.0.1...HEAD)
+# [Unreleased](https://github.com/MyPureCloud/genesys-cloud-client-auth/compare/v1.0.2...HEAD)
+
+# [v1.0.2](https://github.com/MyPureCloud/genesys-cloud-client-auth/tags/v1.0.2)
+### Added
+* [STREAM-883](https://inindca.atlassian.net/browse/STREAM-883) - Generate a test report in JUnit.xml format.
+
+### Changed
+* [STREAM-1209](https://inindca.atlassian.net/browse/STREAM-1209) - Updated axios to v1.14.0 to fix Snyk vulnerability.
+* [STREAM-1421](https://inindca.atlassian.net/browse/STREAM-1421) - Updated axios to v1.15.0 to fix Snyk vulnerability.
+* [STREAM-1509](https://inindca.atlassian.net/browse/STREAM-1509) - Updated axios to v1.15.2 to fix Snyk vulnerability.
+
 
 # [v1.0.1](https://github.com/MyPureCloud/genesys-cloud-client-auth/tags/v1.0.1)
 ### Changed
