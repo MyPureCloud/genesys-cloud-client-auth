@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * [STREAM-1209](https://inindca.atlassian.net/browse/STREAM-1209) - Updated axios to v1.14.0 to fix Snyk vulnerability.
 * [STREAM-1421](https://inindca.atlassian.net/browse/STREAM-1421) - Updated axios to v1.15.0 to fix Snyk vulnerability.
+* [STREAM-1496](https://inindca.atlassian.net/browse/STREAM-1496) - Updated axios to v1.15.2 to fix Snyk vulnerability.
 
 # [v1.0.1](https://github.com/MyPureCloud/genesys-cloud-client-auth/tags/v1.0.1)
 ### Changed
