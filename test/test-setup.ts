@@ -1,4 +1,5 @@
 import { MockLocalStorage, MockWindowLocation } from './utils/test-utils';
+import { randomUUID } from 'crypto';
 
 /* mock window.location */
 Object.defineProperty(window, 'location', {
@@ -11,3 +12,8 @@ Object.defineProperty(window, 'localStorage', {
   value: new MockLocalStorage(),
   writable: true
 });
+
+Object.defineProperty(globalThis, 'crypto', {
+  value: { randomUUID }
+});
+
