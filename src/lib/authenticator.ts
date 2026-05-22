@@ -1,5 +1,3 @@
-import { v4 } from 'uuid';
-
 import {
   IAuthData,
   IAuthenticatorConfig,
@@ -377,7 +375,7 @@ export class GenesysCloudClientAuthenticator {
    * @returns unique id specific to client-auth
    */
   private _getId (id?: string): string {
-    id = id || v4();
+    id = id || globalThis.crypto.randomUUID();
     return `gc-ca_${id}`;
   }
 
