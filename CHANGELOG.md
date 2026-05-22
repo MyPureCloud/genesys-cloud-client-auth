@@ -3,7 +3,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-# [Unreleased](https://github.com/MyPureCloud/genesys-cloud-client-auth/compare/v1.0.1...HEAD)
+# [Unreleased](https://github.com/MyPureCloud/genesys-cloud-client-auth/compare/v2.0.0...HEAD)
+
+# [v2.0.0](https://github.com/MyPureCloud/genesys-cloud-client-auth/tags/v2.0.0)
 ### Breaking Changes
 * [STREAM-1599](https://inindca.atlassian.net/browse/STREAM-1599) - Replace `uuid` with native `globalThis.crypto.randomUUID()`. `randomUUID()` has been widely available in browsers since 2022, so this should only affect you if you use client-auth in an older browser.
 
