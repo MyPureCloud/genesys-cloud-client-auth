@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Breaking Changes
 * [STREAM-1599](https://inindca.atlassian.net/browse/STREAM-1599) - Replace `uuid` with native `globalThis.crypto.randomUUID()`. `randomUUID()` has been widely available in browsers since 2022, so this should only affect you if you use client-auth in an older browser.
 
+# [v1.0.2](https://github.com/MyPureCloud/genesys-cloud-client-auth/tags/v1.0.2)
 ### Added
 * [STREAM-883](https://inindca.atlassian.net/browse/STREAM-883) - Generate a test report in JUnit.xml format.
 
