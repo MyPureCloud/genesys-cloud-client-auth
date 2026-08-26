@@ -1,0 +1,10 @@
+{
+    "successMsg": "Vous avez déjà ouvert une session Genesys Cloud avec succès.",
+    "closeWindowMsg": "Vous pouvez fermer cette fenêtre maintenant.",
+    "closeWindow": "FERMER",
+    "error": "ERREUR :",
+    "errorToken": "Aucun jeton d'accès n'a été fourni.",
+    "errorParse": "Impossible d'analyser les renseignements provenant du stockage local",
+    "errorTokenNotSet": "Aucun jeton n'a été défini.",
+    "errorStateParam": "Aucun paramètre « état » lors de la redirection. Impossible de déterminer l'emplacement d'enregistrement des données d'authentification."
+}
