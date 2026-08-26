@@ -1,0 +1,10 @@
+{
+    "successMsg": "Sikeresen bejelentkezett a Genesys Cloudba.",
+    "closeWindowMsg": "Most már bezárhatja ezt az ablakot.",
+    "closeWindow": "BEZÁRÁS",
+    "error": "HIBA:",
+    "errorToken": "Nincs megadva hozzáférési token.",
+    "errorParse": "Nem sikerült lekérni az információkat a helyi tárolóból",
+    "errorTokenNotSet": "A token nincs beállítva.",
+    "errorStateParam": "Hiányzó 'state' paraméter az átirányításkor. Nem sikerült meghatározni a hitelesítő adatok mentésének helyét."
+}
