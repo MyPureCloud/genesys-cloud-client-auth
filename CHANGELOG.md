@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 # [Unreleased](https://github.com/MyPureCloud/genesys-cloud-client-auth/compare/v2.0.0...HEAD)
+### Changed
+* [STREAM-1937](https://inindca.atlassian.net/browse/STREAM-1937) - Upgraded axios to v1.18.0 to fix Snyk vulnerabilities
 
 # [v2.0.0](https://github.com/MyPureCloud/genesys-cloud-client-auth/tags/v2.0.0)
 ### Breaking Changes
