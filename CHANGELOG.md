@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 # [Unreleased](https://github.com/MyPureCloud/genesys-cloud-client-auth/compare/v2.0.0...HEAD)
 ### Changed
 * [STREAM-1937](https://inindca.atlassian.net/browse/STREAM-1937) - Upgraded axios to v1.18.0 to fix Snyk vulnerabilities
+* [STREAM-2633](https://inindca.atlassian.net/browse/STREAM-2633) - Upgraded genesys-spark-components and genesys-spark-components-react to v4.258.1 in the React app
 
 # [v2.0.0](https://github.com/MyPureCloud/genesys-cloud-client-auth/tags/v2.0.0)
 ### Breaking Changes
